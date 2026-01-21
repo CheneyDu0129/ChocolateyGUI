@@ -447,7 +447,7 @@
                         VerticalAlignment="Center"
                         Style="{DynamicResource IconFlatButtonStyle}" ToolTip="{lang:Localize RemoteSourceView_ButtonCheckForOutdatedPkgs}" Margin="0,0,2,0">
                     <StackPanel Orientation="Horizontal">
-                        <iconPacks:PackIconFontAwesome Kind="SyncSolid" />
+                        <iconPacks:PackIconFontAwesome Kind="RotateSolid" />
                         <iconPacks:PackIconFontAwesome Kind="BoxSolid" Margin="2 0 0 0" />
                     </StackPanel>
                 </Button>
@@ -457,7 +457,7 @@
                         Style="{DynamicResource IconFlatButtonStyle}"
                         ToolTip="{lang:Localize RemoteSourceView_ButtonRefreshPkgs}"
                         Margin="0,0,2,0">
-                    <iconPacks:PackIconFontAwesome Kind="SyncSolid" />
+                    <iconPacks:PackIconFontAwesome Kind="RotateSolid" />
                 </Button>
                 <RadioButton Margin="6,0,1,0"
                              Style="{DynamicResource ListViewModeRadioButtonStyle}"
