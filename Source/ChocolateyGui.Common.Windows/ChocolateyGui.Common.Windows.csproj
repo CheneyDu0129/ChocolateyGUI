@@ -33,6 +33,14 @@
     <OutputPath>bin\ReleaseOfficial\</OutputPath>
     <DefineConstants>TRACE;CODE_ANALYSIS;FORCE_CHOCOLATEY_OFFICIAL_KEY</DefineConstants>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(CHOCOLATEYGUI_OFFICIAL_KEY)' == ''">
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\chocolateygui.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(CHOCOLATEYGUI_OFFICIAL_KEY)' != ''">
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>$(CHOCOLATEYGUI_OFFICIAL_KEY)</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <None Include="..\ChocolateyGuiRules.ruleset">
       <Link>ChocolateyGuiRules.ruleset</Link>
