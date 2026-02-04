@@ -107,6 +107,7 @@
   <ItemGroup>
     <Resource Include="chocolatey%402.png" />
     <Resource Include="chocolatey%403.png" />
+    <SplashScreen Include="chocolatey.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="chocolatey%404.png" />
