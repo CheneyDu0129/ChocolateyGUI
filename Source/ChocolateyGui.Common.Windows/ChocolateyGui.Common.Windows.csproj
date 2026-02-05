@@ -71,7 +71,6 @@
     </AdditionalFiles>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="BuildTools.FxCop" Version="1.0.1" />
     <PackageReference Include="Caliburn.Micro" Version="3.2.0" />
     <PackageReference Include="MahApps.Metro" Version="2.4.11" />
     <PackageReference Include="MahApps.Metro.IconPacks.BoxIcons" Version="6.2.1" />
@@ -80,33 +79,12 @@
     <PackageReference Include="MahApps.Metro.IconPacks.Modern" Version="6.2.1" />
     <PackageReference Include="MahApps.Metro.IconPacks.Octicons" Version="6.2.1" />
     <PackageReference Include="MahApps.Metro.SimpleChildWindow" Version="2.2.1" />
-    <PackageReference Include="Markdig.Signed" Version="0.44.0" />
     <PackageReference Include="Markdig.Wpf.Signed" Version="0.5.0.1" />
-    <PackageReference Include="Microsoft.CodeAnalysis.BannedApiAnalyzers">
-      <Version>3.3.4</Version>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-    <PackageReference Include="Microsoft.NETCore.Platforms" Version="7.0.4" />
-    <PackageReference Include="Microsoft.VisualStudio.Threading" Version="17.14.15" />
-    <PackageReference Include="NETStandard.Library" Version="2.0.3" />
     <PackageReference Include="SkiaSharp.HarfBuzz" Version="1.68.3" />
     <PackageReference Include="Splat" Version="2.0.0" />
-    <PackageReference Include="Serilog" Version="4.3.0" />
-    <PackageReference Include="StyleCop.Analyzers">
-      <Version>1.1.118</Version>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
     <PackageReference Include="Svg.Skia" Version="3.4.1" />
-    <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
-    <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
-    <PackageReference Include="System.Diagnostics.Contracts" Version="4.3.0" />
     <PackageReference Include="System.Net.Http" Version="4.3.4" />
     <PackageReference Include="System.Reactive" Version="6.1.0" />
     <PackageReference Include="System.Runtime.Caching" Version="10.0.2" />
-    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.1.2" />
-    <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" Version="4.3.0" />
   </ItemGroup>
 </Project>
