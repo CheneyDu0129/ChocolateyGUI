@@ -61,7 +61,7 @@
             "licenses": [
                 {
                     "type": "MIT",
-                    "link": "",
+                    "link": "https://github.com/litedb-org/LiteDB/blob/84065086a8e8716063b255d0abb332708d0b2ad3/LICENSE",
                     "name": "LICENSE"
                 }
             ]
@@ -73,7 +73,7 @@
             "licenses": [
                 {
                     "type": "MIT",
-                    "link": "",
+                    "link": "https://github.com/MahApps/MahApps.Metro/blob/f1e91f8ab62fc83273d71c82830a0d05e7f7c2f6/LICENSE",
                     "name": "LICENSE"
                 }
             ]
@@ -85,7 +85,7 @@
             "licenses": [
                 {
                     "type": "MIT",
-                    "link": "",
+                    "link": "https://github.com/MahApps/MahApps.Metro.IconPacks/blob/d7d1c4ab6202143fd83410d715d323a2dbddf320/LICENSE",
                     "name": "LICENSE"
                 }
             ]
@@ -97,7 +97,7 @@
             "licenses": [
                 {
                     "type": "MIT",
-                    "link": "",
+                    "link": "https://github.com/MahApps/MahApps.Metro.IconPacks/blob/d7d1c4ab6202143fd83410d715d323a2dbddf320/LICENSE",
                     "name": "LICENSE"
                 }
             ]
@@ -109,7 +109,7 @@
             "licenses": [
                 {
                     "type": "MIT",
-                    "link": "",
+                    "link": "https://github.com/MahApps/MahApps.Metro.IconPacks/blob/d7d1c4ab6202143fd83410d715d323a2dbddf320/LICENSE",
                     "name": "LICENSE"
                 }
             ]
@@ -121,7 +121,7 @@
             "licenses": [
                 {
                     "type": "MIT",
-                    "link": "",
+                    "link": "https://github.com/MahApps/MahApps.Metro.IconPacks/blob/d7d1c4ab6202143fd83410d715d323a2dbddf320/LICENSE",
                     "name": "LICENSE"
                 }
             ]
@@ -133,7 +133,7 @@
             "licenses": [
                 {
                     "type": "MIT",
-                    "link": "",
+                    "link": "https://github.com/MahApps/MahApps.Metro.IconPacks/blob/d7d1c4ab6202143fd83410d715d323a2dbddf320/LICENSE",
                     "name": "LICENSE"
                 }
             ]
@@ -145,7 +145,7 @@
             "licenses": [
                 {
                     "type": "MIT",
-                    "link": "",
+                    "link": "https://github.com/punker76/MahApps.Metro.SimpleChildWindow/blob/f17d0def889df10f92f00e9f2240ace90b67f24a/LICENSE",
                     "name": "LICENSE"
                 }
             ]
@@ -182,7 +182,7 @@
             "licenses": [
                 {
                     "type": "MIT",
-                    "link": "",
+                    "link": "https://github.com/microsoft/vs-threading/blob/051a9047ff5c89efa46058a629c3add6c122e9b6/LICENSE",
                     "name": "LICENSE"
                 }
             ]
@@ -207,7 +207,7 @@
             "licenses": [
                 {
                     "type": "Apache-2.0",
-                    "link": "",
+                    "link": "https://github.com/serilog/serilog/blob/1b461379f4e218a939d5c94897df2a1dbbf90573/LICENSE",
                     "name": "LICENSE"
                 }
             ]
@@ -219,7 +219,7 @@
             "licenses": [
                 {
                     "type": "Apache-2.0",
-                    "link": "",
+                    "link": "https://github.com/serilog/serilog-formatting-compact/blob/8472ad8ccb97432ca7efbe78d8bc0eaf61db5356/LICENSE",
                     "name": "LICENSE"
                 }
             ]
@@ -231,7 +231,7 @@
             "licenses": [
                 {
                     "type": "Apache-2.0",
-                    "link": "",
+                    "link": "https://github.com/serilog/serilog-sinks-async/blob/5c6e5df7dffe5535978475c9ce8c5c6fb1cc9dca/LICENSE",
                     "name": "LICENSE"
                 }
             ]
@@ -243,7 +243,7 @@
             "licenses": [
                 {
                     "type": "Apache-2.0",
-                    "link": "",
+                    "link": "https://github.com/serilog/serilog-sinks-console/blob/9b75d510787f5d54cf76584a3c3341d7eab0ee0a/LICENSE",
                     "name": "LICENSE"
                 }
             ]
@@ -255,7 +255,7 @@
             "licenses": [
                 {
                     "type": "Apache-2.0",
-                    "link": "",
+                    "link": "https://github.com/serilog/serilog-sinks-periodicbatching/blob/649fc9a10d3339e7cdcc2cb8982d757310b310ce/LICENSE",
                     "name": "LICENSE"
                 }
             ]
@@ -303,7 +303,7 @@
             "licenses": [
                 {
                     "type": "MIT",
-                    "link": "",
+                    "link": "https://github.com/wieslawsoltes/Svg.Skia/blob/c3030266d07c82738c6639bd6bc86080e2dafb1e/LICENSE.TXT",
                     "name": "LICENSE.TXT"
                 }
             ]
@@ -341,7 +341,7 @@
             "licenses": [
                 {
                     "type": "MIT",
-                    "link": "",
+                    "link": "https://github.com/dotnet/dotnet/blob/44525024595742ebe09023abe709df51de65009b/LICENSE.TXT",
                     "name": "LICENSE.TXT"
                 }
             ]
