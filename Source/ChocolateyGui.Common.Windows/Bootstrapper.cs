@@ -139,6 +139,9 @@ namespace ChocolateyGui.Common.Windows
         {
             try
             {
+                var splashScreenService = Bootstrapper.Container.Resolve<ISplashScreenService>();
+                splashScreenService.Show();
+                
                 // Do not remove! Load Chocolatey once so all config gets set
                 // properly for future calls
                 var choco = Lets.GetChocolatey(initializeLogging: false);

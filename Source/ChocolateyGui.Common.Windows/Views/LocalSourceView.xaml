@@ -199,7 +199,7 @@
                         VerticalAlignment="Center"
                         Style="{DynamicResource IconFlatButtonStyle}" ToolTip="{lang:Localize LocalSourceView_ButtonCheckForOutdatedPkgs}" Margin="0,0,2,0">
                     <StackPanel Orientation="Horizontal">
-                        <iconPacks:PackIconFontAwesome Kind="SyncSolid" />
+                        <iconPacks:PackIconFontAwesome Kind="RotateSolid" />
                         <iconPacks:PackIconFontAwesome Kind="BoxSolid" Margin="2 0 0 0" />
                     </StackPanel>
                 </Button>
@@ -207,7 +207,7 @@
                         ToolTipService.ShowOnDisabled="True"
                         VerticalAlignment="Center"
                         Style="{DynamicResource IconFlatButtonStyle}" ToolTip="{lang:Localize LocalSourceView_ButtonRefreshPkgs}" Margin="0,0,2,0">
-                    <iconPacks:PackIconFontAwesome Kind="SyncSolid" />
+                    <iconPacks:PackIconFontAwesome Kind="RotateSolid" />
                 </Button>
                 <Button Command="{commands:DataContextCommandAdapter UpdateAll, CanUpdateAll}"
                         VerticalAlignment="Center"
@@ -222,7 +222,7 @@
                                                    DisabledFeatureToolTip="{lang:Localize Application_OperationNotAllowed}" />
                     </i:Interaction.Behaviors>
                     <StackPanel Orientation="Horizontal">
-                        <iconPacks:PackIconFontAwesome Kind="SyncSolid" />
+                        <iconPacks:PackIconFontAwesome Kind="RotateSolid" />
                         <iconPacks:PackIconFontAwesome Kind="AsteriskSolid" Margin="2 0 0 0" />
                     </StackPanel>
                 </Button>
@@ -232,7 +232,7 @@
                         Style="{DynamicResource IconFlatButtonStyle}"
                         ToolTip="{lang:Localize LocalSourceView_ButtonExport}"
                         Margin="2,0,2,0">
-                    <iconPacks:PackIconFontAwesome Kind="SaveRegular" />
+                    <iconPacks:PackIconFontAwesome Kind="FloppyDiskRegular" />
                 </Button>
                 <RadioButton Margin="6,0,1,0"
                              Style="{DynamicResource ListViewModeRadioButtonStyle}"
