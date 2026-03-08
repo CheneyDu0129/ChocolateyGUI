@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright company="Chocolatey" file="ChocolateyService.cs">
 //   Copyright 2017 - Present Chocolatey Software, LLC
 //   Copyright 2014 - 2017 Rob Reynolds, the maintainers of Chocolatey, and RealDimensions Software, LLC
@@ -348,25 +348,28 @@ namespace ChocolateyGui.Common.Windows.Services
 
         public async Task<List<NuGetVersion>> GetAvailableVersionsForPackageIdAsync(string id, int page, int pageSize, bool includePreRelease)
         {
-            _choco.Set(
-                config =>
-                {
-                    config.CommandName = "list";
-                    config.Input = id;
-                    config.ListCommand.Exact = true;
-                    config.ListCommand.Page = page;
-                    config.ListCommand.PageSize = pageSize;
-                    config.Prerelease = includePreRelease;
-                    config.AllVersions = true;
-                    config.QuietOutput = true;
-                    config.RegularOutput = false;
+            using (await Lock.WriteLockAsync())
+            {
+                _choco.Set(
+                    config =>
+                    {
+                        config.CommandName = "search";
+                        config.Input = id;
+                        config.ListCommand.Exact = true;
+                        config.ListCommand.Page = page;
+                        config.ListCommand.PageSize = pageSize;
+                        config.Prerelease = includePreRelease;
+                        config.AllVersions = true;
+                        config.QuietOutput = true;
+                        config.RegularOutput = false;
 #if !DEBUG
-                                config.Verbose = false;
+                                    config.Verbose = false;
 #endif // DEBUG
-                });
-            var chocoConfig = _choco.GetConfiguration();
-            var packages = await _choco.ListAsync<PackageResult>();
-            return packages.Select(p => NuGetVersion.Parse(p.Version)).OrderByDescending(p => p.Version).ToList();
+                    });
+                var chocoConfig = _choco.GetConfiguration();
+                var packages = await _choco.ListAsync<PackageResult>();
+                return packages.Select(p => NuGetVersion.Parse(p.Version)).OrderByDescending(p => p.Version).ToList();
+            }
         }
 
         public async Task<PackageOperationResult> UninstallPackage(string id, string version, bool force = false)

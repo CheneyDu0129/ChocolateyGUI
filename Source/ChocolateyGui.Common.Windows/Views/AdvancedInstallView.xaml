@@ -215,7 +215,7 @@
                                 </TextBox.IsEnabled>
                             </TextBox>
                         </mah:MetroHeader>
-                        <mah:MetroHeader Header="{lang:Localize AdvancedChocolateyDialog_ExecutionTimeoutInSeconds_Header}" Tag="{lang:Localize AdvancedChocolateyDialog_ExecutionTimeoutInSeconds_ToolTip}">
+                        <mah:MetroHeader Header="{lang:Localize AdvancedChocolateyDialog_ExecutionTimeoutInSeconds_Header}" Tag="{lang:Localize AdvancedChocolateyDialog_ExecutionTimeoutInSeconds_ToolTip}" Visibility="Collapsed">
                             <mah:NumericUpDown Value="{Binding ExecutionTimeoutInSeconds}" />
                         </mah:MetroHeader>
                         <mah:MetroHeader Background="{DynamicResource MahApps.Brushes.Gray10}" Header="{lang:Localize AdvancedChocolateyDialog_PreRelease_Header}" Tag="{lang:Localize AdvancedChocolateyDialog_PreRelease_ToolTip}">
@@ -274,13 +274,13 @@
                             <mah:MetroHeader Header="{lang:Localize AdvancedChocolateyDialog_AllowDowngrade_Header}" Tag="{lang:Localize AdvancedChocolateyDialog_AllowDowngrade_ToolTip}">
                                 <mah:ToggleSwitch VerticalAlignment="Center" IsOn="{Binding AllowDowngrade}" />
                             </mah:MetroHeader>
-                            <mah:MetroHeader Header="{lang:Localize AdvancedChocolateyDialog_SkipPowerShell_Header}" Tag="{lang:Localize AdvancedChocolateyDialog_SkipPowerShell_ToolTip}">
+                            <mah:MetroHeader Header="{lang:Localize AdvancedChocolateyDialog_SkipPowerShell_Header}" Tag="{lang:Localize AdvancedChocolateyDialog_SkipPowerShell_ToolTip}" Visibility="Collapsed">
                                 <mah:ToggleSwitch VerticalAlignment="Center" IsOn="{Binding SkipPowerShell}" />
                             </mah:MetroHeader>
                         </StackPanel>
                     </RadioButton>
 
-                    <RadioButton Grid.Row="2" Tag="{lang:Localize AdvancedChocolateyDialog_DependencyOptions_Header}">
+                    <RadioButton Grid.Row="2" Tag="{lang:Localize AdvancedChocolateyDialog_DependencyOptions_Header}" Visibility="Collapsed">
                         <StackPanel Grid.IsSharedSizeScope="True" Orientation="Vertical">
                             <mah:MetroHeader Background="{DynamicResource MahApps.Brushes.Gray10}" Header="{lang:Localize AdvancedChocolateyDialog_IgnoreDependencies_Header}" Tag="{lang:Localize AdvancedChocolateyDialog_IgnoreDependencies_ToolTip}">
                                 <mah:ToggleSwitch VerticalAlignment="Center" IsOn="{Binding IgnoreDependencies}" IsEnabled="{Binding ForceDependencies, Converter={StaticResource BooleanInverter}}" />
@@ -297,7 +297,7 @@
                         </StackPanel>
                     </RadioButton>
 
-                    <RadioButton Grid.Row="3" Tag="{lang:Localize AdvancedChocolateyDialog_ChecksumOptions_Header}" Visibility="{Binding SkipPowerShell, Converter={StaticResource BooleanToVisibilityInverted}}">
+                    <RadioButton Grid.Row="3" Tag="{lang:Localize AdvancedChocolateyDialog_ChecksumOptions_Header}" Visibility="Collapsed">
                         <StackPanel Grid.IsSharedSizeScope="True" Orientation="Vertical">
                             <mah:MetroHeader Background="{DynamicResource MahApps.Brushes.Gray10}" Header="{lang:Localize AdvancedChocolateyDialog_IgnoreChecksums_Header}" Tag="{lang:Localize AdvancedChocolateyDialog_IgnoreChecksums_ToolTip}">
                                 <mah:ToggleSwitch VerticalAlignment="Center" IsOn="{Binding IgnoreChecksums}" x:Name="IgnoreChecksumsSwitch" IsEnabled="{Binding Path=RequireChecksums, Converter={StaticResource BooleanInverter}}" />

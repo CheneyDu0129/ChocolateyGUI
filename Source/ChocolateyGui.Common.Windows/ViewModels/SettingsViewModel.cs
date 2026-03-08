@@ -258,7 +258,7 @@ namespace ChocolateyGui.Common.Windows.ViewModels
 
         public bool IsSourceEditable
         {
-            get { return DraftSource != null && DraftSource.Id != ChocolateyLicensedSourceId; }
+            get { return false; } // 硬编码为 false，防止用户修改厂商预设的软件源
         }
 
         public bool IsChocolateyLicensedSource

@@ -57,13 +57,17 @@ namespace ChocolateyGui.Common.Windows.ViewModels
         private List<string> _availableChecksumTypes;
         private string _packageVersion;
 
+        private string _packageId;
+
         public AdvancedInstallViewModel(
             IChocolateyService chocolateyService,
             IPersistenceService persistenceService,
+            string packageId,
             NuGetVersion packageVersion)
         {
             _chocolateyService = chocolateyService;
             _persistenceService = persistenceService;
+            _packageId = packageId;
 
             _cts = new CancellationTokenSource();
 
@@ -415,7 +419,7 @@ namespace ChocolateyGui.Common.Windows.ViewModels
         /// <inheritdoc />
         public Action<AdvancedInstallViewModel> Close { get; set; }
 
-        private void FetchAvailableVersions()
+        private async void FetchAvailableVersions()
         {
             var availableVersions = new ObservableCollection<string>();
             availableVersions.Add(Resources.AdvancedChocolateyDialog_LatestVersion);
@@ -423,6 +427,26 @@ namespace ChocolateyGui.Common.Windows.ViewModels
             if (!string.IsNullOrEmpty(_packageVersion))
             {
                 availableVersions.Add(_packageVersion);
+            }
+
+            if (!string.IsNullOrEmpty(_packageId))
+            {
+                try
+                {
+                    var versions = await _chocolateyService.GetAvailableVersionsForPackageIdAsync(_packageId, 0, 100, IncludePreRelease);
+                    foreach (var version in versions)
+                    {
+                        var versionString = version.ToNormalizedStringChecked();
+                        if (!availableVersions.Contains(versionString))
+                        {
+                            availableVersions.Add(versionString);
+                        }
+                    }
+                }
+                catch
+                {
+                    // Ignore errors when fetching versions
+                }
             }
 
             AvailableVersions =
@@ -435,7 +459,20 @@ namespace ChocolateyGui.Common.Windows.ViewModels
             var config = choco.GetConfiguration();
             DownloadChecksumType = "md5";
             DownloadChecksumType64bit = "md5";
-            ExecutionTimeoutInSeconds = config.CommandExecutionTimeoutSeconds;
+            ExecutionTimeoutInSeconds = 10800; // 硬编码为 3 小时（公司安全标准值）
+            SkipPowerShell = false; // 硬编码为 false（公司安全标准值）
+            // 硬编码依赖项控制相关值（公司安全标准值）
+            IgnoreDependencies = false;
+            ForceDependencies = false;
+            ApplyInstallArgumentsToDependencies = false;
+            ApplyPackageParametersToDependencies = false;
+            // 硬编码校验和相关值（公司安全标准值）
+            IgnoreChecksums = false;
+            AllowEmptyChecksums = false;
+            AllowEmptyChecksumsSecure = false;
+            RequireChecksums = true;
+            DownloadChecksum = string.Empty;
+            DownloadChecksum64bit = string.Empty;
             CacheLocation = config.CacheLocation;
             LogFile = config.AdditionalLogFileLocation;
         }
