@@ -72,7 +72,9 @@ If you would like to contribute code or help squash a bug or two, that's awesome
 
 * It is assumed that a version of Visual Studio 2019 or newer is already installed on the machine being used to complete the build.
 * `choco install wixtoolset -y`
+* **Add By DU JIAWEI**: `Install-Module -Name ConvertToSARIF -RequiredVersion 1.0.0 -SkipPublisherCheck -Force -Scope CurrentUser`
 * **OPTIONAL:** Set `FXCOPDIR` environment variable, which can be set using [vswhere](https://chocolatey.org/packages/vswhere) and the following command:
+   
    ```ps1
    $FXCOPDIR = vswhere -products * -latest -prerelease -find **/FxCopCmd.exe
    [Environment]::SetEnvironmentVariable("FXCOPDIR", $FXCOPDIR, 'User')
