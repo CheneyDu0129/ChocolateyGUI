@@ -41,3 +41,4 @@ export:
   perform-regex-removal: true
   regex-text: '### Where to get it(\r\n)*You can .*\)'
   multiline-regex: true
+

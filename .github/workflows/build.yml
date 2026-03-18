@@ -36,6 +36,8 @@ jobs:
 
       - name: Build project
         shell: powershell
+        env:
+          TRANSIFEX_API_TOKEN: ${{ secrets.TRANSIFEX_API_TOKEN }}
         run: |
           ./build.ps1 --target=CI
 

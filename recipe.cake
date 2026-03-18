@@ -1,4 +1,4 @@
-#load nuget:?package=Chocolatey.Cake.Recipe&version=0.28.4
+#load nuget:?package=Chocolatey.Cake.Recipe&version=0.32.0
 
 ///////////////////////////////////////////////////////////////////////////////
 // MODULES
@@ -124,10 +124,11 @@ BuildParameters.SetParameters(context: Context,
                             getFilesToSign: getFilesToSign,
                             getMsisToSign: getMsisToSign,
                             shouldBuildMsi: true,
-                            strongNameDependentAssembliesInputPath: string.Format("{0}{1}", ((FilePath)("./Source")).FullPath, "\\packages\\Splat*"));
+                            strongNameDependentAssembliesInputPath: string.Format("{0}{1}", ((FilePath)("./Source")).FullPath, "\\packages\\Splat*"),
+                            shouldRunInspectCode: false);
 
 ToolSettings.SetToolSettings(context: Context);
 
 BuildParameters.PrintParameters(Context);
 
-Build.Run();
+Build.RunDotNet();

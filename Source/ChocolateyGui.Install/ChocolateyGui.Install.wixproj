@@ -33,11 +33,21 @@
     <SuppressIces>ICE38;ICE43;ICE18;ICE61</SuppressIces>
   </PropertyGroup>
   <PropertyGroup>
-  	<_GuiProjectFolder>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\..\ChocolateyGui'))</_GuiProjectFolder>
-  	<_GuiCliProjectFolder>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\..\ChocolateyGuiCli'))</_GuiCliProjectFolder>
-  	<_GuiTargetDir>$(_GuiProjectFolder)\..\..\code_drop\temp\_PublishedApps\ChocolateyGui</_GuiTargetDir>
-    <_GuiCliTargetDir>$(_GuiCliProjectFolder)\..\..\code_drop\temp\_PublishedApps\ChocolateyGuiCli</_GuiCliTargetDir>
-  	<DefineConstants>$(DefineConstants);GuiProjectFolder=$(_GuiProjectFolder);GuiTargetDir=$(_GuiTargetDir);GuiCliProjectFolder=$(_GuiCliProjectFolder);GuiCliTargetDir=$(_GuiCliTargetDir)</DefineConstants>
+    <_GuiProjectFolder>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\..\ChocolateyGui'))</_GuiProjectFolder>
+    <_GuiCliProjectFolder>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\..\ChocolateyGuiCli'))</_GuiCliProjectFolder>
+    <_GuiTargetDir>$(_GuiProjectFolder)\..\..\code_drop\temp\_PublishedApps\ChocolateyGui\net48</_GuiTargetDir>
+    <_GuiCliTargetDir>$(_GuiCliProjectFolder)\..\..\code_drop\temp\_PublishedApps\ChocolateyGuiCli\net48</_GuiCliTargetDir>
+    <DefineConstants>$(DefineConstants);GuiProjectFolder=$(_GuiProjectFolder);GuiTargetDir=$(_GuiTargetDir);GuiCliProjectFolder=$(_GuiCliProjectFolder);GuiCliTargetDir=$(_GuiCliTargetDir)</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'ReleaseOfficial|x86' ">
+    <SuppressPdbOutput>True</SuppressPdbOutput>
+    <SuppressIces>ICE38;ICE43;ICE18;ICE61</SuppressIces>
+    <OutputPath>bin\$(Platform)\$(Configuration)\</OutputPath>
+    <IntermediateOutputPath>obj\$(Platform)\$(Configuration)\</IntermediateOutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'ReleaseOfficial|AnyCPU' ">
+    <OutputPath>bin\$(Platform)\$(Configuration)\</OutputPath>
+    <IntermediateOutputPath>obj\$(Platform)\$(Configuration)\</IntermediateOutputPath>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="NetFx48.wxs" />

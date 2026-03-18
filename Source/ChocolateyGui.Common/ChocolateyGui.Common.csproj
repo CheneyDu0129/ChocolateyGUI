@@ -1,213 +1,59 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{A3A40034-4E31-4D05-832A-351C416DCCBB}</ProjectGuid>
+    <TargetFramework>net48</TargetFramework>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ChocolateyGui.Common</RootNamespace>
-    <AssemblyName>ChocolateyGui.Common</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <Deterministic>true</Deterministic>
     <BuildToolsFxCopVersion>1.0.1</BuildToolsFxCopVersion>
-    <TargetFrameworkProfile />
     <LangVersion>7.1</LangVersion>
+    <Configurations>Debug;Release;ReleaseOfficial</Configurations>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>..\ChocolateyGuiRules.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>False</RunCodeAnalysis>
+    <RunCodeAnalysisRestore>False</RunCodeAnalysisRestore>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <OutputPath>bin\Debug\</OutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE;CODE_ANALYSIS</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>..\ChocolateyGuiRules.ruleset</CodeAnalysisRuleSet>
-    <RunCodeAnalysis>True</RunCodeAnalysis>
+    <RunCodeAnalysis>False</RunCodeAnalysis>
+    <RunCodeAnalysisRestore>True</RunCodeAnalysisRestore>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;CODE_ANALYSIS;</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'ReleaseOfficial|AnyCPU'">
+    <Optimize>true</Optimize>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <CodeAnalysisRuleSet>..\ChocolateyGuiRules.ruleset</CodeAnalysisRuleSet>
     <OutputPath>bin\ReleaseOfficial\</OutputPath>
     <DefineConstants>TRACE;CODE_ANALYSIS;FORCE_CHOCOLATEY_OFFICIAL_KEY</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <RunCodeAnalysis>true</RunCodeAnalysis>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>..\ChocolateyGuiRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="Autofac, Version=4.6.1.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
-      <HintPath>..\packages\Autofac.4.6.1\lib\net45\Autofac.dll</HintPath>
-    </Reference>
-    <Reference Include="AutoMapper, Version=7.0.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoMapper.7.0.1\lib\net45\AutoMapper.dll</HintPath>
-    </Reference>
-    <Reference Include="chocolatey">
-      <HintPath>..\packages\chocolatey.lib.2.1.0\lib\net48\chocolatey.dll</HintPath>
-      <SpecificVersion>False</SpecificVersion>
-      <Private Condition="'$(Configuration)' != 'Debug'">False</Private>
-    </Reference>
-    <Reference Include="LiteDB, Version=5.0.15.0, Culture=neutral, PublicKeyToken=4ee40123013c9f27, processorArchitecture=MSIL">
-      <HintPath>..\packages\LiteDB.5.0.15\lib\net45\LiteDB.dll</HintPath>
-    </Reference>
-    <Reference Include="log4net, Version=2.0.12.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <HintPath>..\packages\log4net.2.0.12\lib\net45\log4net.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.Threading, Version=15.3.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.VisualStudio.Threading.15.4.4\lib\net45\Microsoft.VisualStudio.Threading.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.Validation, Version=15.3.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.VisualStudio.Validation.15.3.32\lib\net45\Microsoft.VisualStudio.Validation.dll</HintPath>
-    </Reference>
-    <Reference Include="Serilog, Version=2.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
-      <HintPath>..\packages\Serilog.2.5.0\lib\net46\Serilog.dll</HintPath>
-    </Reference>
-    <Reference Include="Serilog.Formatting.Compact, Version=1.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
-      <HintPath>..\packages\Serilog.Formatting.Compact.1.0.0\lib\net45\Serilog.Formatting.Compact.dll</HintPath>
-    </Reference>
-    <Reference Include="Serilog.Sinks.Async, Version=1.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
-      <HintPath>..\packages\Serilog.Sinks.Async.1.1.0\lib\net45\Serilog.Sinks.Async.dll</HintPath>
-    </Reference>
-    <Reference Include="Serilog.Sinks.Console, Version=3.1.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
-      <HintPath>..\packages\Serilog.Sinks.Console.3.1.0\lib\net45\Serilog.Sinks.Console.dll</HintPath>
-    </Reference>
-    <Reference Include="Serilog.Sinks.File, Version=2.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
-      <HintPath>..\packages\Serilog.Sinks.File.3.2.0\lib\net45\Serilog.Sinks.File.dll</HintPath>
-    </Reference>
-    <Reference Include="Serilog.Sinks.PeriodicBatching, Version=2.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
-      <HintPath>..\packages\Serilog.Sinks.PeriodicBatching.2.1.1\lib\net45\Serilog.Sinks.PeriodicBatching.dll</HintPath>
-    </Reference>
-    <Reference Include="Serilog.Sinks.RollingFile, Version=2.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
-      <HintPath>..\packages\Serilog.Sinks.RollingFile.3.3.0\lib\net45\Serilog.Sinks.RollingFile.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Runtime" />
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Security" />
-    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
+  <PropertyGroup Condition="'$(CHOCOLATEYGUI_OFFICIAL_KEY)' == ''">
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\chocolateygui.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(CHOCOLATEYGUI_OFFICIAL_KEY)' != '' AND Exists('$(CHOCOLATEYGUI_OFFICIAL_KEY)')">
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>$(CHOCOLATEYGUI_OFFICIAL_KEY)</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\SolutionVersion.cs">
       <Link>Properties\SolutionVersion.cs</Link>
     </Compile>
-    <Compile Include="Attributes\ConfigAttribute.cs" />
-    <Compile Include="Attributes\FeatureAttribute.cs" />
-    <Compile Include="Attributes\LocalizedCommandForAttribute.cs" />
-    <Compile Include="Attributes\LocalizedDescriptionAttribute.cs" />
-    <Compile Include="Base\ConnectionClosedException.cs" />
-    <Compile Include="Base\ObservableBase.cs" />
-    <Compile Include="ChocolateyConfigurationExtensions.cs" />
-    <Compile Include="ChocolateyExtensions.cs" />
-    <Compile Include="ColouredConsoleSink.cs" />
-    <Compile Include="Commands\BaseCommand.cs" />
-    <Compile Include="Commands\ConfigCommand.cs" />
-    <Compile Include="Commands\FeatureCommand.cs" />
-    <Compile Include="Commands\GenericRunner.cs" />
-    <Compile Include="Commands\ICommand.cs" />
-    <Compile Include="Commands\PurgeCommand.cs" />
-    <Compile Include="Controls\ObservableRingBufferCollection.cs" />
-    <Compile Include="Enums\ListViewMode.cs" />
-    <Compile Include="Enums\PackagesChangedEventType.cs" />
-    <Compile Include="Enums\ThemeMode.cs" />
-    <Compile Include="Hacks.cs" />
-    <Compile Include="Models\AdvancedInstall.cs" />
-    <Compile Include="Models\AppConfiguration.cs" />
-    <Compile Include="Models\ChocolateyAggregatedSources.cs" />
-    <Compile Include="Models\ChocolateyFeature.cs" />
-    <Compile Include="Models\ChocolateyGuiConfiguration.cs" />
-    <Compile Include="Models\ChocolateyGuiFeature.cs" />
-    <Compile Include="Models\ChocolateyGuiSetting.cs" />
-    <Compile Include="Models\ChocolateySetting.cs" />
-    <Compile Include="Models\ChocolateySource.cs" />
-    <Compile Include="Models\ConfigCommandConfiguration.cs" />
-    <Compile Include="Models\ConfigCommandType.cs" />
-    <Compile Include="Models\FeatureCommandConfiguration.cs" />
-    <Compile Include="Models\FeatureCommandType.cs" />
-    <Compile Include="Models\InformationCommandConfiguration.cs" />
-    <Compile Include="Models\LogLevel.cs" />
-    <Compile Include="Models\LogMessage.cs" />
-    <Compile Include="Models\Messages\AboutGoBackMessage.cs" />
-    <Compile Include="Models\Messages\FeatureModifiedMessage.cs" />
-    <Compile Include="Models\Messages\PackageChangedMessage.cs" />
-    <Compile Include="Models\Messages\PackageHasUpdateMessage.cs" />
-    <Compile Include="Models\Messages\ResetScrollPositionMessage.cs" />
-    <Compile Include="Models\Messages\SettingsGoBackMessage.cs" />
-    <Compile Include="Models\Messages\ShowAboutMessage.cs" />
-    <Compile Include="Models\Messages\ShowPackageDetailsMessage.cs" />
-    <Compile Include="Models\Messages\ShowSettingsMessage.cs" />
-    <Compile Include="Models\Messages\ShowSourcesMessage.cs" />
-    <Compile Include="Models\Messages\SourcesUpdatedMessage.cs" />
-    <Compile Include="Models\OutdatedPackage.cs" />
-    <Compile Include="Models\Package.cs" />
-    <Compile Include="Models\PackageOperationResult.cs" />
-    <Compile Include="Models\PackageResults.cs" />
-    <Compile Include="Models\PackageSearchOptions.cs" />
-    <Compile Include="Models\PackageSearchResults.cs" />
-    <Compile Include="Models\PowerShellOutputLine.cs" />
-    <Compile Include="Models\PurgeCommandConfiguration.cs" />
-    <Compile Include="Models\PurgeCommandType.cs" />
-    <Compile Include="Models\NuGetVersionTypeConverter.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
+    <Compile Update="Properties\Resources.Designer.cs">
       <DependentUpon>Resources.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Providers\ChocolateyConfigurationProvider.cs" />
-    <Compile Include="Providers\IChocolateyConfigurationProvider.cs" />
-    <Compile Include="Providers\IVersionNumberProvider.cs" />
-    <Compile Include="Providers\VersionNumberProvider.cs" />
-    <Compile Include="Services\AllowedCommandsService.cs" />
-    <Compile Include="Services\ChocolateyGuiCacheService.cs" />
-    <Compile Include="Services\ConfigService.cs" />
-    <Compile Include="Services\IAllowedCommandsService.cs" />
-    <Compile Include="Services\IChocolateyGuiCacheService.cs" />
-    <Compile Include="Services\IChocolateyService.cs" />
-    <Compile Include="Services\IConfigService.cs" />
-    <Compile Include="Services\IFileStorageService.cs" />
-    <Compile Include="Services\IPersistenceService.cs" />
-    <Compile Include="Services\ISplashScreenService.cs" />
-    <Compile Include="Services\IVersionService.cs" />
-    <Compile Include="Services\LiteDBFileStorageService.cs" />
-    <Compile Include="Services\VersionService.cs" />
-    <Compile Include="Startup\AssemblyResolver.cs" />
-    <Compile Include="Startup\AutoFacConfiguration.cs" />
-    <Compile Include="Utilities\DefaultsExtensions.cs" />
-    <Compile Include="Utilities\LogSetup.cs" />
-    <Compile Include="Utilities\TranslationSource.cs" />
-    <Compile Include="ViewModels\ISourceViewModelBase.cs" />
-    <Compile Include="ViewModels\Items\IPackageViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Properties\Resources.resx">
+    <EmbeddedResource Update="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.*.resx" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\ChocolateyGuiRules.ruleset">
@@ -216,7 +62,6 @@
     <AdditionalFiles Include="..\stylecop.json">
       <Link>stylecop.json</Link>
     </AdditionalFiles>
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDictionary Include="..\CustomDictionary.xml">
@@ -227,19 +72,40 @@
     <SourceRoot Include="$(MSBuildThisFileDirectory)/../" />
   </ItemGroup>
   <ItemGroup>
-    <Analyzer Include="..\packages\Microsoft.CodeAnalysis.BannedApiAnalyzers.3.3.4\analyzers\dotnet\cs\Microsoft.CodeAnalysis.BannedApiAnalyzers.dll" />
-    <Analyzer Include="..\packages\Microsoft.CodeAnalysis.BannedApiAnalyzers.3.3.4\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.BannedApiAnalyzers.dll" />
-    <Analyzer Include="..\packages\StyleCop.Analyzers.1.0.2\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
-    <Analyzer Include="..\packages\StyleCop.Analyzers.1.0.2\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
     <SourceRoot Include="$(MSBuildThisFileDirectory)/../" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Startup\Adapters\" />
   </ItemGroup>
   <ItemGroup>
     <AdditionalFiles Include="..\ChocolateyGui\BannedSymbols.txt">
       <Link>BannedSymbols.txt</Link>
     </AdditionalFiles>
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <PackageReference Include="Autofac" Version="4.6.1" />
+    <PackageReference Include="AutoMapper" Version="7.0.1" />
+    <PackageReference Include="BuildTools.FxCop" Version="1.0.1" />
+    <PackageReference Include="chocolatey.lib" Version="2.7.0" />
+    <PackageReference Include="LiteDB" Version="5.0.21" />
+    <PackageReference Include="Microsoft.CodeAnalysis.BannedApiAnalyzers">
+      <Version>3.3.4</Version>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Threading" Version="17.14.15" />
+    <PackageReference Include="Microsoft.VisualStudio.Validation" Version="17.13.22" />
+    <PackageReference Include="Serilog.Formatting.Compact" Version="3.0.0" />
+    <PackageReference Include="Serilog.Sinks.Async" Version="2.1.0" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="6.1.1" />
+    <PackageReference Include="Serilog.Sinks.PeriodicBatching" Version="5.0.0" />
+    <PackageReference Include="Serilog.Sinks.RollingFile" Version="3.3.0" />
+    <PackageReference Include="StyleCop.Analyzers">
+      <Version>1.1.118</Version>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Providers\ElevationStatusProvider.cs" />
+  </ItemGroup>
 </Project>

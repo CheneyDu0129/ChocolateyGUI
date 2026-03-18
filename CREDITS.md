@@ -10,83 +10,54 @@ Chocolatey uses a number of 3rd party components. Their details are below.
   * [Apache v2.0 License](#apache-v20-license)
   * [BSD-3-Clause](#bsd-3-clause)
   * [MIT License](#mit-license)
-  * [BSD-2-Clause License](#bsd-2-clause-license)
-  * [GNU Lesser General Public License (LGPL) v3.0](#gnu-lesser-general-public-license-\(lgpl\)-v30)
-  * [Microsoft Public License](#microsoft-public-license)
-  * [Microsoft Software License](#microsoft-software-license)
 * [Chocolatey Software Component License](#chocolatey-software-component-licenses)
   * [Chocolatey Open Source](#chocolatey-open-source)
 * [Chocolatey CLI / Chocolatey.Lib](#chocolatey-cli--chocolateylib)
   * [Apache v2.0 License](#apache-v20-license-1)
-    * [Checksum@0.2.0](#checksum020)
-    * [Chocolatey.NuGet.Client@3.1.0](#chocolateynugetclient310)
-    * [log4net@rel/2.0.12](#log4netrel2012)
-    * [Microsoft.Web.Xdt@2.1.1](#microsoftwebxdt211)
+    * [Checksum@0.3.1](#checksum031)
+    * [Chocolatey.NuGet.Client@3.5.0](#chocolateynugetclient350)
+    * [log4net@rel/3.2.0](#log4netrel320)
   * [BSD-3-Clause](#bsd-3-clause-1)
     * [Rhino.Licensing@1.4.1](#rhinolicensing141)
   * [MIT License](#mit-license-1)
-    * [AlphaFS@2.1.3](#alphafs213)
-    * [Microsoft.Bcl.HashCode@1.1.1](#microsoftbclhashcode111)
-    * [Newtonsoft.Json@13.0.1](#newtonsoftjson1301)
-    * [SimpleInjector@2.8.3](#simpleinjector283)
-    * [System.Reactive@rxnet-v5.0.0](#systemreactiverxnet-v500)
-    * [System.Runtime.CompilerServices.Unsafe@4.5.3](#systemruntimecompilerservicesunsafe453)
-    * [System.Threading.Tasks.Extensions@4.5.4](#systemthreadingtasksextensions454)
+    * [AlphaFS@v2.2.6](#alphafsv226)
+    * [Microsoft.Bcl.HashCode@v6.0.0](#microsoftbclhashcodev600)
+    * [SimpleInjector@v5.5.0](#simpleinjectorv550)
+    * [System.Reactive@rxnet-v6.1.0](#systemreactiverxnet-v610)
   * [Other](#other)
-    * [7-Zip@21.07](#7-zip2107)
-    * [Shim Generator (shimgen)@1.0.0](#shim-generator-\(shimgen\)100)
+    * [7-Zip@26.00](#7-zip2600)
+    * [Shim Generator (shimgen)@2.0.0](#shim-generator-\(shimgen\)200)
 * [Chocolatey GUI](#chocolatey-gui)
   * [Apache v2.0 License](#apache-v20-license-2)
-    * [Chocolatey CLI / Chocolatey.Lib@2.1.0](#chocolatey-cli--chocolateylib210)
-    * [Serilog@2.5.0](#serilog250)
-    * [Serilog.Formatting.Compact@1.0.0](#serilogformattingcompact100)
-    * [Serilog.Sinks.Async@1.1.0](#serilogsinksasync110)
-    * [Serilog.Sinks.Console@3.1.0](#serilogsinksconsole310)
-    * [Serilog.Sinks.File@3.2.0](#serilogsinksfile320)
-    * [Serilog.Sinks.PeriodicBatching@2.1.1](#serilogsinksperiodicbatching211)
+    * [Chocolatey CLI / Chocolatey.Lib@2.7.0](#chocolatey-cli--chocolateylib270)
+    * [Serilog@v4.3.0](#serilogv430)
+    * [Serilog.Formatting.Compact@v3.0.0](#serilogformattingcompactv300)
+    * [Serilog.Sinks.Async@v2.1.0](#serilogsinksasyncv210)
+    * [Serilog.Sinks.Console@v6.1.1](#serilogsinksconsolev611)
+    * [Serilog.Sinks.PeriodicBatching@v5.0.0](#serilogsinksperiodicbatchingv500)
     * [Serilog.Sinks.RollingFile@3.3.0](#serilogsinksrollingfile330)
-    * [System.Reactive.Core@3.1.1](#systemreactivecore311)
-    * [System.Reactive.Interfaces@3.1.1](#systemreactiveinterfaces311)
-    * [System.Reactive.Linq@3.1.1](#systemreactivelinq311)
-    * [System.Reactive.PlatformServices@3.1.1](#systemreactiveplatformservices311)
-    * [System.Reactive.Windows.Threading@3.1.1](#systemreactivewindowsthreading311)
-  * [BSD-2-Clause License](#bsd-2-clause-license-1)
-    * [Markdig.Signed@0.23.0](#markdigsigned0230)
-  * [GNU Lesser General Public License (LGPL) v3.0](#gnu-lesser-general-public-license-\(lgpl\)-v30-1)
-    * [Fizzler@1.2.0](#fizzler120)
-  * [Microsoft Public License](#microsoft-public-license-1)
-    * [Svg.Custom@0.3.0](#svgcustom030)
-  * [Microsoft Software License](#microsoft-software-license-1)
-    * [System.Runtime.InteropServices.RuntimeInformation@4.3.0](#systemruntimeinteropservicesruntimeinformation430)
   * [MIT License](#mit-license-2)
     * [Autofac@4.6.1](#autofac461)
     * [AutoMapper@7.0.1](#automapper701)
     * [Caliburn.Micro@3.2.0](#caliburnmicro320)
-    * [Caliburn.Micro.Core@3.2.0](#caliburnmicrocore320)
-    * [ControlzEx@4.4.0](#controlzex440)
-    * [HarfBuzzSharp@2.6.1.4](#harfbuzzsharp2614)
-    * [LiteDB@5.0.15](#litedb5015)
-    * [MahApps.Metro@2.4.4](#mahappsmetro244)
-    * [MahApps.Metro.IconPacks.BoxIcons@4.8.0](#mahappsmetroiconpacksboxicons480)
-    * [MahApps.Metro.IconPacks.Entypo@4.8.0](#mahappsmetroiconpacksentypo480)
-    * [MahApps.Metro.IconPacks.FontAwesome@4.8.0](#mahappsmetroiconpacksfontawesome480)
-    * [MahApps.Metro.IconPacks.Modern@4.8.0](#mahappsmetroiconpacksmodern480)
-    * [MahApps.Metro.IconPacks.Octicons@4.8.0](#mahappsmetroiconpacksocticons480)
-    * [MahApps.Metro.SimpleChildWindow@2.0.0](#mahappsmetrosimplechildwindow200)
+    * [LiteDB@v5.0.21](#litedbv5021)
+    * [MahApps.Metro@2.4.11](#mahappsmetro2411)
+    * [MahApps.Metro.IconPacks.BoxIcons@6.2.1](#mahappsmetroiconpacksboxicons621)
+    * [MahApps.Metro.IconPacks.Entypo@6.2.1](#mahappsmetroiconpacksentypo621)
+    * [MahApps.Metro.IconPacks.FontAwesome@6.2.1](#mahappsmetroiconpacksfontawesome621)
+    * [MahApps.Metro.IconPacks.Modern@6.2.1](#mahappsmetroiconpacksmodern621)
+    * [MahApps.Metro.IconPacks.Octicons@6.2.1](#mahappsmetroiconpacksocticons621)
+    * [MahApps.Metro.SimpleChildWindow@2.2.1](#mahappsmetrosimplechildwindow221)
     * [Markdig.Wpf.Signed@0.5.0.1](#markdigwpfsigned0501)
-    * [Microsoft.VisualStudio.Threading@15.4.4](#microsoftvisualstudiothreading1544)
-    * [Microsoft.VisualStudio.Validation@15.3.32](#microsoftvisualstudiovalidation15332)
-    * [Microsoft.Xaml.Behaviors.Wpf@1.1.19](#microsoftxamlbehaviorswpf1119)
-    * [SkiaSharp@1.68.3](#skiasharp1683)
+    * [Microsoft.CSharp@v4.7.0](#microsoftcsharpv470)
+    * [Microsoft.VisualStudio.Threading@v17.14.15](#microsoftvisualstudiothreadingv171415)
+    * [Microsoft.VisualStudio.Validation@v17.13.22](#microsoftvisualstudiovalidationv171322)
     * [SkiaSharp.HarfBuzz@1.68.3](#skiasharpharfbuzz1683)
     * [Splat@2.0.0](#splat200)
-    * [Svg.Skia@0.3.0](#svgskia030)
-    * [System.Buffers@4.5.1](#systembuffers451)
-    * [System.Memory@4.5.4](#systemmemory454)
-    * [System.Numerics.Vectors@4.5.0](#systemnumericsvectors450)
-    * [System.Runtime.CompilerServices.Unsafe@4.7.1](#systemruntimecompilerservicesunsafe471)
-    * [System.Threading.Tasks.Extensions@4.4.0](#systemthreadingtasksextensions440)
-    * [System.ValueTuple@4.5.0](#systemvaluetuple450)
+    * [Svg.Skia@v3.4.1](#svgskiav341)
+    * [System.Data.DataSetExtensions@v4.5.0](#systemdatadatasetextensionsv450)
+    * [System.Net.Http@4.3.4](#systemnethttp434)
+    * [System.Runtime.Caching@v10.0.2](#systemruntimecachingv1002)
 
 ## Open Source License Types (Reference)
 
@@ -333,203 +304,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### BSD-2-Clause License
-
-The [BSD 2-Clause License](https://opensource.org/license/bsd-2-clause) has also been called the "Simplified BSD License" and the "FreeBSD License." It has the following terms:
-
-```text
-Copyright <YEAR> <COPYRIGHT HOLDER>
-
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are met:
-
-1. Redistributions of source code must retain the above copyright notice,
-   this list of conditions and the following disclaimer.
-
-2. Redistributions in binary form must reproduce the above copyright notice,
-   this list of conditions and the following disclaimer in the documentation
-   and/or other materials provided with the distribution.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS “AS IS”
-AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
-LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
-CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
-SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
-INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
-CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
-ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-POSSIBILITY OF SUCH DAMAGE.
-```
-
-### GNU Lesser General Public License (LGPL) v3.0
-
-The [GNU Lesser General Public License](https://www.gnu.org/licenses/lgpl-3.0.html) has the following terms:
-
-```txt
-### GNU LESSER GENERAL PUBLIC LICENSE
-
-Version 3, 29 June 2007
-
-Copyright © 2007 Free Software Foundation, Inc. <[https://fsf.org/](https://fsf.org/)\>
-
-Everyone is permitted to copy and distribute verbatim copies of this license document, but changing it is not allowed.
-
-This version of the GNU Lesser General Public License incorporates the terms and conditions of version 3 of the GNU General Public License, supplemented by the additional permissions listed below.
-
-0. **Additional Definitions.**
-
-As used herein, “this License” refers to version 3 of the GNU Lesser General Public License, and the “GNU GPL” refers to version 3 of the GNU General Public License.
-
-“The Library” refers to a covered work governed by this License, other than an Application or a Combined Work as defined below.
-
-An “Application” is any work that makes use of an interface provided by the Library, but which is not otherwise based on the Library. Defining a subclass of a class defined by the Library is deemed a mode of using an interface provided by the Library.
-
-A “Combined Work” is a work produced by combining or linking an Application with the Library. The particular version of the Library with which the Combined Work was made is also called the “Linked Version”.
-
-The “Minimal Corresponding Source” for a Combined Work means the Corresponding Source for the Combined Work, excluding any source code for portions of the Combined Work that, considered in isolation, are based on the Application, and not on the Linked Version.
-
-The “Corresponding Application Code” for a Combined Work means the object code and/or source code for the Application, including any data and utility programs needed for reproducing the Combined Work from the Application, but excluding the System Libraries of the Combined Work.
-
-1. **Exception to Section 3 of the GNU GPL.**
-
-You may convey a covered work under sections 3 and 4 of this License without being bound by section 3 of the GNU GPL.
-
-2. **Conveying Modified Versions.**
-
-If you modify a copy of the Library, and, in your modifications, a facility refers to a function or data to be supplied by an Application that uses the facility (other than as an argument passed when the facility is invoked), then you may convey a copy of the modified version:
-
-* a) under this License, provided that you make a good faith effort to ensure that, in the event an Application does not supply the function or data, the facility still operates, and performs whatever part of its purpose remains meaningful, or
-* b) under the GNU GPL, with none of the additional permissions of this License applicable to that copy.
-
-3. **Object Code Incorporating Material from Library Header Files.**
-
-The object code form of an Application may incorporate material from a header file that is part of the Library. You may convey such object code under terms of your choice, provided that, if the incorporated material is not limited to numerical parameters, data structure layouts and accessors, or small macros, inline functions and templates (ten or fewer lines in length), you do both of the following:
-
-* a) Give prominent notice with each copy of the object code that the Library is used in it and that the Library and its use are covered by this License.
-* b) Accompany the object code with a copy of the GNU GPL and this license document.
-
-4. **Combined Works.**
-
-You may convey a Combined Work under terms of your choice that, taken together, effectively do not restrict modification of the portions of the Library contained in the Combined Work and reverse engineering for debugging such modifications, if you also do each of the following:
-
-* a) Give prominent notice with each copy of the Combined Work that the Library is used in it and that the Library and its use are covered by this License.
-  
-* b) Accompany the Combined Work with a copy of the GNU GPL and this license document.
-  
-* c) For a Combined Work that displays copyright notices during execution, include the copyright notice for the Library among these notices, as well as a reference directing the user to the copies of the GNU GPL and this license document.
-  
-* d) Do one of the following:
-  
-  * 0) Convey the Minimal Corresponding Source under the terms of this License, and the Corresponding Application Code in a form suitable for, and under terms that permit, the user to recombine or relink the Application with a modified version of the Linked Version to produce a modified Combined Work, in the manner specified by section 6 of the GNU GPL for conveying Corresponding Source.
-  * 1) Use a suitable shared library mechanism for linking with the Library. A suitable mechanism is one that (a) uses at run time a copy of the Library already present on the user's computer system, and (b) will operate properly with a modified version of the Library that is interface-compatible with the Linked Version.
-* e) Provide Installation Information, but only if you would otherwise be required to provide such information under section 6 of the GNU GPL, and only to the extent that such information is necessary to install and execute a modified version of the Combined Work produced by recombining or relinking the Application with a modified version of the Linked Version. (If you use option 4d0, the Installation Information must accompany the Minimal Corresponding Source and Corresponding Application Code. If you use option 4d1, you must provide the Installation Information in the manner specified by section 6 of the GNU GPL for conveying Corresponding Source.)
-  
-
-5. **Combined Libraries.**
-
-You may place library facilities that are a work based on the Library side by side in a single library together with other library facilities that are not Applications and are not covered by this License, and convey such a combined library under terms of your choice, if you do both of the following:
-
-* a) Accompany the combined library with a copy of the same work based on the Library, uncombined with any other library facilities, conveyed under the terms of this License.
-* b) Give prominent notice with the combined library that part of it is a work based on the Library, and explaining where to find the accompanying uncombined form of the same work.
-
-6. **Revised Versions of the GNU Lesser General Public License.**
-
-The Free Software Foundation may publish revised and/or new versions of the GNU Lesser General Public License from time to time. Such new versions will be similar in spirit to the present version, but may differ in detail to address new problems or concerns.
-
-Each version is given a distinguishing version number. If the Library as you received it specifies that a certain numbered version of the GNU Lesser General Public License “or any later version” applies to it, you have the option of following the terms and conditions either of that published version or of any later version published by the Free Software Foundation. If the Library as you received it does not specify a version number of the GNU Lesser General Public License, you may choose any version of the GNU Lesser General Public License ever published by the Free Software Foundation.
-
-If the Library as you received it specifies that a proxy can decide whether future versions of the GNU Lesser General Public License shall apply, that proxy's public statement of acceptance of any version is permanent authorization for you to choose that version for the Library.
-```
-
-### Microsoft Public License
-
-The [Microsoft Public License](https://opensource.org/license/ms-pl-html) has the following terms:
-
-```txt
-This license governs use of the accompanying software. If you use the software, you accept this license. If you do not accept the license, do not use the software.
-
-1. Definitions
-
-The terms “reproduce,” “reproduction,” “derivative works,” and “distribution” have the same meaning here as under U.S. copyright law.
-
-A “contribution” is the original software, or any additions or changes to the software.
-
-A “contributor” is any person that distributes its contribution under this license.
-
-“Licensed patents” are a contributor’s patent claims that read directly on its contribution.
-
-2. Grant of Rights
-
-(A) Copyright Grant- Subject to the terms of this license, including the license conditions and limitations in section 3, each contributor grants you a non-exclusive, worldwide, royalty-free copyright license to reproduce its contribution, prepare derivative works of its contribution, and distribute its contribution or any derivative works that you create.
-
-(B) Patent Grant- Subject to the terms of this license, including the license conditions and limitations in section 3, each contributor grants you a non-exclusive, worldwide, royalty-free license under its licensed patents to make, have made, use, sell, offer for sale, import, and/or otherwise dispose of its contribution in the software or derivative works of the contribution in the software.
-
-3. Conditions and Limitations
-
-(A) No Trademark License- This license does not grant you rights to use any contributors’ name, logo, or trademarks.
-
-(B) If you bring a patent claim against any contributor over patents that you claim are infringed by the software, your patent license from such contributor to the software ends automatically.
-
-(C) If you distribute any portion of the software, you must retain all copyright, patent, trademark, and attribution notices that are present in the software.
-
-(D) If you distribute any portion of the software in source code form, you may do so only under this license by including a complete copy of this license with your distribution. If you distribute any portion of the software in compiled or object code form, you may only do so under a license that complies with this license.
-
-(E) The software is licensed “as-is.” You bear the risk of using it. The contributors give no express warranties, guarantees or conditions. You may have additional consumer rights under your local laws which this license cannot change. To the extent permitted under your local laws, the contributors exclude the implied warranties of merchantability, fitness for a particular purpose and non-infringement.
-```
-
-### Microsoft Software License
-
-The [Microsoft Software License](https://github.com/dotnet/core/blob/4156c6415620a004f294998ada55881ad203da18/license-information.md) has the following terms:
-
-```txt
-# License Information
-
-The .NET project uses source and binaries from multiple sources that may be important to your use of .NET.
-
-This document is provided for informative purposes only and is not itself a license.
-
-## Source code
-
-.NET source uses the MIT license.
-
-[Each repo](./Documentation/core-repos.md) has:
-
-* A license, for example, [dotnet/runtime LICENSE.TXT](https://github.com/dotnet/runtime/blob/main/LICENSE.TXT).
-* Third party notice file, for example, [dotnet/runtime THIRD-PARTY-NOTICES.TXT](https://github.com/dotnet/runtime/blob/main/THIRD-PARTY-NOTICES.TXT)
-
-More information:
-
-* [Project copyright guidance](https://github.com/dotnet/runtime/blob/main/docs/project/copyright.md)
-
-## Product distributions
-
-Product distributions use the following license:
-
-* On Linux and macOS: [MIT license](https://github.com/dotnet/core/blob/main/LICENSE.TXT)
-* On Windows: [.NET Library License](https://dotnet.microsoft.com/dotnet_library_license.htm)
-
-Product distributions include [downloadable assets](https://dotnet.microsoft.com/download/dotnet) and [runtime packs](https://www.nuget.org/packages/Microsoft.NETCore.App.Runtime.win-x64/).
-
-More information:
-
-* [Windows license information](https://github.com/dotnet/core/blob/main/license-information-windows.md).
-* [.NET Asset Licensing Model](https://github.com/dotnet/runtime/blob/main/docs/project/licensing-assets.md)
-
-## Package distributions
-
-Library packages use the MIT license, for example [System.Text.Json](https://www.nuget.org/packages/System.Text.Json).
-
-## Redistribution
-
-Binaries produced by .NET SDK compilers (C#, F#, VB) can be redistributed without additional restrictions. The only restrictions are based on the license of the compiler inputs used to produce the binary.
-
-Applications are subject to the same terms as are covered by "Product distributions" and "Package distributions", above.
-
-Parts of the .NET runtime are embedded in applications, including [platform-specific executable hosts](https://learn.microsoft.com/dotnet/core/deploying/deploy-with-cli#framework-dependent-executable), and [self-contained deployments](https://learn.microsoft.com/dotnet/core/deploying/deploy-with-cli#self-contained-deployment).
-```
-
 ## Chocolatey Software Component Licenses
 
 ### Chocolatey Open Source
@@ -547,21 +321,17 @@ https://www.apache.org/licenses/LICENSE-2.0
 
 ### Apache v2.0 License
 
-#### Checksum@0.2.0
+#### Checksum@0.3.1
 
-[Checksum](https://github.com/chocolatey/checksum) - [License terms.](https://github.com/chocolatey/checksum/blob/e6f5645610c7bc15084b48f69d4cdb056106f956/LICENSE)
+[Checksum](https://github.com/chocolatey/checksum) - [License terms.](https://github.com/chocolatey/checksum/blob/89a1b39cbc05624aacefae416b3e954475838ecb/LICENSE)
 
-#### Chocolatey.NuGet.Client@3.1.0
+#### Chocolatey.NuGet.Client@3.5.0
 
-[Chocolatey.NuGet.Client](https://github.com/NuGet/NuGet.Client) [(modified)](https://github.com/chocolatey/NuGet.Client) - [License terms.](https://github.com/NuGet/NuGet.Client/blob/72f9f2b2eab28c9d91a22065c55aa7702abf7e01/LICENSE.txt)
+[Chocolatey.NuGet.Client](https://github.com/NuGet/NuGet.Client) [(modified)](https://github.com/chocolatey/NuGet.Client) - [License terms.](https://github.com/chocolatey/NuGet.Client/blob/d08e5cc246b384fd424e99371168d7cf4534723e/LICENSE.txt)
 
-#### log4net@rel/2.0.12
+#### log4net@rel/3.2.0
 
-[log4net](https://github.com/apache/logging-log4net) - [License terms.](https://github.com/apache/logging-log4net/blob/dbad144815221ffe4ed85efa73134583253dc75b/LICENSE)
-
-#### Microsoft.Web.Xdt@2.1.1
-
-[Microsoft.Web.Xdt](https://www.nuget.org/packages/Microsoft.Web.Xdt/2.1.1) - [License terms.](https://licenses.nuget.org/Apache-2.0)
+[log4net](https://github.com/apache/logging-log4net) - [License terms.](https://github.com/apache/logging-log4net/blob/5e9e2b0ea8a57a441e779d23429f6759a06d93ce/LICENSE)
 
 ### BSD-3-Clause
 
@@ -571,37 +341,25 @@ https://www.apache.org/licenses/LICENSE-2.0
 
 ### MIT License
 
-#### AlphaFS@2.1.3
+#### AlphaFS@v2.2.6
 
-[AlphaFS](https://github.com/alphaleonis/AlphaFS) - [License terms.](https://github.com/alphaleonis/AlphaFS/blob/c63d46894e08d5a4e993b35131051f13203c3321/LICENSE.md)
+[AlphaFS](https://github.com/alphaleonis/AlphaFS) - [License terms.](https://github.com/alphaleonis/AlphaFS/blob/d76d1f9f02e6869dc23dcfc6ea9163a8c1b69064/LICENSE.md)
 
-#### Microsoft.Bcl.HashCode@1.1.1
+#### Microsoft.Bcl.HashCode@v6.0.0
 
-[Microsoft.Bcl.HashCode](https://github.com/dotnet/corefx) - [License terms.](https://github.com/dotnet/corefx/blob/bdaf5f50f035df0aa98bd69b400b5d1dcff6a7b0/LICENSE)
+[Microsoft.Bcl.HashCode](https://github.com/dotnet/runtime) - [License terms.](https://github.com/dotnet/runtime/blob/4822e3c3aa77eb82b2fb33c9321f923cf11ddde6/LICENSE.TXT)
 
-#### Newtonsoft.Json@13.0.1
+#### SimpleInjector@v5.5.0
 
-[Newtonsoft.Json](https://github.com/JamesNK/Newtonsoft.Json) - [License terms.](https://github.com/JamesNK/Newtonsoft.Json/blob/ae9fe44e1323e91bcbd185ca1a14099fba7c021f/LICENSE.md)
+[SimpleInjector](https://github.com/simpleinjector/SimpleInjector) - [License terms.](https://github.com/simpleinjector/SimpleInjector/blob/eb27d31d1fdf055bed8bcfe5c22b2a1580bbb2a9/LICENSE)
 
-#### SimpleInjector@2.8.3
+#### System.Reactive@rxnet-v6.1.0
 
-[SimpleInjector](https://simpleinjector.org/) - [License terms.](https://github.com/simpleinjector/SimpleInjector/blob/0687195a7691363d4b4918e36b5e4d708e88253c/licence.txt)
-
-#### System.Reactive@rxnet-v5.0.0
-
-[System.Reactive](https://github.com/dotnet/reactive) - [License terms.](https://github.com/dotnet/reactive/blob/103c252a0ec94eac753f353131ad95cc0be1b390/LICENSE)
-
-#### System.Runtime.CompilerServices.Unsafe@4.5.3
-
-[System.Runtime.CompilerServices.Unsafe](https://www.nuget.org/packages/System.Runtime.CompilerServices.Unsafe/4.5.3) - [License terms.](https://github.com/dotnet/corefx/blob/master/LICENSE.TXT)
-
-#### System.Threading.Tasks.Extensions@4.5.4
-
-[System.Threading.Tasks.Extensions](https://www.nuget.org/packages/System.Threading.Tasks.Extensions/4.5.4) - [License terms.](https://github.com/dotnet/corefx/blob/master/LICENSE.TXT)
+[System.Reactive](https://github.com/dotnet/reactive) - [License terms.](https://github.com/dotnet/reactive/blob/f4da16f15a3cde97f178396ea6e3489cc893651f/LICENSE)
 
 ### Other
 
-#### 7-Zip@21.07
+#### 7-Zip@26.00
 
 [7-Zip](https://www.7-zip.org/) - [License terms.](https://www.7-zip.org/license.txt)
 
@@ -749,7 +507,7 @@ The license for original unRAR code has the following restriction:
 --
 ```
 
-#### Shim Generator (shimgen)@1.0.0
+#### Shim Generator (shimgen)@2.0.0
 
 [Shim Generator (shimgen)](https://github.com/chocolatey/shimgen) - [License terms.](https://github.com/chocolatey/choco/blob/d25f993696b4d665ee2dc94ceb0937a2ed5698eb/src/chocolatey.resources/tools/shimgen.license.txt)
 
@@ -823,81 +581,33 @@ licenses. You can learn more by contacting Chocolatey at https://chocolatey.org/
 
 ### Apache v2.0 License
 
-#### Chocolatey CLI / Chocolatey.Lib@2.1.0
+#### Chocolatey CLI / Chocolatey.Lib@2.7.0
 
-[Chocolatey CLI / Chocolatey.Lib](https://github.com/chocolatey/choco) - [License terms.](https://github.com/chocolatey/choco/blob/46976cfc9b97391b923a03bdc18203f4524e7f41/LICENSE)
+[Chocolatey CLI / Chocolatey.Lib](https://github.com/chocolatey/choco) - [License terms.](https://github.com/chocolatey/choco/blob/044c62398b82e64a4bb1d89307fb2f82ba5c6671/LICENSE)
 
-#### Serilog@2.5.0
+#### Serilog@v4.3.0
 
-[Serilog](https://github.com/serilog/serilog) - [License terms.](https://github.com/serilog/serilog/blob/7e9b58adcbd5b300a21811943c911fa3040bfc25/LICENSE)
+[Serilog](https://github.com/serilog/serilog) - [License terms.](https://github.com/serilog/serilog/blob/1b461379f4e218a939d5c94897df2a1dbbf90573/LICENSE)
 
-#### Serilog.Formatting.Compact@1.0.0
+#### Serilog.Formatting.Compact@v3.0.0
 
-[Serilog.Formatting.Compact](https://github.com/serilog/serilog-formatting-compact) - [License terms.](https://github.com/serilog/serilog-formatting-compact/blob/06e18e46e5c2e40feb6f880b8d420aec7677c274/LICENSE)
+[Serilog.Formatting.Compact](https://github.com/serilog/serilog-formatting-compact) - [License terms.](https://github.com/serilog/serilog-formatting-compact/blob/8472ad8ccb97432ca7efbe78d8bc0eaf61db5356/LICENSE)
 
-#### Serilog.Sinks.Async@1.1.0
+#### Serilog.Sinks.Async@v2.1.0
 
-[Serilog.Sinks.Async](https://github.com/serilog/serilog-sinks-async) - [License terms.](https://github.com/serilog/serilog-sinks-async/blob/752c27f0b0cd1771c344c52f4485d61bff438ed4/LICENSE)
+[Serilog.Sinks.Async](https://github.com/serilog/serilog-sinks-async) - [License terms.](https://github.com/serilog/serilog-sinks-async/blob/5c6e5df7dffe5535978475c9ce8c5c6fb1cc9dca/LICENSE)
 
-#### Serilog.Sinks.Console@3.1.0
+#### Serilog.Sinks.Console@v6.1.1
 
-[Serilog.Sinks.Console](https://github.com/serilog/serilog-sinks-console) - [License terms.](https://github.com/serilog/serilog-sinks-console/blob/4b5ef34643b5d0e76973e5256bebe05fd3b88280/LICENSE)
+[Serilog.Sinks.Console](https://github.com/serilog/serilog-sinks-console) - [License terms.](https://github.com/serilog/serilog-sinks-console/blob/9b75d510787f5d54cf76584a3c3341d7eab0ee0a/LICENSE)
 
-#### Serilog.Sinks.File@3.2.0
+#### Serilog.Sinks.PeriodicBatching@v5.0.0
 
-[Serilog.Sinks.File](https://github.com/serilog/serilog-sinks-file) - [License terms.](https://github.com/serilog/serilog-sinks-file/blob/c8418ed96ad8c02fa4b472b03459153175adb4d6/LICENSE)
-
-#### Serilog.Sinks.PeriodicBatching@2.1.1
-
-[Serilog.Sinks.PeriodicBatching](https://github.com/serilog/serilog-sinks-periodicbatching) - [License terms.](https://github.com/serilog/serilog-sinks-periodicbatching/blob/16c50371424f3626f75ab19b593043555b97c676/LICENSE)
+[Serilog.Sinks.PeriodicBatching](https://github.com/serilog/serilog-sinks-periodicbatching) - [License terms.](https://github.com/serilog/serilog-sinks-periodicbatching/blob/649fc9a10d3339e7cdcc2cb8982d757310b310ce/LICENSE)
 
 #### Serilog.Sinks.RollingFile@3.3.0
 
 [Serilog.Sinks.RollingFile](https://github.com/serilog/serilog-sinks-rollingfile) - [License terms.](https://github.com/serilog/serilog-sinks-rollingfile/blob/2a24d25b8fb56f9aab7eeb9887b728c060bf50d6/LICENSE)
-
-#### System.Reactive.Core@3.1.1
-
-[System.Reactive.Core](https://github.com/dotnet/reactive/) - [License terms.](https://github.com/dotnet/reactive/blob/e0b6af3e204feb8aa13841a8a873d78ae6c43467/LICENSE)
-
-#### System.Reactive.Interfaces@3.1.1
-
-[System.Reactive.Interfaces](https://github.com/dotnet/reactive) - [License terms.](https://github.com/dotnet/reactive/blob/e0b6af3e204feb8aa13841a8a873d78ae6c43467/LICENSE)
-
-#### System.Reactive.Linq@3.1.1
-
-[System.Reactive.Linq](https://github.com/dotnet/reactive) - [License terms.](https://github.com/dotnet/reactive/blob/e0b6af3e204feb8aa13841a8a873d78ae6c43467/LICENSE)
-
-#### System.Reactive.PlatformServices@3.1.1
-
-[System.Reactive.PlatformServices](https://github.com/dotnet/reactive) - [License terms.](https://github.com/dotnet/reactive/blob/e0b6af3e204feb8aa13841a8a873d78ae6c43467/LICENSE)
-
-#### System.Reactive.Windows.Threading@3.1.1
-
-[System.Reactive.Windows.Threading](https://github.com/dotnet/reactive) - [License terms.](https://github.com/dotnet/reactive/blob/e0b6af3e204feb8aa13841a8a873d78ae6c43467/LICENSE)
-
-### BSD-2-Clause License
-
-#### Markdig.Signed@0.23.0
-
-[Markdig.Signed](https://github.com/xoofx/markdig) - [License terms.](https://github.com/xoofx/markdig/blob/3030b72f781f902cb947a173853de95de8924c6c/license.txt)
-
-### GNU Lesser General Public License (LGPL) v3.0
-
-#### Fizzler@1.2.0
-
-[Fizzler](https://github.com/atifaziz/Fizzler) - [License terms.](https://github.com/atifaziz/Fizzler/blob/f5f2e983e58f2198229d63de4c0563e2952bdb68/COPYING.LESSER.txt)
-
-### Microsoft Public License
-
-#### Svg.Custom@0.3.0
-
-[Svg.Custom](https://github.com/wieslawsoltes/Svg.Skia) - [License terms.](https://github.com/wieslawsoltes/Svg.Skia/blob/c65367905b814451a9e3d00dc8da31ecb5d5914a/src/Svg.Custom/LICENSE.TXT)
-
-### Microsoft Software License
-
-#### System.Runtime.InteropServices.RuntimeInformation@4.3.0
-
-[System.Runtime.InteropServices.RuntimeInformation](https://www.nuget.org/packages/System.Runtime.InteropServices.RuntimeInformation/4.3.0) - [License terms.](https://github.com/dotnet/core/blob/f448548f18ed90b8ade9dba5567fa3e401ad3d2b/license-information.md)
 
 ### MIT License
 
@@ -913,69 +623,53 @@ licenses. You can learn more by contacting Chocolatey at https://chocolatey.org/
 
 [Caliburn.Micro](https://github.com/Caliburn-Micro/Caliburn.Micro) - [License terms.](https://github.com/Caliburn-Micro/Caliburn.Micro/blob/544babd1865846af175ba32d86c839eb354714aa/License.txt)
 
-#### Caliburn.Micro.Core@3.2.0
+#### LiteDB@v5.0.21
 
-[Caliburn.Micro.Core](https://github.com/Caliburn-Micro/Caliburn.Micro/) - [License terms.](https://github.com/Caliburn-Micro/Caliburn.Micro/blob/544babd1865846af175ba32d86c839eb354714aa/License.txt)
+[LiteDB](https://github.com/litedb-org/LiteDB) - [License terms.](https://github.com/litedb-org/LiteDB/blob/84065086a8e8716063b255d0abb332708d0b2ad3/LICENSE)
 
-#### ControlzEx@4.4.0
+#### MahApps.Metro@2.4.11
 
-[ControlzEx](https://github.com/ControlzEx/ControlzEx) - [License terms.](https://github.com/ControlzEx/ControlzEx/blob/3d188a23b59272b6feff707c4f96be8743576e0d/LICENSE)
+[MahApps.Metro](https://github.com/MahApps/MahApps.Metro) - [License terms.](https://github.com/MahApps/MahApps.Metro/blob/f1e91f8ab62fc83273d71c82830a0d05e7f7c2f6/LICENSE)
 
-#### HarfBuzzSharp@2.6.1.4
+#### MahApps.Metro.IconPacks.BoxIcons@6.2.1
 
-[HarfBuzzSharp](https://github.com/mono/SkiaSharp) - [License terms.](https://github.com/mono/SkiaSharp/blob/080e31cf319624dbccc2103b91aabb54398b93c1/LICENSE.md)
+[MahApps.Metro.IconPacks.BoxIcons](https://github.com/MahApps/MahApps.Metro.IconPacks) - [License terms.](https://github.com/MahApps/MahApps.Metro.IconPacks/blob/d7d1c4ab6202143fd83410d715d323a2dbddf320/LICENSE)
 
-#### LiteDB@5.0.15
+#### MahApps.Metro.IconPacks.Entypo@6.2.1
 
-[LiteDB](https://github.com/litedb-org/LiteDB) - [License terms.](https://github.com/litedb-org/LiteDB/blob/d91d495e5f0e5ff08f74837b794545e40de34fcd/LICENSE)
+[MahApps.Metro.IconPacks.Entypo](https://github.com/MahApps/MahApps.Metro.IconPacks) - [License terms.](https://github.com/MahApps/MahApps.Metro.IconPacks/blob/d7d1c4ab6202143fd83410d715d323a2dbddf320/LICENSE)
 
-#### MahApps.Metro@2.4.4
+#### MahApps.Metro.IconPacks.FontAwesome@6.2.1
 
-[MahApps.Metro](https://github.com/MahApps/MahApps.Metro) - [License terms.](https://github.com/MahApps/MahApps.Metro/blob/29a0ac40a9b99e192aeff63a6def6580c0203076/LICENSE)
+[MahApps.Metro.IconPacks.FontAwesome](https://github.com/MahApps/MahApps.Metro.IconPacks) - [License terms.](https://github.com/MahApps/MahApps.Metro.IconPacks/blob/d7d1c4ab6202143fd83410d715d323a2dbddf320/LICENSE)
 
-#### MahApps.Metro.IconPacks.BoxIcons@4.8.0
+#### MahApps.Metro.IconPacks.Modern@6.2.1
 
-[MahApps.Metro.IconPacks.BoxIcons](https://github.com/MahApps/MahApps.Metro.IconPacks) - [License terms.](https://github.com/MahApps/MahApps.Metro.IconPacks/blob/a24bc41dddd8c896949e6f6d01512ffbb14bed94/LICENSE)
+[MahApps.Metro.IconPacks.Modern](https://github.com/MahApps/MahApps.Metro.IconPacks) - [License terms.](https://github.com/MahApps/MahApps.Metro.IconPacks/blob/d7d1c4ab6202143fd83410d715d323a2dbddf320/LICENSE)
 
-#### MahApps.Metro.IconPacks.Entypo@4.8.0
+#### MahApps.Metro.IconPacks.Octicons@6.2.1
 
-[MahApps.Metro.IconPacks.Entypo](https://github.com/MahApps/MahApps.Metro.IconPacks) - [License terms.](https://github.com/MahApps/MahApps.Metro.IconPacks/blob/a24bc41dddd8c896949e6f6d01512ffbb14bed94/LICENSE)
+[MahApps.Metro.IconPacks.Octicons](https://github.com/MahApps/MahApps.Metro.IconPacks) - [License terms.](https://github.com/MahApps/MahApps.Metro.IconPacks/blob/d7d1c4ab6202143fd83410d715d323a2dbddf320/LICENSE)
 
-#### MahApps.Metro.IconPacks.FontAwesome@4.8.0
+#### MahApps.Metro.SimpleChildWindow@2.2.1
 
-[MahApps.Metro.IconPacks.FontAwesome](https://github.com/MahApps/MahApps.Metro.IconPacks) - [License terms.](https://github.com/MahApps/MahApps.Metro.IconPacks/blob/a24bc41dddd8c896949e6f6d01512ffbb14bed94/LICENSE)
-
-#### MahApps.Metro.IconPacks.Modern@4.8.0
-
-[MahApps.Metro.IconPacks.Modern](https://github.com/MahApps/MahApps.Metro.IconPacks) - [License terms.](https://github.com/MahApps/MahApps.Metro.IconPacks/blob/a24bc41dddd8c896949e6f6d01512ffbb14bed94/LICENSE)
-
-#### MahApps.Metro.IconPacks.Octicons@4.8.0
-
-[MahApps.Metro.IconPacks.Octicons](https://github.com/MahApps/MahApps.Metro.IconPacks) - [License terms.](https://github.com/MahApps/MahApps.Metro.IconPacks/blob/a24bc41dddd8c896949e6f6d01512ffbb14bed94/LICENSE)
-
-#### MahApps.Metro.SimpleChildWindow@2.0.0
-
-[MahApps.Metro.SimpleChildWindow](https://github.com/punker76/MahApps.Metro.SimpleChildWindow) - [License terms.](https://github.com/punker76/MahApps.Metro.SimpleChildWindow/blob/663cb42663c2e8d6f68e553878d4001360be5b21/LICENSE)
+[MahApps.Metro.SimpleChildWindow](https://github.com/punker76/MahApps.Metro.SimpleChildWindow) - [License terms.](https://github.com/punker76/MahApps.Metro.SimpleChildWindow/blob/f17d0def889df10f92f00e9f2240ace90b67f24a/LICENSE)
 
 #### Markdig.Wpf.Signed@0.5.0.1
 
 [Markdig.Wpf.Signed](https://github.com/Kryptos-FR/markdig.wpf) - [License terms.](https://github.com/Kryptos-FR/markdig.wpf/blob/f172c1337eacd80f5fd138b1eb2547e62690b243/LICENSE.md)
 
-#### Microsoft.VisualStudio.Threading@15.4.4
+#### Microsoft.CSharp@v4.7.0
 
-[Microsoft.VisualStudio.Threading](https://github.com/microsoft/vs-threading) - [License terms.](https://github.com/microsoft/vs-threading/blob/da0daeef0c0c21913f59f099fe1cf684431a3b6a/LICENSE)
+[Microsoft.CSharp](https://github.com/dotnet/runtime) - [License terms.](https://github.com/dotnet/runtime/blob/ed3d384706c03937e4eac3c377779f0048fa4c3e/LICENSE.TXT)
 
-#### Microsoft.VisualStudio.Validation@15.3.32
+#### Microsoft.VisualStudio.Threading@v17.14.15
+
+[Microsoft.VisualStudio.Threading](https://github.com/microsoft/vs-threading) - [License terms.](https://github.com/microsoft/vs-threading/blob/051a9047ff5c89efa46058a629c3add6c122e9b6/LICENSE)
+
+#### Microsoft.VisualStudio.Validation@v17.13.22
 
 [Microsoft.VisualStudio.Validation](https://github.com/microsoft/vs-validation) - [License terms.](https://github.com/microsoft/vs-validation/blob/919ad1e29af82dc2db88cb69be9e38962464ec82/LICENSE)
-
-#### Microsoft.Xaml.Behaviors.Wpf@1.1.19
-
-[Microsoft.Xaml.Behaviors.Wpf](https://github.com/microsoft/XamlBehaviorsWpf) - [License terms.](https://github.com/microsoft/XamlBehaviorsWpf/blob/b88a49dfadcc98f41634624124ee19f9d9dc4df2/LICENSE)
-
-#### SkiaSharp@1.68.3
-
-[SkiaSharp](https://github.com/mono/SkiaSharp) - [License terms.](https://github.com/mono/SkiaSharp/blob/fd9484a06ae96f0195a80d93e80d6b54323f450a/LICENSE.txt)
 
 #### SkiaSharp.HarfBuzz@1.68.3
 
@@ -985,30 +679,18 @@ licenses. You can learn more by contacting Chocolatey at https://chocolatey.org/
 
 [Splat](https://github.com/reactiveui/splat) - [License terms.](https://github.com/reactiveui/splat/blob/5a4912c1e0f5eeb434ec9f2452f6571d2e34c34b/LICENSE)
 
-#### Svg.Skia@0.3.0
+#### Svg.Skia@v3.4.1
 
-[Svg.Skia](https://github.com/wieslawsoltes/Svg.Skia) - [License terms.](https://github.com/wieslawsoltes/Svg.Skia/blob/c65367905b814451a9e3d00dc8da31ecb5d5914a/LICENSE.TXT)
+[Svg.Skia](https://github.com/wieslawsoltes/Svg.Skia) - [License terms.](https://github.com/wieslawsoltes/Svg.Skia/blob/c3030266d07c82738c6639bd6bc86080e2dafb1e/LICENSE.TXT)
 
-#### System.Buffers@4.5.1
+#### System.Data.DataSetExtensions@v4.5.0
 
-[System.Buffers](https://www.nuget.org/packages/System.Buffers/4.5.1) - [License terms.](https://github.com/dotnet/corefx/blob/b8b81a66738bb10ef0790023598396861d92b2c4/LICENSE.TXT)
+[System.Data.DataSetExtensions](https://github.com/dotnet/runtime) - [License terms.](https://github.com/dotnet/runtime/blob/ed3d384706c03937e4eac3c377779f0048fa4c3e/LICENSE.TXT)
 
-#### System.Memory@4.5.4
+#### System.Net.Http@4.3.4
 
-[System.Memory](https://www.nuget.org/packages/System.Memory/4.5.4) - [License terms.](https://github.com/dotnet/corefx/blob/b8b81a66738bb10ef0790023598396861d92b2c4/LICENSE.TXT)
+[System.Net.Http](https://github.com/dotnet/core) - [License terms.](https://github.com/dotnet/core/blob/f92e502306a9f1c9f86f14e5240a4d2e235eb88e/LICENSE.TXT)
 
-#### System.Numerics.Vectors@4.5.0
+#### System.Runtime.Caching@v10.0.2
 
-[System.Numerics.Vectors](https://www.nuget.org/packages/System.Numerics.Vectors/4.5.0) - [License terms.](https://github.com/dotnet/corefx/blob/b8b81a66738bb10ef0790023598396861d92b2c4/LICENSE.TXT)
-
-#### System.Runtime.CompilerServices.Unsafe@4.7.1
-
-[System.Runtime.CompilerServices.Unsafe](https://www.nuget.org/packages/System.Runtime.CompilerServices.Unsafe/4.7.1) - [License terms.](https://licenses.nuget.org/MIT)
-
-#### System.Threading.Tasks.Extensions@4.4.0
-
-[System.Threading.Tasks.Extensions](https://www.nuget.org/packages/System.Threading.Tasks.Extensions/4.4.0) - [License terms.](https://github.com/dotnet/corefx/blob/b8b81a66738bb10ef0790023598396861d92b2c4/LICENSE.TXT)
-
-#### System.ValueTuple@4.5.0
-
-[System.ValueTuple](https://www.nuget.org/packages/System.ValueTuple/4.5.0) - [License terms.](https://github.com/dotnet/corefx/blob/b8b81a66738bb10ef0790023598396861d92b2c4/LICENSE.TXT)
+[System.Runtime.Caching](https://github.com/dotnet/dotnet) - [License terms.](https://github.com/dotnet/dotnet/blob/44525024595742ebe09023abe709df51de65009b/LICENSE.TXT)
