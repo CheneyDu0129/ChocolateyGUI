@@ -32,7 +32,7 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(CHOCOLATEYGUI_OFFICIAL_KEY)' == ''">
+  <PropertyGroup Condition="'$(CHOCOLATEYGUI_OFFICIAL_KEY)' == '' OR !Exists('$(CHOCOLATEYGUI_OFFICIAL_KEY')">
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\chocolateygui.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
