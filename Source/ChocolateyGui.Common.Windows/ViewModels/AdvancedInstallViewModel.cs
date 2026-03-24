@@ -1,4 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright company="Chocolatey" file="AdvancedInstallViewModel.cs">
 //   Copyright 2017 - Present Chocolatey Software, LLC
 //   Copyright 2014 - 2017 Rob Reynolds, the maintainers of Chocolatey, and RealDimensions Software, LLC
@@ -461,6 +461,7 @@ namespace ChocolateyGui.Common.Windows.ViewModels
             DownloadChecksumType64bit = "md5";
             ExecutionTimeoutInSeconds = 10800; // 硬编码为 3 小时（公司安全标准值）
             SkipPowerShell = false; // 硬编码为 false（公司安全标准值）
+            IncludePreRelease = true; 
             // 硬编码依赖项控制相关值（公司安全标准值）
             IgnoreDependencies = false;
             ForceDependencies = false;

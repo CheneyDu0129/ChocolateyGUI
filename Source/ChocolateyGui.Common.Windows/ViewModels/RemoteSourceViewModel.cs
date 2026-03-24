@@ -1,4 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright company="Chocolatey" file="RemoteSourceViewModel.cs">
 //   Copyright 2017 - Present Chocolatey Software, LLC
 //   Copyright 2014 - 2017 Rob Reynolds, the maintainers of Chocolatey, and RealDimensions Software, LLC
@@ -108,6 +108,7 @@ namespace ChocolateyGui.Common.Windows.ViewModels
             AddSortOptions();
 
             SortSelection = L(nameof(Resources.RemoteSourceViewModel_SortSelectionPopularity));
+            IncludePrerelease = true; // 默认包含预发布版本
         }
 
         public bool HasLoaded
