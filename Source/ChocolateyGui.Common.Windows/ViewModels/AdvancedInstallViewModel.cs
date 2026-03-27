@@ -26,6 +26,7 @@ namespace ChocolateyGui.Common.Windows.ViewModels
     {
         private readonly IChocolateyService _chocolateyService;
         private readonly IPersistenceService _persistenceService;
+        private readonly Uri _source;
         private CancellationTokenSource _cts;
         private string _selectedVersion;
         private bool _includePreRelease;
@@ -63,11 +64,13 @@ namespace ChocolateyGui.Common.Windows.ViewModels
             IChocolateyService chocolateyService,
             IPersistenceService persistenceService,
             string packageId,
-            NuGetVersion packageVersion)
+            NuGetVersion packageVersion,
+            Uri source)
         {
             _chocolateyService = chocolateyService;
             _persistenceService = persistenceService;
             _packageId = packageId;
+            _source = source;
 
             _cts = new CancellationTokenSource();
 
@@ -433,7 +436,7 @@ namespace ChocolateyGui.Common.Windows.ViewModels
             {
                 try
                 {
-                    var versions = await _chocolateyService.GetAvailableVersionsForPackageIdAsync(_packageId, 0, 100, IncludePreRelease);
+                    var versions = await _chocolateyService.GetAvailableVersionsForPackageIdAsync(_packageId, 0, 100, IncludePreRelease, _source);
                     foreach (var version in versions)
                     {
                         var versionString = version.ToNormalizedStringChecked();

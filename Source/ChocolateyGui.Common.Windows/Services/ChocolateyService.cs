@@ -346,7 +346,7 @@ namespace ChocolateyGui.Common.Windows.Services
             return GetMappedPackage(_choco, new PackageResult(nugetPackage, null, chocoConfig.Sources), _mapper);
         }
 
-        public async Task<List<NuGetVersion>> GetAvailableVersionsForPackageIdAsync(string id, int page, int pageSize, bool includePreRelease)
+        public async Task<List<NuGetVersion>> GetAvailableVersionsForPackageIdAsync(string id, int page, int pageSize, bool includePreRelease, Uri source = null)
         {
             using (await Lock.WriteLockAsync())
             {
@@ -362,6 +362,11 @@ namespace ChocolateyGui.Common.Windows.Services
                         config.AllVersions = true;
                         config.QuietOutput = true;
                         config.RegularOutput = false;
+
+                        if (source != null)
+                        {
+                            config.Sources = source.ToString();
+                        }
 #if !DEBUG
                                     config.Verbose = false;
 #endif // DEBUG
@@ -650,6 +655,23 @@ namespace ChocolateyGui.Common.Windows.Services
             var mappedPackage = package == null ? null : mapper.Map<Package>(package.SearchMetadata);
             if (mappedPackage != null)
             {
+                if (mappedPackage.Source == null && !string.IsNullOrWhiteSpace(package.Source))
+                {
+                    var packageSources = package.Source.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries)
+                        .Select(s => s.Trim())
+                        .ToArray();
+
+                    foreach (var packageSource in packageSources)
+                    {
+                        Uri source;
+                        if (Uri.TryCreate(packageSource, UriKind.Absolute, out source))
+                        {
+                            mappedPackage.Source = source;
+                            break;
+                        }
+                    }
+                }
+
                 if (package.PackageMetadata != null)
                 {
                     mappedPackage.ReleaseNotes = package.PackageMetadata.ReleaseNotes;

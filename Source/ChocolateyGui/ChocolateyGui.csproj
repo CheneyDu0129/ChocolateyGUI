@@ -75,6 +75,7 @@
   <PropertyGroup Condition="'$(CHOCOLATEYGUI_OFFICIAL_KEY)' != '' AND Exists('$(CHOCOLATEYGUI_OFFICIAL_KEY)')">
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>$(CHOCOLATEYGUI_OFFICIAL_KEY)</AssemblyOriginatorKeyFile>
+</PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'ReleaseOfficial|AnyCPU'">
     <OutputPath>bin\ReleaseOfficial\</OutputPath>
     <DefineConstants>TRACE;CODE_ANALYSIS;FORCE_CHOCOLATEY_OFFICIAL_KEY</DefineConstants>

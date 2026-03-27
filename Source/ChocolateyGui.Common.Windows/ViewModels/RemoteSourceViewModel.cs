@@ -320,6 +320,15 @@ namespace ChocolateyGui.Common.Windows.ViewModels
 
                     result.Packages.ToList().ForEach(p =>
                     {
+                        if (p.Source == null && Source != null && !string.IsNullOrWhiteSpace(Source.Value))
+                        {
+                            Uri source;
+                            if (Uri.TryCreate(Source.Value, UriKind.Absolute, out source))
+                            {
+                                p.Source = source;
+                            }
+                        }
+
                         if (installed.Any(package => string.Equals(package.Id, p.Id, StringComparison.OrdinalIgnoreCase)))
                         {
                             p.IsInstalled = true;
