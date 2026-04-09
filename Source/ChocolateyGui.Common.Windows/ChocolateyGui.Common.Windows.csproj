@@ -33,7 +33,7 @@
     <OutputPath>bin\ReleaseOfficial\</OutputPath>
     <DefineConstants>TRACE;CODE_ANALYSIS;FORCE_CHOCOLATEY_OFFICIAL_KEY</DefineConstants>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(CHOCOLATEYGUI_OFFICIAL_KEY)' == ''">
+  <PropertyGroup Condition="'$(CHOCOLATEYGUI_OFFICIAL_KEY)' == '' OR !Exists('$(CHOCOLATEYGUI_OFFICIAL_KEY')">
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\chocolateygui.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
@@ -80,6 +80,7 @@
     <PackageReference Include="MahApps.Metro.IconPacks.Octicons" Version="6.2.1" />
     <PackageReference Include="MahApps.Metro.SimpleChildWindow" Version="2.2.1" />
     <PackageReference Include="Markdig.Wpf.Signed" Version="0.5.0.1" />
+    <PackageReference Include="Markdig.Signed" Version="0.23.0" />
     <PackageReference Include="SkiaSharp.HarfBuzz" Version="1.68.3" />
     <PackageReference Include="Splat" Version="2.0.0" />
     <PackageReference Include="Svg.Skia" Version="3.4.1" />
