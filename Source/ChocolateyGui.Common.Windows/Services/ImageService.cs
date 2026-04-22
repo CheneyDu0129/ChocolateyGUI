@@ -17,19 +17,8 @@ namespace ChocolateyGui.Common.Windows.Services
         {
             get
             {
-                var dpi = NativeMethods.GetScaleFactor();
-                var img = "chocolatey.png";
-
-                if (dpi >= 2f)
-                {
-                    img = "chocolatey@3.png";
-                }
-                else if (dpi > 1.00f)
-                {
-                    img = "chocolatey@2.png";
-                }
-
-                return img;
+                // Always use the new splash image, fallback to chocolatey.png if missing
+                return "semightlogo.png";
             }
         }
 

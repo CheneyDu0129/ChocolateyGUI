@@ -23,12 +23,25 @@ namespace ChocolateyGui.Common.Windows.Services
 
         public void Show()
         {
-            _splashScreen = new SplashScreen(_imageService.SplashScreenImageName);
+            try
+            {
+                _splashScreen = new SplashScreen(_imageService.SplashScreenImageName);
+            }
+            catch
+            {
+                _splashScreen = new SplashScreen("chocolatey.png");
+            }
+
             _splashScreen.Show(true, true);
         }
 
         public void Close(TimeSpan duration)
         {
+            if (_splashScreen == null)
+            {
+                return;
+            }
+
             _splashScreen.Close(duration);
         }
     }

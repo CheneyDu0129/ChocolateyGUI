@@ -159,7 +159,7 @@ namespace ChocolateyGui.Common.Windows
                 elevationProvider.IsBackgroundRunning = backgroundFeature?.Enabled ?? false;
 
                 var splashScreen = Container.Resolve<ISplashScreenService>();
-                splashScreen.Close(TimeSpan.FromMilliseconds(300));
+                splashScreen.Close(TimeSpan.FromMilliseconds(700));
 
                 DisplayRootViewFor<ShellViewModel>();
             }
