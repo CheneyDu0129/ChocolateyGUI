@@ -6,6 +6,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
@@ -114,6 +115,11 @@ namespace ChocolateyGui.Common.Windows.ViewModels.Items
         private NuGetVersion _version;
 
         private long _versionDownloadCount;
+        private Utilities.NotifyTaskCompletion<ObservableCollection<string>> _availableVersions;
+        private string _selectedVersion;
+        private bool _availableVersionsLoaded;
+        private bool _availableVersionsLoading;
+        private bool _includePreRelease = true;
 
         public PackageViewModel(
             IChocolateyService chocolateyService,
@@ -382,7 +388,37 @@ namespace ChocolateyGui.Common.Windows.ViewModels.Items
         public NuGetVersion Version
         {
             get { return _version; }
-            set { SetPropertyValue(ref _version, value); }
+            set
+            {
+                if (SetPropertyValue(ref _version, value) && string.IsNullOrWhiteSpace(_selectedVersion) && value != null)
+                {
+                    SelectedVersion = value.ToNormalizedStringChecked();
+                }
+            }
+        }
+
+        public Utilities.NotifyTaskCompletion<ObservableCollection<string>> AvailableVersions
+        {
+            get { return _availableVersions; }
+            set { SetPropertyValue(ref _availableVersions, value); }
+        }
+
+        public string SelectedVersion
+        {
+            get { return _selectedVersion; }
+            set { SetPropertyValue(ref _selectedVersion, value); }
+        }
+
+        public bool IncludePreRelease
+        {
+            get { return _includePreRelease; }
+            set
+            {
+                if (SetPropertyValue(ref _includePreRelease, value))
+                {
+                    EnsureAvailableVersionsLoaded(true);
+                }
+            }
         }
 
         public long VersionDownloadCount
@@ -425,7 +461,7 @@ namespace ChocolateyGui.Common.Windows.ViewModels.Items
 
         public async Task Install()
         {
-            await InstallPackage(Version.ToNormalizedStringChecked());
+            await InstallPackage(GetInstallVersion());
         }
 
         public async Task InstallAdvanced()
@@ -673,6 +709,7 @@ namespace ChocolateyGui.Common.Windows.ViewModels.Items
         public async void ViewDetails()
 #pragma warning restore RECS0165 // Asynchronous methods should return a Task instead of void
         {
+            EnsureAvailableVersionsLoaded();
             await _eventAggregator.PublishOnUIThreadAsync(new ShowPackageDetailsMessage(this)).ConfigureAwait(false);
         }
 
@@ -763,6 +800,81 @@ namespace ChocolateyGui.Common.Windows.ViewModels.Items
             {
                 _disposeAction?.Invoke();
             }
+        }
+
+        private string GetInstallVersion()
+        {
+            if (string.IsNullOrWhiteSpace(SelectedVersion) ||
+                string.Equals(SelectedVersion, Resources.AdvancedChocolateyDialog_LatestVersion, StringComparison.OrdinalIgnoreCase))
+            {
+                return Version.ToNormalizedStringChecked();
+            }
+
+            return SelectedVersion;
+        }
+
+        private void EnsureAvailableVersionsLoaded(bool forceReload = false)
+        {
+            if (_availableVersionsLoading)
+            {
+                return;
+            }
+
+            if (_availableVersionsLoaded && !forceReload)
+            {
+                return;
+            }
+
+            _availableVersionsLoaded = false;
+            _availableVersionsLoading = true;
+            AvailableVersions = new Utilities.NotifyTaskCompletion<ObservableCollection<string>>(GetAvailableVersionsAsync());
+        }
+
+        private async Task<ObservableCollection<string>> GetAvailableVersionsAsync()
+        {
+            var availableVersions = new ObservableCollection<string>
+            {
+                Resources.AdvancedChocolateyDialog_LatestVersion
+            };
+
+            var currentVersion = Version?.ToNormalizedStringChecked();
+            if (!string.IsNullOrWhiteSpace(currentVersion) && !availableVersions.Contains(currentVersion))
+            {
+                availableVersions.Add(currentVersion);
+            }
+
+            var loadedFromSource = false;
+
+            try
+            {
+                var versions = await _chocolateyService.GetAvailableVersionsForPackageIdAsync(Id, 0, 100, IncludePreRelease, Source);
+                foreach (var version in versions)
+                {
+                    var versionString = version.ToNormalizedStringChecked();
+                    if (!availableVersions.Contains(versionString))
+                    {
+                        availableVersions.Add(versionString);
+                    }
+                }
+
+                loadedFromSource = true;
+            }
+            catch
+            {
+                // Ignore errors when fetching versions
+            }
+            finally
+            {
+                _availableVersionsLoading = false;
+                _availableVersionsLoaded = loadedFromSource;
+            }
+
+            if (string.IsNullOrWhiteSpace(SelectedVersion))
+            {
+                SelectedVersion = currentVersion ?? Resources.AdvancedChocolateyDialog_LatestVersion;
+            }
+
+            return availableVersions;
         }
     }
 }

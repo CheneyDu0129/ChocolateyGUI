@@ -173,35 +173,6 @@
                                 Margin="5 0 5 0"
                                 Grid.IsSharedSizeScope="True"
                                 Orientation="Vertical">
-                        <mah:MetroHeader Background="{DynamicResource MahApps.Brushes.Gray10}" Header="{lang:Localize AdvancedChocolateyDialog_Version_Header}" Tag="{lang:Localize AdvancedChocolateyDialog_Version_ToolTip}">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-                                <ComboBox x:Name="AvailableVersionsComboBox"
-                                          Grid.Column="0"
-                                          IsEnabled="{Binding AvailableVersions.IsSuccessfullyCompleted}"
-                                          ItemsSource="{Binding AvailableVersions.Result, Mode=OneWay}"
-                                          SelectedItem="{Binding SelectedVersion, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                          IsEditable="True" />
-                                <mah:ProgressRing Grid.Column="0"
-                                                  Width="20"
-                                                  Height="20"
-                                                  IsActive="{Binding AvailableVersions.IsNotCompleted}"
-                                                  IsLarge="False"
-                                                  HorizontalAlignment="Left"
-                                                  VerticalAlignment="Center"
-                                                  Margin="5 0 0 0" />
-                                <!--<CheckBox x:Name="IncludePrereleaseCheckBox"
-                                          Grid.Column="1"
-                                          Margin="5 0 0 0"
-                                          Content="{lang:Localize AdvancedChocolateyDialog_IncludePreRelease_Content}"
-                                          ToolTip="{lang:Localize AdvancedChocolateyDialog_IncludePreRelease_ToolTip}"
-                                          IsEnabled="{Binding AvailableVersions.IsSuccessfullyCompleted}"
-                                          IsChecked="{Binding IncludePreRelease}" />-->
-                            </Grid>
-                        </mah:MetroHeader>
                         <mah:MetroHeader Header="{lang:Localize AdvancedChocolateyDialog_PackageParameters_Header}" Tag="{lang:Localize AdvancedChocolateyDialog_PackageParameters_ToolTip}">
                             <TextBox Text="{Binding PackageParameters, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding SkipPowerShell, Converter={StaticResource BooleanInverter}}" />
                         </mah:MetroHeader>
@@ -217,9 +188,6 @@
                         </mah:MetroHeader>
                         <mah:MetroHeader Header="{lang:Localize AdvancedChocolateyDialog_ExecutionTimeoutInSeconds_Header}" Tag="{lang:Localize AdvancedChocolateyDialog_ExecutionTimeoutInSeconds_ToolTip}" Visibility="Collapsed">
                             <mah:NumericUpDown Value="{Binding ExecutionTimeoutInSeconds}" />
-                        </mah:MetroHeader>
-                        <mah:MetroHeader Background="{DynamicResource MahApps.Brushes.Gray10}" Header="{lang:Localize AdvancedChocolateyDialog_PreRelease_Header}" Tag="{lang:Localize AdvancedChocolateyDialog_PreRelease_ToolTip}">
-                            <mah:ToggleSwitch VerticalAlignment="Center" IsOn="{Binding PreRelease}" />
                         </mah:MetroHeader>
                         <mah:MetroHeader Header="{lang:Localize AdvancedChocolateyDialog_Forcex86_Header}" Tag="{lang:Localize AdvancedChocolateyDialog_Forcex86_ToolTip}" Visibility="{Binding Is32BitPlatform, Converter={StaticResource BooleanToVisibilityInverted}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:AdvancedInstallView}}}">
                             <mah:ToggleSwitch VerticalAlignment="Center" IsOn="{Binding Forcex86}" x:Name="ForceX86Switch" />

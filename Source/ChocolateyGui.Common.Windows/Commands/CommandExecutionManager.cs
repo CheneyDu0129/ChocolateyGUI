@@ -24,6 +24,9 @@ namespace ChocolateyGui.Common.Windows.Commands
     /// </summary>
     public static class CommandExecutionManager
     {
+        private const string DisconnectedItemTypeName = "MS.Internal.NamedObject";
+        private const string DisconnectedItemName = "DisconnectedItem";
+
         private static readonly ConcurrentDictionary<CommandExecutionProviderKey, Func<object>> CompiledConstructors
             = new ConcurrentDictionary<CommandExecutionProviderKey, Func<object>>();
 
@@ -165,6 +168,12 @@ namespace ChocolateyGui.Common.Windows.Commands
                 return null;
             }
 
+            if (IsDisconnectedItem(target))
+            {
+                _disconnectedItemSentinelValue = target;
+                return null;
+            }
+
             var key = new CommandExecutionProviderKey(target.GetType(), canExecuteMethodName, executedMethodName);
             ICommandExecutionProvider executionProvider;
             if (!ExecutionProviders.TryGetValue(key, out executionProvider))
@@ -185,7 +194,7 @@ namespace ChocolateyGui.Common.Windows.Commands
                     // http://www.go4answers.com/Example/disconnecteditem-causing-it-115624.aspx
                     if (_disconnectedItemSentinelValue == null)
                     {
-                        if (IsDisconnected(target))
+                        if (IsDisconnectedItem(target))
                         {
                             _disconnectedItemSentinelValue = target;
                         }
@@ -200,6 +209,18 @@ namespace ChocolateyGui.Common.Windows.Commands
                         ////            _DisconnectedItemSentinelValue = target;
                         ////        }
                         ////}
+                    }
+
+                    if (target != _disconnectedItemSentinelValue)
+                    {
+                        throw;
+                    }
+                }
+                catch (Exception)
+                {
+                    if (_disconnectedItemSentinelValue == null && IsDisconnectedItem(target))
+                    {
+                        _disconnectedItemSentinelValue = target;
                     }
 
                     if (target != _disconnectedItemSentinelValue)
@@ -238,6 +259,28 @@ namespace ChocolateyGui.Common.Windows.Commands
             }
 
             return constructor;
+        }
+
+        private static bool IsDisconnectedItem(object target)
+        {
+            if (target == null)
+            {
+                return false;
+            }
+
+            var targetType = target.GetType();
+            if (!string.Equals(targetType.FullName, DisconnectedItemTypeName, StringComparison.Ordinal))
+            {
+                return false;
+            }
+
+            var nameField = targetType.GetField("_name", BindingFlags.Instance | BindingFlags.NonPublic);
+            if (nameField == null)
+            {
+                return false;
+            }
+
+            return string.Equals(nameField.GetValue(target) as string, DisconnectedItemName, StringComparison.Ordinal);
         }
 
         /// <summary>

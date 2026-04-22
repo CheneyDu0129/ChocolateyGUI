@@ -464,7 +464,7 @@ namespace ChocolateyGui.Common.Windows.ViewModels
             DownloadChecksumType64bit = "md5";
             ExecutionTimeoutInSeconds = 10800; // 硬编码为 3 小时（公司安全标准值）
             SkipPowerShell = false; // 硬编码为 false（公司安全标准值）
-            IncludePreRelease = true; 
+            IncludePreRelease = false;
             // 硬编码依赖项控制相关值（公司安全标准值）
             IgnoreDependencies = false;
             ForceDependencies = false;

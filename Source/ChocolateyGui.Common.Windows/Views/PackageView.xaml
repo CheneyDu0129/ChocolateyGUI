@@ -197,9 +197,35 @@
             <Label Style="{StaticResource PackageResourceLabel}"
                    Content="{lang:Localize PackageView_Version}"
                    Target="{Binding ElementName=Version}" />
-            <TextBlock x:Name="Version" Text="{Binding Version, Converter={StaticResource NuGetVersionToString}}"
-                       Style="{StaticResource PackageResourceValue}" />
-            
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <ComboBox x:Name="Version"
+                          Grid.Column="0"
+                          MinWidth="180"
+                          IsEnabled="{Binding AvailableVersions.IsSuccessfullyCompleted}"
+                          ItemsSource="{Binding AvailableVersions.Result, Mode=OneWay}"
+                          SelectedItem="{Binding SelectedVersion, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                          IsEditable="True" />
+                <mah:ProgressRing Grid.Column="0"
+                                  Width="16"
+                                  Height="16"
+                                  IsActive="{Binding AvailableVersions.IsNotCompleted}"
+                                  IsLarge="False"
+                                  HorizontalAlignment="Left"
+                                  VerticalAlignment="Center"
+                                  Margin="5 0 0 0" />
+                <CheckBox Grid.Column="1"
+                          Margin="8 0 0 0"
+                          VerticalAlignment="Center"
+                          Content="{lang:Localize AdvancedChocolateyDialog_IncludePreRelease_Content}"
+                          ToolTip="{lang:Localize AdvancedChocolateyDialog_IncludePreRelease_ToolTip}"
+                          IsEnabled="{Binding AvailableVersions.IsSuccessfullyCompleted}"
+                          IsChecked="{Binding IncludePreRelease}" />
+            </Grid>
+             
             <Label Style="{StaticResource PackageResourceLabel}" Content="{lang:Localize PackageView_Downloads}"
                    Target="{Binding ElementName=VersionDownloadCount}"
                    Visibility="{Binding IsDownloadCountAvailable, Converter={StaticResource BoolToVis}}" />
