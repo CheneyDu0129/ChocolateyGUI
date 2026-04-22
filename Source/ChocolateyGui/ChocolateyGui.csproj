@@ -146,6 +146,7 @@
     <Resource Include="chocolatey%402.png" />
     <Resource Include="chocolatey%403.png" />
     <Resource Include="semightlogo.png" />
+    <Resource Include="SEMI_LOGO_EN.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="chocolatey%404.png" />

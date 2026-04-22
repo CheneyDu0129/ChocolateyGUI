@@ -26,7 +26,7 @@ namespace ChocolateyGui.Common.Windows.Services
         {
             get
             {
-                var image = new BitmapImage(new Uri("pack://application:,,,/ChocolateyGui;component/chocolatey_logo.png", UriKind.RelativeOrAbsolute));
+                var image = new BitmapImage(new Uri("pack://application:,,,/ChocolateyGui;component/SEMI_LOGO_EN.png", UriKind.RelativeOrAbsolute));
                 image.Freeze();
                 return image;
             }
