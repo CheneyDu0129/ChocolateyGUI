@@ -67,6 +67,18 @@
             ]
         },
         {
+            "name": "log4net",
+            "link": "https://github.com/apache/logging-log4net",
+            "version": "rel/3.3.1",
+            "licenses": [
+                {
+                    "type": "Apache-2.0",
+                    "link": "",
+                    "name": "LICENSE"
+                }
+            ]
+        },
+        {
             "name": "MahApps.Metro",
             "link": "https://github.com/MahApps/MahApps.Metro",
             "version": "2.4.11",
