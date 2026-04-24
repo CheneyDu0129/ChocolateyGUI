@@ -50,8 +50,6 @@ namespace ChocolateyGui.Common.Windows.Services
         private string _localAppDataPath = string.Empty;
         private const string ErrorRegex = "^\\s*(ERROR|FATAL|WARN)";
 
-        private static readonly ReaderWriterLockSlim _lock = new ReaderWriterLockSlim();
-
         public ChocolateyService(IMapper mapper, IProgressService progressService, IChocolateyConfigSettingsService configSettingsService, IXmlService xmlService, IFileSystem fileSystem, IConfigService configService)
         {
             _mapper = mapper;
@@ -111,95 +109,98 @@ namespace ChocolateyGui.Common.Windows.Services
 
         public async Task<IReadOnlyList<OutdatedPackage>> GetOutdatedPackages(bool includePrerelease = false, bool forceCheckForOutdatedPackages = false, ChocolateySource source = null)
         {
-            var preventAutomatedOutdatedPackagesCheck = _configService.GetEffectiveConfiguration().PreventAutomatedOutdatedPackagesCheck ?? false;
-
-            if (preventAutomatedOutdatedPackagesCheck && !forceCheckForOutdatedPackages)
+            using (await Lock.WriteLockAsync())
             {
-                return new List<OutdatedPackage>();
-            }
+                var preventAutomatedOutdatedPackagesCheck = _configService.GetEffectiveConfiguration().PreventAutomatedOutdatedPackagesCheck ?? false;
 
-            var outdatedPackageFileName = "outdatedPackages";
-
-            if (source != null)
-            {
-                outdatedPackageFileName = $"{outdatedPackageFileName}-{source.Id}";
-            }
-
-            if (includePrerelease)
-            {
-                outdatedPackageFileName = $"{outdatedPackageFileName}-pre.xml";
-            }
-            else
-            {
-                outdatedPackageFileName = $"{outdatedPackageFileName}.xml";
-            }
-
-            var outdatedPackagesFile = _fileSystem.CombinePaths(_localAppDataPath, outdatedPackageFileName);
-
-            var outdatedPackagesCacheDurationInMinutesSetting = _configService.GetEffectiveConfiguration().OutdatedPackagesCacheDurationInMinutes;
-            var outdatedPackagesCacheDurationInMinutes = 0;
-
-            if (!string.IsNullOrWhiteSpace(outdatedPackagesCacheDurationInMinutesSetting))
-            {
-                int.TryParse(outdatedPackagesCacheDurationInMinutesSetting, out outdatedPackagesCacheDurationInMinutes);
-            }
-
-            if (_fileSystem.FileExists(outdatedPackagesFile) && (DateTime.Now - _fileSystem.GetFileModifiedDate(outdatedPackagesFile)).TotalMinutes < outdatedPackagesCacheDurationInMinutes)
-            {
-                return _xmlService.Deserialize<List<OutdatedPackage>>(outdatedPackagesFile);
-            }
-            else
-            {
-                var choco = Lets.GetChocolatey(initializeLogging: false);
-                var configuration = choco.GetConfiguration();
-
-                configuration.CommandName = "outdated";
-                configuration.PackageNames = "all";
-                configuration.UpgradeCommand.NotifyOnlyAvailableUpgrades = true;
-                configuration.RegularOutput = false;
-                configuration.QuietOutput = true;
-                configuration.Prerelease = includePrerelease;
-                configuration.Features.IgnoreUnfoundPackagesOnUpgradeOutdated = true;
-
-                if (forceCheckForOutdatedPackages)
+                if (preventAutomatedOutdatedPackagesCheck && !forceCheckForOutdatedPackages)
                 {
-                    configuration.SetCacheExpirationInMinutes(0);
+                    return new List<OutdatedPackage>();
                 }
 
-                if (source != null && source.Id != "[SourcesView_AggregatedSourcesId]")
+                var outdatedPackageFileName = "outdatedPackages";
+
+                if (source != null)
                 {
-                    configuration.Sources = source.Value;
+                    outdatedPackageFileName = $"{outdatedPackageFileName}-{source.Id}";
                 }
 
-                var nugetService = choco.Container().GetInstance<INugetService>();
-                var packages = await Task.Run(() => nugetService.GetOutdated(configuration));
-
-                var outdatedPackages = packages.Where(p => p.Value.Success && !p.Value.Inconclusive)
-                                               .Select(p => new OutdatedPackage
-                                                   { Id = p.Value.Name, VersionString = p.Value.Version }
-                                               )
-                                               .ToArray();
-
-                try
+                if (includePrerelease)
                 {
-                    // The XmlService won't create a new file, if the file already exists with the same hash,
-                    // i.e. the list of outdated packages hasn't changed. Currently, we check for new outdated
-                    // packages, when the serialized file has become old/stale, so we NEED the file to be re-written
-                    // when this check is done, so that it isn't always doing the check. Therefore, when we are
-                    // getting ready to serialize the list of outdated packages, if the file already exists, delete it.
-                    if (_fileSystem.FileExists(outdatedPackagesFile))
+                    outdatedPackageFileName = $"{outdatedPackageFileName}-pre.xml";
+                }
+                else
+                {
+                    outdatedPackageFileName = $"{outdatedPackageFileName}.xml";
+                }
+
+                var outdatedPackagesFile = _fileSystem.CombinePaths(_localAppDataPath, outdatedPackageFileName);
+
+                var outdatedPackagesCacheDurationInMinutesSetting = _configService.GetEffectiveConfiguration().OutdatedPackagesCacheDurationInMinutes;
+                var outdatedPackagesCacheDurationInMinutes = 0;
+
+                if (!string.IsNullOrWhiteSpace(outdatedPackagesCacheDurationInMinutesSetting))
+                {
+                    int.TryParse(outdatedPackagesCacheDurationInMinutesSetting, out outdatedPackagesCacheDurationInMinutes);
+                }
+
+                if (_fileSystem.FileExists(outdatedPackagesFile) && (DateTime.Now - _fileSystem.GetFileModifiedDate(outdatedPackagesFile)).TotalMinutes < outdatedPackagesCacheDurationInMinutes)
+                {
+                    return _xmlService.Deserialize<List<OutdatedPackage>>(outdatedPackagesFile);
+                }
+                else
+                {
+                    var choco = Lets.GetChocolatey(initializeLogging: false);
+                    var configuration = choco.GetConfiguration();
+
+                    configuration.CommandName = "outdated";
+                    configuration.PackageNames = "all";
+                    configuration.UpgradeCommand.NotifyOnlyAvailableUpgrades = true;
+                    configuration.RegularOutput = false;
+                    configuration.QuietOutput = true;
+                    configuration.Prerelease = includePrerelease;
+                    configuration.Features.IgnoreUnfoundPackagesOnUpgradeOutdated = true;
+
+                    if (forceCheckForOutdatedPackages)
                     {
-                        _fileSystem.DeleteFile(outdatedPackagesFile);
+                        configuration.SetCacheExpirationInMinutes(0);
                     }
 
-                    _xmlService.Serialize(outdatedPackages, outdatedPackagesFile);
-                }
-                catch (Exception ex)
-                {
-                    Logger.Error(ex, L(nameof(Resources.Application_OutdatedPackagesError)));
-                }
+                    if (source != null && source.Id != "[SourcesView_AggregatedSourcesId]")
+                    {
+                        configuration.Sources = source.Value;
+                    }
 
-                return outdatedPackages;
+                    var nugetService = choco.Container().GetInstance<INugetService>();
+                    var packages = await Task.Run(() => nugetService.GetOutdated(configuration));
+
+                    var outdatedPackages = packages.Where(p => p.Value.Success && !p.Value.Inconclusive)
+                                                   .Select(p => new OutdatedPackage
+                                                   { Id = p.Value.Name, VersionString = p.Value.Version }
+                                                   )
+                                                   .ToArray();
+
+                    try
+                    {
+                        // The XmlService won't create a new file, if the file already exists with the same hash,
+                        // i.e. the list of outdated packages hasn't changed. Currently, we check for new outdated
+                        // packages, when the serialized file has become old/stale, so we NEED the file to be re-written
+                        // when this check is done, so that it isn't always doing the check. Therefore, when we are
+                        // getting ready to serialize the list of outdated packages, if the file already exists, delete it.
+                        if (_fileSystem.FileExists(outdatedPackagesFile))
+                        {
+                            _fileSystem.DeleteFile(outdatedPackagesFile);
+                        }
+
+                        _xmlService.Serialize(outdatedPackages, outdatedPackagesFile);
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.Error(ex, L(nameof(Resources.Application_OutdatedPackagesError)));
+                    }
+
+                    return outdatedPackages;
+                }
             }
         }
 
@@ -560,16 +561,19 @@ namespace ChocolateyGui.Common.Windows.Services
 
         public async Task<ChocolateySource[]> GetSources()
         {
-            // We only want to provide the sources returned by calling choco.exe, which will exclude those
-            // as required, based on configuration.  However, in order to be able to set all properties of the source
-            // we need to read all information from the config file, i.e. the username and password
-            var config = await GetConfigFile();
-            var allSources = config.Sources.Select(_mapper.Map<ChocolateySource>).ToArray();
+            using (await Lock.WriteLockAsync())
+            {
+                // We only want to provide the sources returned by calling choco.exe, which will exclude those
+                // as required, based on configuration.  However, in order to be able to set all properties of the source
+                // we need to read all information from the config file, i.e. the username and password
+                var config = await GetConfigFile();
+                var allSources = config.Sources.Select(_mapper.Map<ChocolateySource>).ToArray();
 
-            var filteredSourceIds = _configSettingsService.ListSources(_choco.GetConfiguration()).Select(s => s.Id).ToArray();
+                var filteredSourceIds = _configSettingsService.ListSources(_choco.GetConfiguration()).Select(s => s.Id).ToArray();
 
-            var mappedSources = allSources.Where(s => filteredSourceIds.Contains(s.Id)).ToArray();
-            return mappedSources;
+                var mappedSources = allSources.Where(s => filteredSourceIds.Contains(s.Id)).ToArray();
+                return mappedSources;
+            }
         }
 
         public async Task AddSource(ChocolateySource source)
