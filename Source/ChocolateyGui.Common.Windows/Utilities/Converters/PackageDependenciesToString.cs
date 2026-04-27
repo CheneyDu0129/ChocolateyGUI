@@ -15,7 +15,7 @@ namespace ChocolateyGui.Common.Windows.Utilities.Converters
 {
     public class PackageDependenciesToString : IValueConverter
     {
-        private static readonly Regex PackageNameVersionRegex = new Regex(@"(?<Id>[\w\.]*):{1,2}(?<Version>[\w\.]*)");
+        private static readonly Regex PackageNameVersionRegex = new Regex(@"^(?<Id>[A-Za-z0-9._-]+)(:{1,2})(?<Version>.+)$");
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
@@ -29,28 +29,31 @@ namespace ChocolateyGui.Common.Windows.Utilities.Converters
             var items = dependencyStrings
                 .Select(dependency =>
                 {
-                    var result = string.Empty;
-
-                    var match = PackageNameVersionRegex.Match(dependency);
-                    var id = match.Groups["Id"];
-
-                    if (id == null || string.IsNullOrWhiteSpace(id.Value))
+                    var token = dependency?.Trim();
+                    if (string.IsNullOrWhiteSpace(token))
                     {
-                        return result;
+                        return string.Empty;
                     }
 
-                    result += id.Value;
-
-                    var version = match.Groups["Version"];
-
-                    if (version != null && !string.IsNullOrWhiteSpace(version.Value))
+                    var match = PackageNameVersionRegex.Match(token);
+                    if (!match.Success)
                     {
-                        result += " (" + version + ")";
+                        return ToDisplayName(token);
                     }
 
-                    return result;
+                    var id = match.Groups["Id"]?.Value?.Trim();
+                    if (string.IsNullOrWhiteSpace(id))
+                    {
+                        return token;
+                    }
+
+                    var displayName = ToDisplayName(id);
+                    var version = match.Groups["Version"]?.Value?.Trim();
+                    return string.IsNullOrWhiteSpace(version)
+                        ? displayName
+                        : displayName + " (" + version + ")";
                 })
-                .Where(dependecy => !string.IsNullOrEmpty(dependecy));
+                .Where(dependency => !string.IsNullOrEmpty(dependency));
 
             return string.Join(", ", items);
         }
@@ -58,6 +61,17 @@ namespace ChocolateyGui.Common.Windows.Utilities.Converters
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
+        }
+
+        private static string ToDisplayName(string id)
+        {
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                return string.Empty;
+            }
+
+            var normalized = id.Replace('.', ' ').Replace('-', ' ').Replace('_', ' ');
+            return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(normalized.ToLowerInvariant());
         }
     }
 }

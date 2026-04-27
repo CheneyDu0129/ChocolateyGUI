@@ -105,7 +105,8 @@ namespace ChocolateyGui.Common.Windows.Services
         private static Theme GenerateTheme(string scheme, bool isDark)
         {
             var baseColor = isDark ? ThemeManager.BaseColorDark : ThemeManager.BaseColorLight;
-            var accentColor = isDark ? ThemeAssist.ColorFromString("#FF4F6170") : ThemeAssist.ColorFromString("#FF202F3C");
+            // Brand palette sampled from Semight logo: #04447C, #144B7F, #B71B30.
+            var accentColor = isDark ? ThemeAssist.ColorFromString("#FF144B7F") : ThemeAssist.ColorFromString("#FF04447C");
 
             var theme = new Theme(
                 name: $"{baseColor}.{scheme}",
@@ -117,15 +118,15 @@ namespace ChocolateyGui.Common.Windows.Services
                 isRuntimeGenerated: true,
                 isHighContrast: false);
 
-            var backgroundColor = isDark ? ThemeAssist.ColorFromString("#333333") : ThemeAssist.ColorFromString("#F0EEE0");
+            var backgroundColor = isDark ? ThemeAssist.ColorFromString("#FF111A23") : ThemeAssist.ColorFromString("#FFF3F8FC");
             theme.Resources[ChocolateyColors.BackgroundKey] = backgroundColor;
             theme.Resources[ChocolateyBrushes.BackgroundKey] = backgroundColor.ToBrush();
 
-            var bodyColor = isDark ? ThemeAssist.ColorFromString("#F0EEE0") : ThemeAssist.ColorFromString("#333333");
+            var bodyColor = isDark ? ThemeAssist.ColorFromString("#FFEAF3FB") : ThemeAssist.ColorFromString("#FF1B2C3E");
             theme.Resources[ChocolateyColors.BodyKey] = bodyColor;
             theme.Resources[ChocolateyBrushes.BodyKey] = bodyColor.ToBrush();
 
-            var outOfDateColor = ThemeAssist.ColorFromString("#b71c1c");
+            var outOfDateColor = ThemeAssist.ColorFromString("#FFB71B30");
             theme.Resources[ChocolateyColors.OutOfDateKey] = outOfDateColor;
             theme.Resources[ChocolateyBrushes.OutOfDateKey] = outOfDateColor.ToBrush();
 

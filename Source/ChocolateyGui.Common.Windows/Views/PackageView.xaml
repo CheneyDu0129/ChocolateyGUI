@@ -31,6 +31,22 @@
         <converters:PackageDependenciesToString x:Key="PackageDependenciesToString" />
         <converters:MultiBooleanAndToVisibility x:Key="MultiBooleanAndToVisibility" />
         <BooleanToVisibilityConverter x:Key="BoolToVis" />
+
+        <Style x:Key="ActionButtonStyle" TargetType="Button">
+            <Setter Property="Padding" Value="14,8" />
+            <Setter Property="Margin" Value="6,0" />
+            <Setter Property="MinWidth" Value="120" />
+            <Setter Property="FontSize" Value="15" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+        </Style>
+
+        <Style x:Key="StatusBadgeStyle" TargetType="TextBlock">
+            <Setter Property="Padding" Value="6,3" />
+            <Setter Property="Margin" Value="0,6,0,0" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="TextAlignment" Value="Center" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+        </Style>
     </UserControl.Resources>
 
     <DockPanel x:Name="PackageViewGrid"
@@ -38,31 +54,38 @@
                DataContext="{Binding Package}"
                d:DataContext="{d:DesignInstance viewModels:PackageViewModel}">
 
-        <StackPanel DockPanel.Dock="Top">
-            <StackPanel Margin="5 0 0 0" Orientation="Horizontal">
-                <Button x:Name="Back" Style="{StaticResource BackButtonStyle}" HorizontalAlignment="Left" VerticalAlignment="Center" />
-                <TextBlock Text="{Binding Title}" AutomationProperties.Name="{Binding Title}" Style="{StaticResource TitleTextStyle}"/>
+        <Border DockPanel.Dock="Top"
+                Margin="0,0,0,6"
+                Padding="6,4,10,8"
+                Background="{DynamicResource MahApps.Brushes.Control.Light}">
+            <StackPanel>
+                <StackPanel Margin="5 0 0 0" Orientation="Horizontal">
+                    <Button x:Name="Back" Style="{StaticResource BackButtonStyle}" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                    <TextBlock Text="{Binding Title}" AutomationProperties.Name="{Binding Title}" Style="{StaticResource TitleTextStyle}"/>
+                </StackPanel>
+                <StackPanel Margin="15 2 0 0" Orientation="Horizontal">
+                    <TextBlock Style="{StaticResource SubtitleTextStyle}"
+                               AutomationProperties.Name="{Binding Authors, Converter={StaticResource StringListToString}}">
+                        <Run Text="{lang:Localize PackageView_Authors}" />
+                        <Run FontSize="18" Text="{Binding Authors, Converter={StaticResource StringListToString}}" />
+                    </TextBlock>
+                    <TextBlock Style="{StaticResource SubtitleTextStyle}"
+                               AutomationProperties.Name="{Binding Owners, Converter={StaticResource StringListToString}}">
+                        <Run Text="{lang:Localize PackageView_Maintainers}" />
+                        <Run FontSize="18" Text="{Binding Owners, Converter={StaticResource StringListToString}}" />
+                    </TextBlock>
+                </StackPanel>
             </StackPanel>
-            <StackPanel Margin="15 0 0 0" Orientation="Horizontal">
-                <TextBlock Style="{StaticResource SubtitleTextStyle}"
-                           AutomationProperties.Name="{Binding Authors, Converter={StaticResource StringListToString}}">
-                    <Run Text="{lang:Localize PackageView_Authors}" />
-                    <Run FontSize="18" Text="{Binding Authors, Converter={StaticResource StringListToString}}" />
-                </TextBlock>
-                <TextBlock Style="{StaticResource SubtitleTextStyle}"
-                           AutomationProperties.Name="{Binding Owners, Converter={StaticResource StringListToString}}">
-                    <Run Text="{lang:Localize PackageView_Maintainers}" />
-                    <Run FontSize="18" Text="{Binding Owners, Converter={StaticResource StringListToString}}" />
-                </TextBlock>
-            </StackPanel>
-        </StackPanel>
+        </Border>
 
         <Grid DockPanel.Dock="Bottom">
             <Border HorizontalAlignment="Stretch"
                     VerticalAlignment="Stretch"
-                    Background="{DynamicResource MahApps.Brushes.Accent4}">
+                    BorderBrush="{DynamicResource MahApps.Brushes.Gray5}"
+                    BorderThickness="1,1,0,0"
+                    Background="{DynamicResource MahApps.Brushes.Control.Light}">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,20,10">
-                        <Button Padding="10" Margin="5 0"
+                        <Button Style="{StaticResource ActionButtonStyle}"
                             Command="{commands:DataContextCommandAdapter ShowArguments}"
                             Visibility="{Binding IsInstalled, Converter={StaticResource BooleanToVisibility}, ConverterParameter=False}">
                             <StackPanel Orientation="Horizontal">
@@ -73,7 +96,7 @@
                     <StackPanel Orientation="Horizontal"
                                 IsEnabled="{Binding IsInstallAllowed}"
                                 Visibility="{Binding IsInstalled, Converter={StaticResource BooleanToVisibility}, ConverterParameter=True}">
-                        <Button Padding="10" Margin="5 0"
+                        <Button Style="{StaticResource ActionButtonStyle}"
                             Command="{commands:DataContextCommandAdapter InstallAdvanced}">
                             <i:Interaction.Behaviors>
                                 <utilities:ToolTipBehavior EnabledToolTip="{lang:Localize Application_OperationInstall}"
@@ -89,7 +112,7 @@
                     <StackPanel Orientation="Horizontal"
                                 IsEnabled="{Binding IsInstallAllowed}"
                                 Visibility="{Binding IsInstalled, Converter={StaticResource BooleanToVisibility}, ConverterParameter=True}">
-                        <Button Padding="10" Margin="5 0"
+                        <Button Style="{StaticResource ActionButtonStyle}"
                             Command="{commands:DataContextCommandAdapter Install}">
                             <i:Interaction.Behaviors>
                                 <utilities:ToolTipBehavior EnabledToolTip="{lang:Localize Application_OperationInstall}"
@@ -104,7 +127,7 @@
                     </StackPanel>
                     <StackPanel Orientation="Horizontal"
                                 Visibility="{Binding IsInstalled, Converter={StaticResource BooleanToVisibility}}">
-                        <Button Padding="10" Margin="5 0"
+                        <Button Style="{StaticResource ActionButtonStyle}"
                                 Command="{commands:DataContextCommandAdapter Pin}"
                                 IsEnabled="{Binding IsPinAllowed}"
                                 Visibility="{Binding CanPin, Converter={StaticResource BooleanToVisibility}}">
@@ -118,7 +141,7 @@
                                 <TextBlock Text="{lang:Localize PackageView_ButtonPin}" FontSize="16"/>
                             </StackPanel>
                         </Button>
-                        <Button Padding="10" Margin="5 0"
+                        <Button Style="{StaticResource ActionButtonStyle}"
                                 Command="{commands:DataContextCommandAdapter Unpin}"
                                 IsEnabled="{Binding IsUnpinAllowed}"
                                 Visibility="{Binding CanUnpin, Converter={StaticResource BooleanToVisibility}}">
@@ -132,7 +155,7 @@
                                 <TextBlock Text="{lang:Localize PackageView_ButtonUnpin}" FontSize="16"/>
                             </StackPanel>
                         </Button>
-                        <Button Padding="10" Margin="5 0"
+                        <Button Style="{StaticResource ActionButtonStyle}"
                             Command="{commands:DataContextCommandAdapter Reinstall}"
                             IsEnabled="{Binding IsReinstallAllowed}"
                             Visibility="{Binding CanReinstall, Converter={StaticResource BooleanToVisibility}}">
@@ -146,7 +169,7 @@
                                 <TextBlock Text="{lang:Localize PackageView_ButtonReinstall}" FontSize="16"/>
                             </StackPanel>
                         </Button>
-                        <Button Padding="10" Margin="5 0"
+                        <Button Style="{StaticResource ActionButtonStyle}"
                             Command="{commands:DataContextCommandAdapter Uninstall}"
                             IsEnabled="{Binding IsUninstallAllowed}"
                             Visibility="{Binding CanUninstall, Converter={StaticResource BooleanToVisibility}}">
@@ -160,7 +183,7 @@
                                 <TextBlock Text="{lang:Localize PackageView_ButtonUninstall}" FontSize="16"/>
                             </StackPanel>
                         </Button>
-                        <Button Padding="10" Margin="5 0"
+                        <Button Style="{StaticResource ActionButtonStyle}"
                             Command="{commands:DataContextCommandAdapter Update}"
                             IsEnabled="{Binding IsUpgradeAllowed}"
                             Visibility="{Binding CanUpdate, Converter={StaticResource BooleanToVisibility}}">
@@ -179,143 +202,134 @@
             </Border>
         </Grid>
 
-        <StackPanel DockPanel.Dock="Left" Margin="20 0 0 0">
-            <controls:InternetImage AutomationProperties.Name="Package Icon"
-                                    IconUrl="{Binding IconUrl, IsAsync=True}"
-                                    Width="100" Height="100"
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Center"
-                                    Margin="10" />
-            <Label Style="{StaticResource PackageResourceLabel}"
-                   Content="{lang:Localize PackageView_PackageID}"
-                   Visibility="{Binding Id, Converter={StaticResource NullToVisibility}}"
-                   Target="{Binding ElementName=Id}" />
-            <TextBlock x:Name="Id" Text="{Binding Id}"
+        <Border DockPanel.Dock="Left"
+                Margin="18,0,0,0"
+                Padding="10,8,10,12"
+                Background="{DynamicResource MahApps.Brushes.Control.Light}">
+            <StackPanel Width="220">
+                <controls:InternetImage AutomationProperties.Name="Package Icon"
+                                        IconUrl="{Binding IconUrl, IsAsync=True}"
+                                        Width="100" Height="100"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Margin="10" />
+                <Label Style="{StaticResource PackageResourceLabel}"
+                       Content="{lang:Localize PackageView_PackageID}"
                        Visibility="{Binding Id, Converter={StaticResource NullToVisibility}}"
-                       Style="{StaticResource PackageResourceValue}" />
+                       Target="{Binding ElementName=Id}" />
+                <TextBlock x:Name="Id" Text="{Binding Id}"
+                           Visibility="{Binding Id, Converter={StaticResource NullToVisibility}}"
+                           Style="{StaticResource PackageResourceValue}" />
 
-            <Label Style="{StaticResource PackageResourceLabel}"
-                   Content="{lang:Localize PackageView_Version}"
-                   Target="{Binding ElementName=Version}" />
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-                <ComboBox x:Name="Version"
-                          Grid.Column="0"
-                          MinWidth="180"
-                          IsEnabled="{Binding AvailableVersions.IsSuccessfullyCompleted}"
-                          ItemsSource="{Binding AvailableVersions.Result, Mode=OneWay}"
-                          SelectedItem="{Binding SelectedVersion, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                          IsEditable="True" />
-                <mah:ProgressRing Grid.Column="0"
-                                  Width="16"
-                                  Height="16"
-                                  IsActive="{Binding AvailableVersions.IsNotCompleted}"
-                                  IsLarge="False"
-                                  HorizontalAlignment="Left"
-                                  VerticalAlignment="Center"
-                                  Margin="5 0 0 0" />
-                <CheckBox Grid.Column="1"
-                          Margin="8 0 0 0"
+                <Label Style="{StaticResource PackageResourceLabel}"
+                       Content="{lang:Localize PackageView_Version}"
+                       Target="{Binding ElementName=Version}" />
+                <Grid>
+                    <ComboBox x:Name="Version"
+                              MinWidth="180"
+                              IsEnabled="{Binding AvailableVersions.IsSuccessfullyCompleted}"
+                              ItemsSource="{Binding AvailableVersions.Result, Mode=OneWay}"
+                              SelectedItem="{Binding SelectedVersion, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                              IsEditable="True" />
+                    <mah:ProgressRing Width="16"
+                                      Height="16"
+                                      IsActive="{Binding AvailableVersions.IsNotCompleted}"
+                                      IsLarge="False"
+                                      HorizontalAlignment="Left"
+                                      VerticalAlignment="Center"
+                                      Margin="5 0 0 0" />
+                </Grid>
+
+                <CheckBox Margin="0 8 0 0"
                           VerticalAlignment="Center"
                           Content="{lang:Localize AdvancedChocolateyDialog_IncludePreRelease_Content}"
                           ToolTip="{lang:Localize AdvancedChocolateyDialog_IncludePreRelease_ToolTip}"
                           IsEnabled="{Binding AvailableVersions.IsSuccessfullyCompleted}"
                           IsChecked="{Binding IncludePreRelease}" />
-            </Grid>
-             
-            <Label Style="{StaticResource PackageResourceLabel}" Content="{lang:Localize PackageView_Downloads}"
-                   Target="{Binding ElementName=VersionDownloadCount}"
-                   Visibility="{Binding IsDownloadCountAvailable, Converter={StaticResource BoolToVis}}" />
-            <TextBlock x:Name="VersionDownloadCount" Text="{Binding VersionDownloadCount, StringFormat=N0}"
-                       Style="{StaticResource PackageResourceValue}"
+
+                <Label Style="{StaticResource PackageResourceLabel}" Content="{lang:Localize PackageView_Downloads}"
+                       Target="{Binding ElementName=VersionDownloadCount}"
                        Visibility="{Binding IsDownloadCountAvailable, Converter={StaticResource BoolToVis}}" />
+                <TextBlock x:Name="VersionDownloadCount" Text="{Binding VersionDownloadCount, StringFormat=N0}"
+                           Style="{StaticResource PackageResourceValue}"
+                           Visibility="{Binding IsDownloadCountAvailable, Converter={StaticResource BoolToVis}}" />
 
-            <Label Style="{StaticResource PackageResourceLabel}" Content="{lang:Localize PackageView_TotalDownloads}"
-                   Target="{Binding ElementName=DownloadCount}"
-                   Visibility="{Binding IsDownloadCountAvailable, Converter={StaticResource BoolToVis}}" />
-            <TextBlock x:Name="DownloadCount" Text="{Binding DownloadCount, StringFormat=N0}"
-                       Style="{StaticResource PackageResourceValue}"
+                <Label Style="{StaticResource PackageResourceLabel}" Content="{lang:Localize PackageView_TotalDownloads}"
+                       Target="{Binding ElementName=DownloadCount}"
                        Visibility="{Binding IsDownloadCountAvailable, Converter={StaticResource BoolToVis}}" />
+                <TextBlock x:Name="DownloadCount" Text="{Binding DownloadCount, StringFormat=N0}"
+                           Style="{StaticResource PackageResourceValue}"
+                           Visibility="{Binding IsDownloadCountAvailable, Converter={StaticResource BoolToVis}}" />
 
-            <Label Style="{StaticResource PackageResourceLabel}" Content="{lang:Localize PackageView_LastUpdate}"
-                   Target="{Binding ElementName=Published}" />
-            <TextBlock x:Name="Published" Text="{Binding Published, StringFormat=g}" Style="{StaticResource PackageResourceValue}" />
+                <Label Style="{StaticResource PackageResourceLabel}" Content="{lang:Localize PackageView_LastUpdate}"
+                       Target="{Binding ElementName=Published}" />
+                <TextBlock x:Name="Published" Text="{Binding Published, StringFormat=g}" Style="{StaticResource PackageResourceValue}" />
 
-            <Label Style="{StaticResource PackageResourceLabel}" Content="{lang:Localize PackageView_PackageSize}"
-                   Target="{Binding ElementName=PackageSize}"
-                   Visibility="{Binding IsPackageSizeAvailable, Converter={StaticResource BoolToVis}}"/>
-            <TextBlock x:Name="PackageSize"
-                       Text="{Binding PackageSize, Converter={StaticResource LongSizeToFileSizeString}}"
-                       Style="{StaticResource PackageResourceValue}"
+                <Label Style="{StaticResource PackageResourceLabel}" Content="{lang:Localize PackageView_PackageSize}"
+                       Target="{Binding ElementName=PackageSize}"
                        Visibility="{Binding IsPackageSizeAvailable, Converter={StaticResource BoolToVis}}"/>
+                <TextBlock x:Name="PackageSize"
+                           Text="{Binding PackageSize, Converter={StaticResource LongSizeToFileSizeString}}"
+                           Style="{StaticResource PackageResourceValue}"
+                           Visibility="{Binding IsPackageSizeAvailable, Converter={StaticResource BoolToVis}}"/>
 
-            <StackPanel Margin="5 5 0 40">
-                <TextBlock Visibility="{Binding ProjectUrl, Converter={StaticResource UriToVisibility}}">
-                    <Hyperlink NavigateUri="{Binding ProjectUrl, TargetNullValue=about:blank}" RequestNavigate="HandleLinkClick">
-                        <Run Text="{lang:Localize PackageView_ProjectSite}" />
-                    </Hyperlink>
+                <StackPanel Margin="5 8 0 24">
+                    <TextBlock Visibility="{Binding ProjectUrl, Converter={StaticResource UriToVisibility}}">
+                        <Hyperlink NavigateUri="{Binding ProjectUrl, TargetNullValue=about:blank}" RequestNavigate="HandleLinkClick">
+                            <Run Text="{lang:Localize PackageView_ProjectSite}" />
+                        </Hyperlink>
+                    </TextBlock>
+                    <TextBlock Visibility="{Binding LicenseUrl, Converter={StaticResource UriToVisibility}}">
+                        <Hyperlink NavigateUri="{Binding LicenseUrl, TargetNullValue=about:blank}" RequestNavigate="HandleLinkClick">
+                            <Run Text="{lang:Localize PackageView_License}" />
+                        </Hyperlink>
+                    </TextBlock>
+                    <TextBlock Visibility="{Binding GalleryDetailsUrl, Converter={StaticResource UriToVisibility}}">
+                        <Hyperlink NavigateUri="{Binding GalleryDetailsUrl, TargetNullValue=about:blank}" RequestNavigate="HandleLinkClick">
+                            <Run Text="{lang:Localize PackageView_Gallery}" />
+                        </Hyperlink>
+                    </TextBlock>
+                    <TextBlock Visibility="{Binding ReportAbuseUrl, Converter={StaticResource UriToVisibility}}">
+                        <Hyperlink NavigateUri="{Binding ReportAbuseUrl, TargetNullValue=about:blank}" RequestNavigate="HandleLinkClick">
+                            <Run Text="{lang:Localize PackageView_ReportAbuse}" />
+                        </Hyperlink>
+                    </TextBlock>
+                </StackPanel>
+
+                <TextBlock Style="{StaticResource StatusBadgeStyle}"
+                           Text="{lang:Localize PackagesView_Outdated}"
+                           Background="{DynamicResource {x:Static theming:ChocolateyBrushes.OutOfDateKey}}"
+                           Foreground="{DynamicResource {x:Static theming:ChocolateyBrushes.OutOfDateForegroundKey}}">
+                    <TextBlock.Visibility>
+                        <MultiBinding Converter="{StaticResource MultiBooleanAndToVisibility}">
+                            <Binding Path="IsInstalled" />
+                            <Binding Path="IsOutdated" />
+                        </MultiBinding>
+                    </TextBlock.Visibility>
                 </TextBlock>
-                <TextBlock Visibility="{Binding LicenseUrl, Converter={StaticResource UriToVisibility}}">
-                    <Hyperlink NavigateUri="{Binding LicenseUrl, TargetNullValue=about:blank}" RequestNavigate="HandleLinkClick">
-                        <Run Text="{lang:Localize PackageView_License}" />
-                    </Hyperlink>
+                <TextBlock Style="{StaticResource StatusBadgeStyle}"
+                           Text="{lang:Localize PackagesView_Prerelease}"
+                           Background="{DynamicResource {x:Static theming:ChocolateyBrushes.PreReleaseKey}}"
+                           Foreground="{DynamicResource {x:Static theming:ChocolateyBrushes.PreReleaseForegroundKey}}"
+                           Visibility="{Binding IsPrerelease, Converter={StaticResource BoolToVis}}"/>
+                <TextBlock Style="{StaticResource StatusBadgeStyle}"
+                           Text="{lang:Localize PackagesView_Installed}"
+                           Background="{DynamicResource {x:Static theming:ChocolateyBrushes.IsInstalledKey}}"
+                           Foreground="{DynamicResource {x:Static theming:ChocolateyBrushes.IsInstalledForegroundKey}}">
+                    <TextBlock.Visibility>
+                        <MultiBinding Converter="{StaticResource MultiBooleanAndToVisibility}">
+                            <Binding Path="IsInstalled" />
+                            <Binding Path="IsOutdated" Converter="{StaticResource BooleanInverter}" />
+                        </MultiBinding>
+                    </TextBlock.Visibility>
                 </TextBlock>
-                <TextBlock Visibility="{Binding GalleryDetailsUrl, Converter={StaticResource UriToVisibility}}">
-                    <Hyperlink NavigateUri="{Binding GalleryDetailsUrl, TargetNullValue=about:blank}" RequestNavigate="HandleLinkClick">
-                        <Run Text="{lang:Localize PackageView_Gallery}" />
-                    </Hyperlink>
-                </TextBlock>
-                <TextBlock Visibility="{Binding ReportAbuseUrl, Converter={StaticResource UriToVisibility}}">
-                    <Hyperlink NavigateUri="{Binding ReportAbuseUrl, TargetNullValue=about:blank}" RequestNavigate="HandleLinkClick">
-                        <Run Text="{lang:Localize PackageView_ReportAbuse}" />
-                    </Hyperlink>
-                </TextBlock>
+                <TextBlock Style="{StaticResource StatusBadgeStyle}"
+                           Text="{lang:Localize PackagesView_Pinned}"
+                           Background="{DynamicResource {x:Static theming:ChocolateyBrushes.IsInstalledKey}}"
+                           Foreground="{DynamicResource {x:Static theming:ChocolateyBrushes.IsInstalledForegroundKey}}"
+                           Visibility="{Binding IsPinned, Converter={StaticResource BoolToVis}}"/>
             </StackPanel>
-
-            <TextBlock Text="{lang:Localize PackagesView_Outdated}"
-                       Background="{DynamicResource {x:Static theming:ChocolateyBrushes.OutOfDateKey}}"
-                       Foreground="{DynamicResource {x:Static theming:ChocolateyBrushes.OutOfDateForegroundKey}}"
-                       Padding="3"
-                       VerticalAlignment="Center"
-                       TextAlignment="Center">
-                <TextBlock.Visibility>
-                    <MultiBinding Converter="{StaticResource MultiBooleanAndToVisibility}">
-                        <Binding Path="IsInstalled" />
-                        <Binding Path="IsOutdated" />
-                    </MultiBinding>
-                </TextBlock.Visibility>
-            </TextBlock>
-            <TextBlock Text="{lang:Localize PackagesView_Prerelease}"
-                       Background="{DynamicResource {x:Static theming:ChocolateyBrushes.PreReleaseKey}}"
-                       Foreground="{DynamicResource {x:Static theming:ChocolateyBrushes.PreReleaseForegroundKey}}"
-                       Padding="3"
-                       VerticalAlignment="Center"
-                       TextAlignment="Center"
-                       Visibility="{Binding IsPrerelease, Converter={StaticResource BoolToVis}}"/>
-            <TextBlock Text="{lang:Localize PackagesView_Installed}"
-                       Background="{DynamicResource {x:Static theming:ChocolateyBrushes.IsInstalledKey}}"
-                       Foreground="{DynamicResource {x:Static theming:ChocolateyBrushes.IsInstalledForegroundKey}}"
-                       Padding="3"
-                       VerticalAlignment="Center"
-                       TextAlignment="Center">
-                <TextBlock.Visibility>
-                    <MultiBinding Converter="{StaticResource MultiBooleanAndToVisibility}">
-                        <Binding Path="IsInstalled" />
-                        <Binding Path="IsOutdated" Converter="{StaticResource BooleanInverter}" />
-                    </MultiBinding>
-                </TextBlock.Visibility>
-            </TextBlock>
-            <TextBlock Text="{lang:Localize PackagesView_Pinned}"
-                       Background="{DynamicResource {x:Static theming:ChocolateyBrushes.IsInstalledKey}}"
-                       Foreground="{DynamicResource {x:Static theming:ChocolateyBrushes.IsInstalledForegroundKey}}"
-                       Padding="3"
-                       VerticalAlignment="Center"
-                       TextAlignment="Center"
-                       Visibility="{Binding IsPinned, Converter={StaticResource BoolToVis}}"/>
-        </StackPanel>
+        </Border>
 
         <ScrollViewer Margin="25 5 0 0" Background="{DynamicResource MahApps.Brushes.Control.Background}">
             <StackPanel Margin="5 0 5 5">

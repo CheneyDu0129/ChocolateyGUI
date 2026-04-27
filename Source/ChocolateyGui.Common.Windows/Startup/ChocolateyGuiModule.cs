@@ -8,6 +8,7 @@
 using System;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using Autofac;
 using AutoMapper;
 using Caliburn.Micro;

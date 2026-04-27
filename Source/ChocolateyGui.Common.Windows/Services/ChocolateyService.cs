@@ -679,6 +679,37 @@ namespace ChocolateyGui.Common.Windows.Services
                     mappedPackage.Copyright = package.PackageMetadata.Copyright;
                 }
 
+                if (string.IsNullOrWhiteSpace(mappedPackage.Dependencies) && package.SearchMetadata?.DependencySets != null)
+                {
+                    mappedPackage.Dependencies = string.Join("|",
+                        package.SearchMetadata.DependencySets
+                            .Where(group => group?.Packages != null)
+                            .SelectMany(group => group.Packages)
+                            .Where(dependency => dependency != null && !string.IsNullOrWhiteSpace(dependency.Id))
+                            .Select(dependency =>
+                            {
+                                var range = dependency.VersionRange;
+                                if (range == null || (!range.HasLowerBound && !range.HasUpperBound))
+                                {
+                                    return dependency.Id;
+                                }
+
+                                var constraints = new List<string>();
+                                if (range.HasLowerBound)
+                                {
+                                    constraints.Add((range.IsMinInclusive ? ">=" : ">") + range.MinVersion);
+                                }
+
+                                if (range.HasUpperBound)
+                                {
+                                    constraints.Add((range.IsMaxInclusive ? "<=" : "<") + range.MaxVersion);
+                                }
+
+                                return string.Concat(dependency.Id, "::", string.Join(" ", constraints));
+                            })
+                            .Distinct());
+                }
+
                 var packageInfoService = choco.Container().GetInstance<IChocolateyPackageInformationService>();
                 var packageInfo = packageInfoService.Get(package.PackageMetadata);
                 mappedPackage.IsPinned = packageInfo.IsPinned;

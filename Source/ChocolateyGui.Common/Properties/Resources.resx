@@ -219,7 +219,7 @@ Error: {1}{2}</value>
     <value>Update</value>
   </data>
   <data name="LocalSourceViewModel_Chocolatey" xml:space="preserve">
-    <value>Chocolatey</value>
+    <value>Package Manager</value>
   </data>
   <data name="LocalSourceViewModel_ConfigFiles" xml:space="preserve">
     <value>Config Files {0}</value>
@@ -229,7 +229,7 @@ Error: {1}{2}</value>
     <value>Packages</value>
   </data>
   <data name="LocalSourceViewModel_UpdateAvailableForChocolatey" xml:space="preserve">
-    <value>There's an update available for Chocolatey.</value>
+    <value>There's an update available for the package manager core.</value>
   </data>
   <data name="LocalSourceView_ButtonExport" xml:space="preserve">
     <value>Export</value>
@@ -480,7 +480,7 @@ Or if there is a traditional way to show sorting by the Title in your language, 
     <value>This PC</value>
   </data>
   <data name="SettingsViewModel_DisplayName" xml:space="preserve">
-    <value>Chocolatey GUI - Settings</value>
+    <value>Semight Instrument Package Manager - Settings</value>
   </data>
   <data name="SettingsViewModel_FeatureFailedToUpdate" xml:space="preserve">
     <value>Failed to update features. Error:
@@ -521,7 +521,7 @@ Or if there is a traditional way to show sorting by the Title in your language, 
     <value>Save</value>
   </data>
   <data name="SettingsView_ChocolateyGui" xml:space="preserve">
-    <value>Chocolatey GUI</value>
+    <value>Package Manager</value>
   </data>
   <data name="AboutView_Credits" xml:space="preserve">
     <value>Credits</value>
@@ -587,7 +587,7 @@ Or if there is a traditional way to show sorting by the Title in your language, 
     <value>Username</value>
   </data>
   <data name="SettingsView_Chocolatey" xml:space="preserve">
-    <value>Chocolatey</value>
+    <value>Core</value>
   </data>
   <data name="SettingsView_ToggleShowConsoleOutputDescription" xml:space="preserve">
     <value>Shows output from the commands being executed when a job is running.</value>
@@ -599,7 +599,7 @@ Or if there is a traditional way to show sorting by the Title in your language, 
     <value>settings</value>
   </data>
   <data name="SourcesView_Choco" xml:space="preserve">
-    <value>chocolatey</value>
+    <value>Default Source</value>
   </data>
   <data name="VersionNumberProvider_VersionFormat" xml:space="preserve">
     <value>Version: {0}</value>
@@ -750,10 +750,10 @@ Normal:
     <comment>{0} = Is the name of the configuration parameter that can't be found.  Shown if the end user is trying to set a configuration parameter that doesn't exist.</comment>
   </data>
   <data name="ConfigCommand_Description" xml:space="preserve">
-    <value>Retrieve and configure Chocolatey GUI config settings</value>
+    <value>Retrieve and configure application config settings</value>
   </data>
   <data name="ConfigCommand_Help" xml:space="preserve">
-    <value>Chocolatey GUI CLI will allow you to interact with the persisted configuration information.</value>
+    <value>The CLI allows you to interact with persisted configuration information.</value>
   </data>
   <data name="ConfigCommand_MissingNameOptionError" xml:space="preserve">
     <value>When specifying the subcommand '{0}', you must also specify {1} by option or position.</value>
@@ -792,7 +792,7 @@ Normal:
     <value>The value of the config setting. Required with some actions. Defaults to empty.</value>
   </data>
   <data name="FeatureCommand_Description" xml:space="preserve">
-    <value>View and configure Chocolatey GUI features</value>
+    <value>View and configure application features</value>
   </data>
   <data name="FeatureCommand_Disabled" xml:space="preserve">
     <value>Disabled</value>
@@ -813,7 +813,7 @@ Normal:
     <comment>{0} = The name of the feature that couldn't be found.  i.e. the user has attempted to get or set a feature with a name that doesn't exist.</comment>
   </data>
   <data name="FeatureCommand_Help" xml:space="preserve">
-    <value>Chocolatey GUI will allow you to interact with features.</value>
+    <value>This application allows you to interact with features.</value>
   </data>
   <data name="FeatureCommand_MissingNameOptionError" xml:space="preserve">
     <value>When specifying the subcommand '{0}', you must also specify {1}.</value>
@@ -851,7 +851,7 @@ Normal:
     <comment>{0} = Is equal to "chocolateyguicli feature"</comment>
   </data>
   <data name="SettingsViewModel_InvalidSourceId" xml:space="preserve">
-    <value>chocolatey.licensed is a reserved source id and cannot be used for a new source</value>
+    <value>The licensed source id is reserved and cannot be used for a new source</value>
   </data>
   <data name="SettingsViewModel_SetSourceCertificateAndPasswordMessage" xml:space="preserve">
     <value>NOTE: To remove the Certificate and Password, simply empty both input fields and click Save</value>
@@ -878,10 +878,10 @@ Normal:
     <value>Set Username and Password</value>
   </data>
   <data name="SettingsView_ChocolateyLicensedSourceWarning" xml:space="preserve">
-    <value>* The only modification that can be made to chocolatey.licensed source is to enable/disable it.</value>
+    <value>* The only modification that can be made to the licensed source is to enable/disable it.</value>
   </data>
   <data name="Dialog_AreYouSureIconsMessage" xml:space="preserve">
-    <value>This action will delete all cached icons that appear on the Tile Views of Chocolatey GUI.  Are you sure you want to proceed (this action cannot be undone)?</value>
+    <value>This action will delete all cached icons that appear on the Tile Views of this application.  Are you sure you want to proceed (this action cannot be undone)?</value>
   </data>
   <data name="Dialog_AreYouSureOutdatedPackagesMessage" xml:space="preserve">
     <value>This action will delete the file containing the list of outdated packages for this computer.  Are you sure you want to proceed (this action cannot be undone)?</value>
@@ -902,10 +902,10 @@ Normal:
     <value>Purge Outdated Packages</value>
   </data>
   <data name="PurgeCommand_Description" xml:space="preserve">
-    <value>Purge the Chocolatey GUI caches</value>
+    <value>Purge application caches</value>
   </data>
   <data name="PurgeCommand_Help" xml:space="preserve">
-    <value>Chocolatey GUI will allow you to interact with purging caches used in application.</value>
+    <value>This application allows you to purge caches used in the app.</value>
   </data>
   <data name="PurgeCommand_Title" xml:space="preserve">
     <value>Purge Command</value>
@@ -941,16 +941,16 @@ Normal:
     <value>Prerelease</value>
   </data>
   <data name="SettingsView_ToggleAllowNonAdminAccessToSettingsDescription" xml:space="preserve">
-    <value>Controls whether or not a non-administrator user can access the Settings Screen.  NOTE: This feature will only work with Chocolatey for Business and the Chocolatey GUI licensed extension installed.</value>
+    <value>Controls whether or not a non-administrator user can access the Settings Screen. NOTE: This feature only works with the licensed extension installed.</value>
   </data>
   <data name="Error_DatabaseAccessCli" xml:space="preserve">
-    <value>Unable to access Chocolatey GUI Configuration Database.  This typically happens when Chocolatey GUI is already running.  Please close all instances of the application, and try running the command again.</value>
+    <value>Unable to access the configuration database. This typically happens when the GUI is already running. Please close all instances of the application, and try running the command again.</value>
   </data>
   <data name="Error_DatabaseAccessGui" xml:space="preserve">
-    <value>Unable to access Chocolatey GUI Configuration Database.  This typically happens when Chocolatey GUI or Chocolatey GUI CLI is already running.  Please close all instances of the application, and try running it again.</value>
+    <value>Unable to access the configuration database. This typically happens when the GUI or CLI is already running. Please close all instances of the application, and try running it again.</value>
   </data>
   <data name="SettingsView_ToggleUseKeyboardBindings" xml:space="preserve">
-    <value>Allows keyboard bindings to be used to interact with different areas of the Chocolatey GUI User Interface.</value>
+    <value>Allows keyboard bindings to be used to interact with different areas of the application user interface.</value>
   </data>
   <data name="SettingsView_TogglePackageDownloadCountDescription" xml:space="preserve">
     <value>Allows control over whether package download count is displayed on remote source views.</value>
@@ -1001,13 +1001,13 @@ Normal:
     <value>Unable to serialize Outdated Packages Cache file.</value>
   </data>
   <data name="SettingsView_TogglePreventAllPackageIconDownloads" xml:space="preserve">
-    <value>Prevents the download of the icon for all package. NOTE: This feature will only work with Chocolatey for Business and the Chocolatey GUI licensed extension installed.</value>
+    <value>Prevents downloading package icons. NOTE: This feature only works with the licensed extension installed.</value>
   </data>
   <data name="SettingsView_ConfigDefaultSourceName" xml:space="preserve">
-    <value>The name of the source which should be shown by default when opening application. NOTE: This configuration setting will only work with Chocolatey for Business and the Chocolatey GUI licensed extension installed.</value>
+    <value>The source name shown by default when opening the application. NOTE: This configuration setting only works with the licensed extension installed.</value>
   </data>
   <data name="SettingsView_ToggleHideAllRemoteChocolateySources" xml:space="preserve">
-    <value>Controls whether or not remote sources (for example the Chocolatey Community Repository) are displayed in Chocolatey GUI.  Enabling this feature makes Chocolatey GUI a read-only application, that will only show the currently installed packages.  NOTE: This feature will only work with Chocolatey for Business and the Chocolatey GUI licensed extension installed.</value>
+    <value>Controls whether remote sources (for example the Community Repository) are displayed. Enabling this feature makes the application read-only and only shows currently installed packages. NOTE: This feature only works with the licensed extension installed.</value>
   </data>
   <data name="SettingsView_ToggleDefaultToDarkMode" xml:space="preserve">
     <value>Default to dark mode. It is still possible to switch during use.</value>
@@ -1191,7 +1191,7 @@ Please contact your System Administrator to enable this operation.</value>
     <value>Skip PowerShell</value>
   </data>
   <data name="AdvancedChocolateyDialog_SkipPowerShell_ToolTip" xml:space="preserve">
-    <value>Do not run chocolateyInstall.ps1.</value>
+    <value>Do not run the package install script.</value>
   </data>
   <data name="AdvancedChocolateyDialog_Title_Install" xml:space="preserve">
     <value>Install Options</value>
@@ -1209,7 +1209,7 @@ Please contact your System Administrator to enable this operation.</value>
     <value>Include prerelease package in the version list</value>
   </data>
   <data name="Dialog_AreYourSureRemoveSourceMessage" xml:space="preserve">
-    <value>This action will remove the '{0}' source from both Chocolatey and Chocolatey GUI.  Are you sure you want to proceed (this action cannot be undone)?</value>
+    <value>This action will remove the '{0}' source from both the package manager core and this application. Are you sure you want to proceed (this action cannot be undone)?</value>
     <comment>{0} = The id of the source which is away to be deleted, i.e. chocolatey, chocolatey.licensed, etc</comment>
   </data>
   <data name="Dialog_AreYouSureUpdateAllMessage" xml:space="preserve">
@@ -1227,10 +1227,10 @@ Please contact your System Administrator to enable this operation.</value>
     <value>Search...</value>
   </data>
   <data name="SettingsView_ToggleHideThisPCSourceDescription" xml:space="preserve">
-    <value>Controls whether or not the This PC source is displayed in Chocolatey GUI.  Enabling this feature means that Chocolatey GUI will no longer show a list of all the currently installed packages on the machine.  NOTE: This feature will only work with Chocolatey for Business and the Chocolatey GUI licensed extension installed.</value>
+    <value>Controls whether or not the This PC source is displayed. Enabling this feature means the application will no longer show a list of currently installed packages on the machine. NOTE: This feature only works with the licensed extension installed.</value>
   </data>
   <data name="SettingsView_TogglePreventUsageOfUpdateAllButtonDescription" xml:space="preserve">
-    <value>Prevents the ability for user to use the Update All button. NOTE: This feature will only work with Chocolatey for Business and the Chocolatey GUI licensed extension installed.</value>
+    <value>Prevents the ability to use the Update All button. NOTE: This feature only works with the licensed extension installed.</value>
   </data>
   <data name="SettingsView_ToggleSkipModalDialogConfirmationDescription" xml:space="preserve">
     <value>Skip modal dialog confirmations when performing potentially destructive actions.</value>
@@ -1273,7 +1273,7 @@ Please contact your System Administrator to enable this operation.</value>
     <value>Exclude Installed Packages</value>
   </data>
   <data name="ChocolateyGUI_HideAllRemoteChocolateySourcesTitle" xml:space="preserve">
-    <value>Hide All Remote Chocolatey Sources</value>
+    <value>Hide All Remote Sources</value>
   </data>
   <data name="ChocolateyGUI_HideThisPCSourceTitle" xml:space="preserve">
     <value>Hide This PC Source</value>
@@ -1350,7 +1350,7 @@ Please contact your System Administrator to enable this operation.</value>
     <value>There are no Persisted Arguments available for this package!</value>
   </data>
   <data name="SettingsView_LanguageDescription" xml:space="preserve">
-    <value>The preferred language for Chocolatey GUI. Defaults to Windows System Locale.</value>
+    <value>The preferred language for this application. Defaults to Windows System Locale.</value>
   </data>
   <data name="FilePicker_LogFiles" xml:space="preserve">
     <value>Log Files</value>
@@ -1368,7 +1368,7 @@ Please contact your System Administrator to enable this operation.</value>
     <value>Cache Location</value>
   </data>
   <data name="AdvancedChocolateyDialog_CacheLocation_ToolTip" xml:space="preserve">
-    <value>Location for download cache, defaults to %TEMP% or value in chocolatey.config file.</value>
+    <value>Location for download cache, defaults to %TEMP% or value in the package manager config file.</value>
   </data>
   <data name="AdvancedChocolateyDialog_CacheLocation_BrowseDescription" xml:space="preserve">
     <value>The location to store any files downloaded by package during installations or upgrades.</value>
