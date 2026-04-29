@@ -1,0 +1,27 @@
+﻿using FlaUI.Core.AutomationElements;
+using FlaUI.Core.Definitions;
+using System.Linq;
+
+namespace ChocolateyGui.UITests
+{
+    internal static class AutomationIds
+    {
+        internal const string PRERELEASE_CHECK_BOX = "PrereleaseCheckBox";
+        internal const string ALL_VERSIONS_CHECK_BOX = "AllVersionsCheckBox";
+        internal const string SEARCH_TEXT_BOX = "SearchTextBox";
+        internal const string SOURCES_LIST_VIEW = "SourcesListView";
+        internal const string DIALOG = "PART_Dialog";
+        internal const string SHOW_SETTINGS = "ShowSettings";
+        internal const string SHOW_ABOUT = "ShowAbout";
+
+        internal static AutomationElement[] LocateAllByText(this AutomationElement automationElement, string text)
+        {
+            return automationElement.FindAllDescendants(cf => cf.ByControlType(ControlType.Text).And(cf.ByName(text)));
+        }
+
+        internal static AutomationElement LocateFirstByText(this AutomationElement automationElement, string text)
+        {
+            return automationElement.LocateAllByText(text).FirstOrDefault();
+        }
+    }
+}

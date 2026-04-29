@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChocolateyGui.Common", "Cho
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChocolateyGui.Common.Windows", "ChocolateyGui.Common.Windows\ChocolateyGui.Common.Windows.csproj", "{4C2E05FE-3F4D-40BE-873C-5D07C8729741}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChocolateyGui.UITests", "ChocolateyGui.UITests\ChocolateyGui.UITests.csproj", "{58AE187D-B19D-44D8-97EC-683FABD295A8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -106,6 +108,22 @@ Global
 		{4C2E05FE-3F4D-40BE-873C-5D07C8729741}.ReleaseOfficial|x86.Build.0 = ReleaseOfficial|Any CPU
 		{4C2E05FE-3F4D-40BE-873C-5D07C8729741}.WIX|Any CPU.ActiveCfg = Release|Any CPU
 		{4C2E05FE-3F4D-40BE-873C-5D07C8729741}.WIX|x86.ActiveCfg = Release|Any CPU
+		{58AE187D-B19D-44D8-97EC-683FABD295A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58AE187D-B19D-44D8-97EC-683FABD295A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58AE187D-B19D-44D8-97EC-683FABD295A8}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{58AE187D-B19D-44D8-97EC-683FABD295A8}.Debug|x86.Build.0 = Debug|Any CPU
+		{58AE187D-B19D-44D8-97EC-683FABD295A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58AE187D-B19D-44D8-97EC-683FABD295A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58AE187D-B19D-44D8-97EC-683FABD295A8}.Release|x86.ActiveCfg = Release|Any CPU
+		{58AE187D-B19D-44D8-97EC-683FABD295A8}.Release|x86.Build.0 = Release|Any CPU
+		{58AE187D-B19D-44D8-97EC-683FABD295A8}.ReleaseOfficial|Any CPU.ActiveCfg = Release|Any CPU
+		{58AE187D-B19D-44D8-97EC-683FABD295A8}.ReleaseOfficial|Any CPU.Build.0 = Release|Any CPU
+		{58AE187D-B19D-44D8-97EC-683FABD295A8}.ReleaseOfficial|x86.ActiveCfg = Release|Any CPU
+		{58AE187D-B19D-44D8-97EC-683FABD295A8}.ReleaseOfficial|x86.Build.0 = Release|Any CPU
+		{58AE187D-B19D-44D8-97EC-683FABD295A8}.WIX|Any CPU.ActiveCfg = Debug|Any CPU
+		{58AE187D-B19D-44D8-97EC-683FABD295A8}.WIX|Any CPU.Build.0 = Debug|Any CPU
+		{58AE187D-B19D-44D8-97EC-683FABD295A8}.WIX|x86.ActiveCfg = Debug|Any CPU
+		{58AE187D-B19D-44D8-97EC-683FABD295A8}.WIX|x86.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
