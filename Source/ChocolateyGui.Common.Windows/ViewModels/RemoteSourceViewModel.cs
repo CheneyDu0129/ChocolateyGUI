@@ -58,6 +58,9 @@ namespace ChocolateyGui.Common.Windows.ViewModels
         private ListViewMode _listViewMode;
         private bool _showAdditionalPackageInformation;
         private string _resourceId;
+        private bool _isLoadingPackages;
+        private bool _hasShownLoadError;
+        private bool _isOnline = true;
 
         private IDisposable _searchQuerySubscription;
 
@@ -107,7 +110,7 @@ namespace ChocolateyGui.Common.Windows.ViewModels
 
             AddSortOptions();
 
-            SortSelection = L(nameof(Resources.RemoteSourceViewModel_SortSelectionPopularity));
+            SortSelection = L(nameof(Resources.RemoteSourceViewModel_SortSelectionAtoZ));
             IncludePrerelease = true; // 默认包含预发布版本
         }
 
@@ -133,6 +136,12 @@ namespace ChocolateyGui.Common.Windows.ViewModels
         {
             get { return _showAdditionalPackageInformation; }
             set { this.SetPropertyValue(ref _showAdditionalPackageInformation, value); }
+        }
+
+        public bool IsOnline
+        {
+            get { return _isOnline; }
+            set { this.SetPropertyValue(ref _isOnline, value); }
         }
 
         public ChocolateySource Source { get; }
@@ -275,6 +284,13 @@ namespace ChocolateyGui.Common.Windows.ViewModels
 
         public async Task LoadPackages(bool forceCheckForOutdatedPackages)
         {
+            if (_isLoadingPackages)
+            {
+                return;
+            }
+
+            _isLoadingPackages = true;
+
             try
             {
                 if (!IsActive || (!CanLoadRemotePackages() && Packages.Any()))
@@ -313,7 +329,6 @@ namespace ChocolateyGui.Common.Windows.ViewModels
                                     MatchWord,
                                     Source.Value));
                     var installed = await _chocolateyPackageService.GetInstalledPackages();
-                    var outdated = await _chocolateyPackageService.GetOutdatedPackages(false, null, forceCheckForOutdatedPackages);
 
                     PageCount = (int)Math.Ceiling((double)result.TotalCount / (double)PageSize);
                     Packages.Clear();
@@ -346,6 +361,9 @@ namespace ChocolateyGui.Common.Windows.ViewModels
                     {
                         CurrentPage = PageCount == 0 ? 1 : PageCount;
                     }
+
+                    _hasShownLoadError = false;
+                    IsOnline = true;
                 }
                 finally
                 {
@@ -358,10 +376,21 @@ namespace ChocolateyGui.Common.Windows.ViewModels
             catch (Exception ex)
             {
                 Logger.Error(ex, "Failed to load new packages.");
-                await _dialogService.ShowMessageAsync(
-                    L(nameof(Resources.RemoteSourceViewModel_FailedToLoad)),
-                    L(nameof(Resources.RemoteSourceViewModel_FailedToLoadRemotePackages), ex.Message));
-                throw;
+                IsOnline = false;
+
+                if (!_hasShownLoadError)
+                {
+                    _hasShownLoadError = true;
+                    await _dialogService.ShowMessageAsync(
+                        L(nameof(Resources.RemoteSourceViewModel_FailedToLoad)),
+                        L(nameof(Resources.RemoteSourceViewModel_FailedToLoadRemotePackages), ex.Message));
+                }
+
+                HasLoaded = true;
+            }
+            finally
+            {
+                _isLoadingPackages = false;
             }
         }
 

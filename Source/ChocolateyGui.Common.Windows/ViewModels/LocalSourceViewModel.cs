@@ -53,6 +53,9 @@ namespace ChocolateyGui.Common.Windows.ViewModels
         private string _searchQuery;
         private bool _showOnlyPackagesWithUpdate;
         private bool _isShowOnlyPackagesWithUpdateEnabled;
+        private bool _showOnlyProvidedPackages;
+        private readonly HashSet<string> _providedPackageSources = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        private readonly HashSet<string> _providedPackageSourceHosts = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         private string _sortColumn;
         private bool _sortDescending;
         private bool _isLoading;
@@ -64,8 +67,8 @@ namespace ChocolateyGui.Common.Windows.ViewModels
         public LocalSourceViewModel(
             IChocolateyService chocolateyService,
             IDialogService dialogService,
-            IProgressService progressService,
-            IPersistenceService persistenceService,
+            IProgressService persistenceService,
+            IPersistenceService pPersistenceService,
             IChocolateyGuiCacheService chocolateyGuiCacheService,
             IConfigService configService,
             IAllowedCommandsService allowedCommandsService,
@@ -77,8 +80,8 @@ namespace ChocolateyGui.Common.Windows.ViewModels
         {
             _chocolateyService = chocolateyService;
             _dialogService = dialogService;
-            _progressService = progressService;
-            _persistenceService = persistenceService;
+            _progressService = persistenceService;
+            _persistenceService = pPersistenceService;
             _chocolateyGuiCacheService = chocolateyGuiCacheService;
             _configService = configService;
             _allowedCommandsService = allowedCommandsService;
@@ -140,6 +143,12 @@ namespace ChocolateyGui.Common.Windows.ViewModels
         {
             get { return _isShowOnlyPackagesWithUpdateEnabled; }
             set { this.SetPropertyValue(ref _isShowOnlyPackagesWithUpdateEnabled, value); }
+        }
+
+        public bool ShowOnlyProvidedPackages
+        {
+            get { return _showOnlyProvidedPackages; }
+            set { this.SetPropertyValue(ref _showOnlyProvidedPackages, value); }
         }
 
         public bool MatchWord
@@ -375,7 +384,8 @@ namespace ChocolateyGui.Common.Windows.ViewModels
                         eventPattern =>
                             eventPattern.EventArgs.PropertyName == nameof(MatchWord) ||
                             eventPattern.EventArgs.PropertyName == nameof(SearchQuery) ||
-                            eventPattern.EventArgs.PropertyName == nameof(ShowOnlyPackagesWithUpdate))
+                            eventPattern.EventArgs.PropertyName == nameof(ShowOnlyPackagesWithUpdate) ||
+                            eventPattern.EventArgs.PropertyName == nameof(ShowOnlyProvidedPackages))
                     .ObserveOnDispatcher()
                     .Subscribe(eventPattern => PackageSource.Refresh());
 
@@ -440,9 +450,14 @@ namespace ChocolateyGui.Common.Windows.ViewModels
                 include &= package.CanUpdate && !package.IsPinned;
             }
 
+            if (ShowOnlyProvidedPackages)
+            {
+                include &= IsFromProvidedSource(package);
+            }
+ 
             return include;
         }
-
+ 
         private async Task LoadPackages()
         {
             if (IsLoading)
@@ -452,9 +467,26 @@ namespace ChocolateyGui.Common.Windows.ViewModels
 
             IsLoading = true;
             IsShowOnlyPackagesWithUpdateEnabled = false;
-
-            _packages.Clear();
-            Packages.Clear();
+            _providedPackageSources.Clear();
+            _providedPackageSourceHosts.Clear();
+ 
+             var providedSources = await _chocolateyService.GetSources();
+             foreach (var source in providedSources.Where(source => !source.Disabled && IsProvidedSource(source)))
+             {
+                 Uri sourceUri;
+                 if (Uri.TryCreate(source.Value, UriKind.Absolute, out sourceUri))
+                 {
+                     _providedPackageSources.Add(NormalizeSource(sourceUri));
+ 
+                    if (!sourceUri.IsFile && !string.IsNullOrWhiteSpace(sourceUri.Host))
+                    {
+                        _providedPackageSourceHosts.Add(sourceUri.Host);
+                    }
+                 }
+             }
+ 
+             _packages.Clear();
+             Packages.Clear();
 
             var packages = (await _chocolateyService.GetInstalledPackages())
                 .Select(Mapper.Map<IPackageViewModel>).ToList();
@@ -469,7 +501,68 @@ namespace ChocolateyGui.Common.Windows.ViewModels
 
             await CheckOutdated(false);
         }
+ 
+        private static bool IsProvidedSource(ChocolateySource source)
+        {
+            if (source == null)
+            {
+                return false;
+            }
 
+            if (string.Equals(source.Id, "chocolatey", StringComparison.OrdinalIgnoreCase))
+            {
+                return false;
+            }
+
+            return string.IsNullOrWhiteSpace(source.Value)
+                || source.Value.IndexOf("community.chocolatey.org", StringComparison.OrdinalIgnoreCase) < 0;
+        }
+
+        private bool IsFromProvidedSource(IPackageViewModel package)
+        {
+            if (package == null)
+            {
+                return false;
+            }
+
+            // Installed package metadata may not always include source.
+            // Do not hide such packages to avoid empty lists.
+            if (package.Source == null)
+            {
+                return true;
+            }
+
+            // If no configured provided source could be normalized, keep package visible.
+            if (_providedPackageSources.Count == 0 && _providedPackageSourceHosts.Count == 0)
+            {
+                return true;
+            }
+ 
+            var normalizedSource = NormalizeSource(package.Source);
+            if (_providedPackageSources.Contains(normalizedSource))
+            {
+                return true;
+            }
+ 
+            if (!package.Source.IsFile && !string.IsNullOrWhiteSpace(package.Source.Host))
+            {
+                return _providedPackageSourceHosts.Contains(package.Source.Host);
+            }
+ 
+            return false;
+        }
+
+        private static string NormalizeSource(Uri source)
+        {
+            if (source == null)
+            {
+                return string.Empty;
+            }
+
+            var normalizedSource = source.IsFile ? source.LocalPath : source.AbsoluteUri;
+            return normalizedSource.TrimEnd('/').TrimEnd('\\');
+        }
+ 
         private async Task CheckOutdated(bool forceCheckForOutdated)
         {
             IsLoading = true;

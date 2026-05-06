@@ -173,25 +173,24 @@
             <WrapPanel Grid.Column="0" Orientation="Horizontal" Margin="0,5">
                 <StackPanel Orientation="Horizontal" Margin="0 0 5 0">
                     <Label Margin="5,0" FontSize="16" FontWeight="SemiBold" VerticalAlignment="Center"
-                           Target="{Binding ElementName=SearchTextBox}" Content="{lang:Localize LocalSourceView_SearchBoxText}"/>
+                           Target="{Binding ElementName=SearchTextBox}" Content="{lang:Localize ChocolateyGui.Common.Views.LocalSourceView_SearchBoxText}"/>
                     <TextBox x:Name="SearchTextBox"
                              Width="200"
                              FontSize="14"
                              VerticalAlignment="Center"
                              Text="{Binding SearchQuery, Delay=250, UpdateSourceTrigger=PropertyChanged}" />
                 </StackPanel>
-                <CheckBox Name="MatchCheckBox"
-                          Margin="5"
-                          Style="{StaticResource Chocolatey.Styles.CheckBox.SourceHeader}"
-                          Content="{lang:Localize LocalSourceView_CheckboxMatchExact}"
-                          IsChecked="{Binding MatchWord}" />
-                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                 <CheckBox Name="UpdatesCheckBox"
                           Margin="5"
                           Style="{StaticResource Chocolatey.Styles.CheckBox.SourceHeader}"
                           Content="{lang:Localize LocalSourceView_CheckboxPkgsWithUpdates}"
                           IsChecked="{Binding ShowOnlyPackagesWithUpdate}"
                           IsEnabled="{Binding IsShowOnlyPackagesWithUpdateEnabled}"/>
+                <CheckBox Name="ProvidedPackagesCheckBox"
+                          Margin="5"
+                          Style="{StaticResource Chocolatey.Styles.CheckBox.SourceHeader}"
+                          Content="{lang:Localize LocalSourceView_CheckboxProvidedPkgs}"
+                          IsChecked="{Binding ShowOnlyProvidedPackages}"/>
             </WrapPanel>
             <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="10,6">
                 <Button Command="{commands:DataContextCommandAdapter CheckForOutdatedPackages, CanCheckForOutdatedPackages}"

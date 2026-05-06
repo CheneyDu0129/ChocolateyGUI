@@ -221,14 +221,17 @@ Error: {1}{2}</value>
   <data name="LocalSourceViewModel_Chocolatey" xml:space="preserve">
     <value>Package Manager</value>
   </data>
-  <data name="LocalSourceViewModel_ConfigFiles" xml:space="preserve">
+  <data name="LocalSourceView_Model">
+    <value>Chocolatey GUI</value>
+  </data>
+  <data name="LocalSourceView_ConfigFiles" xml:space="preserve">
     <value>Config Files {0}</value>
     <comment>{0} = Is equal to (.config)|*.config</comment>
   </data>
-  <data name="LocalSourceViewModel_Packages" xml:space="preserve">
+  <data name="LocalSourceView_Packages" xml:space="preserve">
     <value>Packages</value>
   </data>
-  <data name="LocalSourceViewModel_UpdateAvailableForChocolatey" xml:space="preserve">
+  <data name="LocalSourceView_UpdateAvailableForChocolatey" xml:space="preserve">
     <value>There's an update available for the package manager core.</value>
   </data>
   <data name="LocalSourceView_ButtonExport" xml:space="preserve">
@@ -252,6 +255,9 @@ Error: {1}{2}</value>
   <data name="LocalSourceView_CheckboxPkgsWithUpdates" xml:space="preserve">
     <value>Show Only Packages with Updates</value>
   </data>
+  <data name="LocalSourceView_CheckboxProvidedPkgs" xml:space="preserve">
+    <value>Show Only Provided Packages</value>
+  </data>
   <data name="LocalSourceView_Grid_Authors" xml:space="preserve">
     <value>Authors</value>
   </data>
@@ -266,6 +272,15 @@ Error: {1}{2}</value>
   </data>
   <data name="LocalSourceView_SearchBoxText" xml:space="preserve">
     <value>Search:</value>
+  </data>
+  <data name="SourcesView_BrowseProducts" xml:space="preserve">
+    <value>Browse Products</value>
+  </data>
+  <data name="SourcesView_Installed" xml:space="preserve">
+    <value>Installed</value>
+  </data>
+  <data name="SourcesView_Source" xml:space="preserve">
+    <value>Source</value>
   </data>
   <data name="PackageViewModel_DisplayName" xml:space="preserve">
     <value>Package - {0}</value>
@@ -1351,6 +1366,12 @@ Please contact your System Administrator to enable this operation.</value>
   </data>
   <data name="SettingsView_LanguageDescription" xml:space="preserve">
     <value>The preferred language for this application. Defaults to Windows System Locale.</value>
+  </data>
+  <data name="ChocolateyGUI_ShowSourcesTabInSettingsTitle" xml:space="preserve">
+    <value>Show Sources Tab in Settings</value>
+  </data>
+  <data name="SettingsView_ToggleShowSourcesTabInSettingsDescription" xml:space="preserve">
+    <value>Show or hide the Sources tab in Settings.</value>
   </data>
   <data name="FilePicker_LogFiles" xml:space="preserve">
     <value>Log Files</value>

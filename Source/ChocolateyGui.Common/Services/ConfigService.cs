@@ -31,12 +31,14 @@ namespace ChocolateyGui.Common.Services
                 OutdatedPackagesCacheDurationInMinutes = "60",
                 UseKeyboardBindings = true,
                 DefaultToTileViewForLocalSource = true,
-                DefaultToTileViewForRemoteSource = true
+                DefaultToTileViewForRemoteSource = true,
+                ShowSourcesTabInSettings = true
             };
 
             var defaultUserSettings = new AppConfiguration()
             {
-                Id = "v0.18.0"
+                Id = "v0.18.0",
+                ShowSourcesTabInSettings = true
             };
 
             // If the global database is null, the assumption has to be that we are running as a non-administrator

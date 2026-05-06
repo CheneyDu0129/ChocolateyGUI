@@ -85,7 +85,6 @@ namespace ChocolateyGui.Common.Models
 
         [LocalizedDescription(nameof(Resources.SettingsView_ToggleDefaultToDarkMode))]
         [Feature]
-
         public bool? DefaultToDarkMode { get; set; }
 
         [LocalizedDescription(nameof(Resources.SettingsView_ToggleHideThisPCSourceDescription))]
@@ -99,6 +98,10 @@ namespace ChocolateyGui.Common.Models
         [LocalizedDescription(nameof(Resources.SettingsView_ToggleSkipModalDialogConfirmationDescription))]
         [Feature]
         public bool? SkipModalDialogConfirmation { get; set; }
+
+        [LocalizedDescription("SettingsView_ToggleShowSourcesTabInSettingsDescription")]
+        [Feature]
+        public bool? ShowSourcesTabInSettings { get; set; }
 
         public override string ToString()
         {
@@ -124,6 +127,7 @@ DefaultToDarkMode: {17}
 HideThisPCSource: {18}
 PreventUsageOfUpdateAllButton: {19}
 SkipModalDialogConfirmation: {20}
+ShowSourcesTabInSettings: {21}
 ".FormatWith(
                 OutdatedPackagesCacheDurationInMinutes,
                 DefaultSourceName,
@@ -145,7 +149,8 @@ SkipModalDialogConfirmation: {20}
                 DefaultToDarkMode,
                 HideThisPCSource,
                 PreventUsageOfUpdateAllButton,
-                SkipModalDialogConfirmation);
+                SkipModalDialogConfirmation,
+                ShowSourcesTabInSettings);
         }
     }
 }

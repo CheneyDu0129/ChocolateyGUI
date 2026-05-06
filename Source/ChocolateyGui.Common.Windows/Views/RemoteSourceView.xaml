@@ -408,6 +408,17 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <WrapPanel Grid.Column="0" Orientation="Horizontal" Margin="0,5">
+                <StackPanel Orientation="Horizontal"
+                            Margin="0 0 10 0"
+                            Visibility="{Binding DataContext.HasMultipleBrowseSources, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, AncestorLevel=2}, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <Label Margin="5,0" FontSize="16" FontWeight="SemiBold" VerticalAlignment="Center"
+                           Content="{lang:Localize SourcesView_Source}"/>
+                    <ComboBox Width="220"
+                              Margin="0,1,0,0"
+                              ItemsSource="{Binding DataContext.BrowseSources, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, AncestorLevel=2}}"
+                              SelectedItem="{Binding DataContext.SelectedBrowseSource, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, AncestorLevel=2}, Mode=TwoWay}"
+                              DisplayMemberPath="DisplayName" />
+                </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="0 0 5 0">
                     <Label Margin="5,0" FontSize="16" FontWeight="SemiBold" VerticalAlignment="Center"
                            Target="{Binding ElementName=SearchTextBox}" Content="{lang:Localize RemoteSourceView_SearchBoxText}"/>
@@ -434,12 +445,6 @@
                           Style="{StaticResource Chocolatey.Styles.CheckBox.SourceHeader}"
                           Content="{lang:Localize RemoteSourceView_CheckboxIncludePrerelease}"
                           IsChecked="{Binding IncludePrerelease}" />
-                <CheckBox Name="MatchCheckBox"
-                          Margin="5"
-                          Style="{StaticResource Chocolatey.Styles.CheckBox.SourceHeader}"
-                          Content="{lang:Localize RemoteSourceView_CheckboxMatchExactly}"
-                          IsChecked="{Binding MatchWord}" />
-                <ComboBox Name="SortBox" Margin="5 1" ItemsSource="{Binding SortOptions}" SelectedValue="{Binding SortSelection}"/>
             </WrapPanel>
             <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="10,6">
                 <Button Command="{commands:DataContextCommandAdapter CheckForOutdatedPackages, CanCheckForOutdatedPackages}"

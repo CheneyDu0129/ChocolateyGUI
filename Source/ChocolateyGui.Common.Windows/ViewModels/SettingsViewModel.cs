@@ -205,8 +205,8 @@ namespace ChocolateyGui.Common.Windows.ViewModels
             }
         }
 
-        public ObservableCollection<CultureInfo> AllLanguages { get; private set; } =
-            new ObservableCollection<CultureInfo>();
+        public ObservableCollection<CultureInfo> AllLanguages { get; private set; }
+            = new ObservableCollection<CultureInfo>();
 
         public bool CanSave => SelectedSource != null;
 
@@ -258,12 +258,17 @@ namespace ChocolateyGui.Common.Windows.ViewModels
 
         public bool IsSourceEditable
         {
-            get { return false; } // 硬编码为 false，防止用户修改厂商预设的软件源
+            get { return DraftSource != null && !IsChocolateyLicensedSource; }
         }
 
         public bool IsChocolateyLicensedSource
         {
             get { return DraftSource != null && DraftSource.Id == ChocolateyLicensedSourceId; }
+        }
+
+        public bool IsSourcesTabVisible
+        {
+            get { return _config?.ShowSourcesTabInSettings ?? true; }
         }
 
         public void ChocolateyFeatureToggled(ChocolateyFeature feature)
@@ -331,6 +336,12 @@ namespace ChocolateyGui.Common.Windows.ViewModels
             {
                 ThemeAssist.BundledTheme.IsLightTheme = !feature.Enabled;
                 ThemeAssist.BundledTheme.ToggleTheme.Execute(null);
+            }
+
+            if (feature.Title == nameof(AppConfiguration.ShowSourcesTabInSettings))
+            {
+                _config.ShowSourcesTabInSettings = feature.Enabled;
+                NotifyOfPropertyChange(nameof(IsSourcesTabVisible));
             }
         }
 
@@ -578,6 +589,15 @@ namespace ChocolateyGui.Common.Windows.ViewModels
         {
             _config = _configService.GetEffectiveConfiguration();
 
+            Sources.Clear();
+            var chocolateySources = await _chocolateyService.GetSources();
+            foreach (var chocolateySource in chocolateySources)
+            {
+                Sources.Add(chocolateySource);
+            }
+
+            SelectedSource = null;
+
             var chocolateyFeatures = await _chocolateyService.GetFeatures();
             foreach (var chocolateyFeature in chocolateyFeatures)
             {
@@ -643,7 +663,19 @@ namespace ChocolateyGui.Common.Windows.ViewModels
                         .Subscribe();
 
             var chocolateyGuiFeatures = _configService.GetFeatures(global: false, useResourceKeys: true);
-            foreach (var chocolateyGuiFeature in chocolateyGuiFeatures)
+            foreach (var chocolateyGuiFeature in chocolateyGuiFeatures.Where(f =>
+                !string.Equals(f.Title, nameof(AppConfiguration.AllowNonAdminAccessToSettings), StringComparison.OrdinalIgnoreCase)
+                && !string.Equals(f.Title, nameof(AppConfiguration.ExcludeInstalledPackages), StringComparison.OrdinalIgnoreCase)
+                && !string.Equals(f.Title, nameof(AppConfiguration.HideAllRemoteChocolateySources), StringComparison.OrdinalIgnoreCase)
+                && !string.Equals(f.Title, nameof(AppConfiguration.HidePackageDownloadCount), StringComparison.OrdinalIgnoreCase)
+                && !string.Equals(f.Title, nameof(AppConfiguration.HideThisPCSource), StringComparison.OrdinalIgnoreCase)
+                && !string.Equals(f.Title, nameof(AppConfiguration.PreventAllPackageIconDownloads), StringComparison.OrdinalIgnoreCase)
+                && !string.Equals(f.Title, nameof(AppConfiguration.PreventUsageOfUpdateAllButton), StringComparison.OrdinalIgnoreCase)
+                && !string.Equals(f.Title, nameof(AppConfiguration.ShowAggregatedSourceView), StringComparison.OrdinalIgnoreCase)
+                && !string.Equals(f.Title, nameof(AppConfiguration.ShowAdditionalPackageInformation), StringComparison.OrdinalIgnoreCase)
+                && !string.Equals(f.Title, nameof(AppConfiguration.ShowConsoleOutput), StringComparison.OrdinalIgnoreCase)
+                && !string.Equals(f.Title, nameof(AppConfiguration.SkipModalDialogConfirmation), StringComparison.OrdinalIgnoreCase)
+                ))
             {
                 chocolateyGuiFeature.DisplayTitle = _translationSource["ChocolateyGUI_" + chocolateyGuiFeature.Title + "Title"];
 #if DEBUG
@@ -717,12 +749,6 @@ namespace ChocolateyGui.Common.Windows.ViewModels
                 .Concat()
                 .Subscribe();
 
-            var sources = await _chocolateyService.GetSources();
-            foreach (var source in sources)
-            {
-                Sources.Add(source);
-            }
-
             AllLanguages.Clear();
 
             foreach (var language in Internationalization.GetAllSupportedCultures().OrderBy(c => c.NativeName))
@@ -736,6 +762,7 @@ namespace ChocolateyGui.Common.Windows.ViewModels
             // as we do not want to save the configuration file when it is not needed.
             _config.UseLanguage = Internationalization.GetSupportedCultureInfo(selectedLanguage).Name;
             NotifyOfPropertyChange(nameof(UseLanguage));
+            NotifyOfPropertyChange(nameof(IsSourcesTabVisible));
         }
 
         private void OnDeactivated(object sender, DeactivationEventArgs deactivationEventArgs)

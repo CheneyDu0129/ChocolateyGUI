@@ -252,7 +252,7 @@
                 </Grid>
             </TabItem>
 
-            <TabItem Header="{lang:Localize SettingsView_Sources}">
+            <TabItem Header="{lang:Localize SettingsView_Sources}" Visibility="{Binding IsSourcesTabVisible, Converter={StaticResource BooleanToVisibility}}">
                 <Grid Margin="5" UseLayoutRounding="True">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -451,8 +451,7 @@
                                             Width="80"
                                             HorizontalAlignment="Left"
                                             VerticalAlignment="Center"
-                                            Content="{lang:Localize SettingsView_ButtonNew}"
-                                            Visibility="Collapsed" />
+                                            Content="{lang:Localize SettingsView_ButtonNew}" />
 
                                     <Button x:Name="Save"
                                             Padding="5 5"
@@ -460,8 +459,7 @@
                                             Width="80"
                                             HorizontalAlignment="Left"
                                             VerticalAlignment="Center"
-                                            Content="{lang:Localize SettingsView_ButtonSave}"
-                                            Visibility="Collapsed" />
+                                            Content="{lang:Localize SettingsView_ButtonSave}" />
 
                                     <Button x:Name="Remove"
                                             Padding="5 5"
@@ -469,8 +467,7 @@
                                             Width="80"
                                             HorizontalAlignment="Left"
                                             VerticalAlignment="Center"
-                                            Content="{lang:Localize SettingsView_ButtonRemove}"
-                                            Visibility="Collapsed" />
+                                            Content="{lang:Localize SettingsView_ButtonRemove}" />
 
                                     <Button x:Name="Cancel"
                                             Padding="5 5"

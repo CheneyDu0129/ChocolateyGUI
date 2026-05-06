@@ -4,55 +4,95 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:viewModels="clr-namespace:ChocolateyGui.Common.Windows.ViewModels"
+             xmlns:lang="clr-namespace:ChocolateyGui.Common.Windows.Utilities.Extensions"
              mc:Ignorable="d"
              d:DesignHeight="760" d:DesignWidth="1300"
              d:DataContext="{d:DesignInstance viewModels:SourcesViewModel}">
 
+    <UserControl.Resources>
+        <Style x:Key="SourceModeTabStyle" TargetType="{x:Type RadioButton}">
+            <Setter Property="Background" Value="#FFF3F4F6" />
+            <Setter Property="BorderBrush" Value="#FFD0D7DE" />
+            <Setter Property="Foreground" Value="#FF1F2937" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Margin" Value="0,0,12,0" />
+            <Setter Property="MinWidth" Value="140" />
+            <Setter Property="MinHeight" Value="40" />
+            <Setter Property="FontSize" Value="15" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type RadioButton}">
+                        <Border x:Name="Root"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="6">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"
+                                              Margin="10,6"
+                                              RecognizesAccessKey="True" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Root" Property="Background" Value="#FFE8EEF5" />
+                                <Setter Property="BorderBrush" Value="#FF9AA9B8" />
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="Root" Property="Background" Value="#FF2B6CB0" />
+                                <Setter Property="BorderBrush" Value="#FF2B6CB0" />
+                                <Setter Property="Foreground" Value="White" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="Root" Property="Opacity" Value="0.6" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
     <Grid>
-        <DockPanel>
-                <Grid DockPanel.Dock="Left" MinWidth="250" MaxWidth="300">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
-                    <Image Grid.Row="0"
-                           Height="150"
-                           Stretch="Uniform"
-                           VerticalAlignment="Top"
-                           Margin="15,15,15,10"
-                           Source="{Binding PrimaryApplicationImageSource}" >
-                    </Image>
-                    <ListBox x:Name="SourcesListView"
-                             Grid.Row="1"
-                             ItemsSource="{Binding Items}"
-                             Background="Transparent"
-                             BorderBrush="Transparent"
-                             Padding="5,0,-1,0"
-                             SelectedItem="{Binding ActiveItem}">
-                        <ListBox.ItemContainerStyleSelector>
-                            <viewModels:SourcesListBoxItemStyleSelector ListBoxItemContainerStyleKey="{StaticResource SourcesListBoxItemContainerStyle}"
-                                                                        SeparatorContainerStyleKey="{StaticResource SourcesSeparatorContainerStyle}"/>
-                        </ListBox.ItemContainerStyleSelector>
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <TextBlock x:Name="Tb"
-                                           Style="{StaticResource SourceItemTextBlockStyle}"
-                                           Text="{Binding DisplayName}" />
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
-                    <Image Grid.Row="2"
-                           Source="{Binding SecondaryApplicationImageSource}"
-                           Margin="0,15,0,15"
-                           Height="100" />
-                    <TextBlock Grid.Row="3"
-                               Text="{Binding DisplayVersion}"
-                               Padding="5"/>
-                </Grid>
-            <ContentControl x:Name="ActiveItem" />
-        </DockPanel>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Padding="10,8" Background="{DynamicResource MahApps.Brushes.Accent4}">
+            <StackPanel Orientation="Horizontal">
+                <RadioButton GroupName="SourceMode"
+                             IsChecked="{Binding IsBrowseProductsSelected, Mode=TwoWay}"
+                             Style="{StaticResource SourceModeTabStyle}">
+                    <TextBlock Text="{lang:Localize SourcesView_BrowseProducts}"
+                               Margin="8,2" />
+                </RadioButton>
+                <RadioButton GroupName="SourceMode"
+                             Margin="0"
+                             IsChecked="{Binding IsInstalledSelected, Mode=TwoWay}"
+                             Style="{StaticResource SourceModeTabStyle}">
+                    <TextBlock Text="{lang:Localize SourcesView_Installed}"
+                               Margin="8,2" />
+                </RadioButton>
+            </StackPanel>
+        </Border>
+
+        <ContentControl Grid.Row="1" x:Name="ActiveItem" />
+
+        <StatusBar Grid.Row="2">
+            <StatusBarItem HorizontalContentAlignment="Left">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="● " Foreground="#FF2E7D32" Visibility="{Binding IsActiveSourceOnline, Converter={StaticResource BooleanToVisibility}}" />
+                    <TextBlock Text="在线" Foreground="#FF2E7D32" Visibility="{Binding IsActiveSourceOnline, Converter={StaticResource BooleanToVisibility}}" />
+                    <TextBlock Text="● " Foreground="#FFC62828" Visibility="{Binding IsActiveSourceOnline, Converter={StaticResource BooleanToVisibilityInverted}}" />
+                    <TextBlock Text="离线" Foreground="#FFC62828" Visibility="{Binding IsActiveSourceOnline, Converter={StaticResource BooleanToVisibilityInverted}}" />
+                </StackPanel>
+            </StatusBarItem>
+            <StatusBarItem HorizontalContentAlignment="Right">
+                <TextBlock Text="{Binding DisplayVersion}" />
+            </StatusBarItem>
+        </StatusBar>
     </Grid>
 
 </UserControl>
