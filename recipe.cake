@@ -132,20 +132,175 @@ Func<FilePathCollection> getMsisToSign = () =>
     return msisToSign;
 };
 
+var companyProfile = Argument("companyProfile", "semight");
+var packagePrefix = Argument("packagePrefix", string.Empty);
+var packageVersionOverride = Argument("packageVersion", string.Empty);
+var useBranchPackageVersion = Argument("useBranchPackageVersion", false);
+
+var supportedCompanyProfiles = new[] { "semight", "nexustest" };
+if (!supportedCompanyProfiles.Contains(companyProfile, StringComparer.OrdinalIgnoreCase))
+{
+    throw new Exception(string.Format("Unsupported companyProfile '{0}'. Allowed values: semight, nexustest.", companyProfile));
+}
+
+var companyName = "Semight Instrument";
+if (companyProfile.Equals("nexustest", StringComparison.OrdinalIgnoreCase))
+{
+    companyName = "Nexustest";
+}
+
+var packageDisplayName = string.Format("{0} Package Manager", companyName);
+var packageId = string.IsNullOrWhiteSpace(packagePrefix)
+    ? "instr-pkgmgr"
+    : string.Format("{0}-instr-pkgmgr", packagePrefix.ToLowerInvariant());
+var releaseNotesSourcePath = MakeAbsolute(File("./CHANGELOG.md")).FullPath;
+
+Func<string, string> getReleaseNotesContent = targetVersion =>
+{
+    if (!System.IO.File.Exists(releaseNotesSourcePath))
+    {
+        return "Release notes are maintained by the team in CHANGELOG.md.";
+    }
+
+    var changelogContent = System.IO.File.ReadAllText(releaseNotesSourcePath).Trim();
+    if (string.IsNullOrWhiteSpace(changelogContent))
+    {
+        return "Release notes are maintained by the team in CHANGELOG.md.";
+    }
+
+    string resolvedReleaseNotes = null;
+    if (!string.IsNullOrWhiteSpace(targetVersion))
+    {
+        var targetCoreVersion = targetVersion.Split('-')[0];
+        var headingRegex = new System.Text.RegularExpressions.Regex(@"^##\s*\[?(?<version>[^\]\s]+)\]?[^\r\n]*$", System.Text.RegularExpressions.RegexOptions.Multiline);
+        var headingMatches = headingRegex.Matches(changelogContent);
+
+        for (var i = 0; i < headingMatches.Count; i++)
+        {
+            var currentMatch = headingMatches[i];
+            var candidateVersion = currentMatch.Groups["version"].Value;
+            var candidateCoreVersion = candidateVersion.Split('-')[0];
+            var isMatch = string.Equals(candidateVersion, targetVersion, StringComparison.OrdinalIgnoreCase)
+                || string.Equals(candidateCoreVersion, targetCoreVersion, StringComparison.OrdinalIgnoreCase)
+                || targetVersion.StartsWith(candidateVersion, StringComparison.OrdinalIgnoreCase)
+                || candidateVersion.StartsWith(targetVersion, StringComparison.OrdinalIgnoreCase);
+
+            if (!isMatch)
+            {
+                continue;
+            }
+
+            var sectionStart = currentMatch.Index;
+            var sectionEnd = i + 1 < headingMatches.Count ? headingMatches[i + 1].Index : changelogContent.Length;
+            resolvedReleaseNotes = changelogContent.Substring(sectionStart, sectionEnd - sectionStart).Trim();
+            Information("Release notes section selected for version: {0}", candidateVersion);
+            break;
+        }
+    }
+
+    if (string.IsNullOrWhiteSpace(resolvedReleaseNotes))
+    {
+        resolvedReleaseNotes = changelogContent;
+        Information("Release notes section not found for version '{0}', using full CHANGELOG content.", targetVersion ?? "(null)");
+    }
+
+    // Nuspec releaseNotes is xml text, so escape special chars before replacement.
+    return System.Security.SecurityElement.Escape(resolvedReleaseNotes);
+};
+
+Information("Branding profile: {0}", companyProfile);
+Information("Computed package id: {0}", packageId);
+Information("Release notes source: {0}", releaseNotesSourcePath);
+
+Action<string, string> setBuildVersionProperty = (propertyName, value) =>
+{
+    var target = BuildParameters.Version;
+    if (target == null || string.IsNullOrWhiteSpace(value))
+    {
+        return;
+    }
+
+    var property = typeof(BuildVersion).GetProperty(propertyName, System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic);
+    if (property == null)
+    {
+        return;
+    }
+
+    var setter = property.GetSetMethod(true);
+    if (setter == null)
+    {
+        return;
+    }
+
+    setter.Invoke(target, new object[] { value });
+};
+
+Func<string> resolvePackageVersion = () =>
+{
+    if (!string.IsNullOrWhiteSpace(packageVersionOverride))
+    {
+        return packageVersionOverride.Trim();
+    }
+
+    if (useBranchPackageVersion)
+    {
+        return BuildParameters.Version?.PackageVersion;
+    }
+
+    return BuildParameters.Version?.MajorMinorPatch;
+};
+
+TaskSetup(taskSetupContext =>
+{
+    if (!string.Equals(taskSetupContext.Task.Name, "Create-Chocolatey-Packages", StringComparison.OrdinalIgnoreCase))
+    {
+        return;
+    }
+
+    var effectivePackageVersion = resolvePackageVersion();
+    if (!string.IsNullOrWhiteSpace(effectivePackageVersion)
+        && !string.Equals(BuildParameters.Version?.PackageVersion, effectivePackageVersion, StringComparison.OrdinalIgnoreCase))
+    {
+        Information("Overriding package version from '{0}' to '{1}'.", BuildParameters.Version?.PackageVersion, effectivePackageVersion);
+        setBuildVersionProperty("PackageVersion", effectivePackageVersion);
+    }
+
+    var nuspecFiles = GetFiles(BuildParameters.Paths.Directories.ChocolateyNuspecDirectory + BuildParameters.ChocolateyNuspecGlobbingPattern);
+    foreach (var nuspecFile in nuspecFiles)
+    {
+        var nuspecContent = System.IO.File.ReadAllText(nuspecFile.FullPath);
+        nuspecContent = nuspecContent
+            .Replace("__PACKAGE_ID__", packageId)
+            .Replace("__PACKAGE_TITLE__", packageDisplayName)
+            .Replace("__PACKAGE_AUTHORS__", companyName)
+            .Replace("__PACKAGE_OWNERS__", companyName)
+            .Replace("__RELEASE_NOTES__", getReleaseNotesContent(BuildParameters.Version.PackageVersion));
+        System.IO.File.WriteAllText(nuspecFile.FullPath, nuspecContent);
+    }
+
+    var installScriptPath = BuildParameters.Paths.Directories.ChocolateyNuspecDirectory.CombineWithFilePath("chocolateyInstall.ps1").FullPath;
+    if (System.IO.File.Exists(installScriptPath))
+    {
+        var installScriptContent = System.IO.File.ReadAllText(installScriptPath);
+        installScriptContent = installScriptContent.Replace("'Chocolatey GUI'", string.Format("'{0}'", packageDisplayName));
+        System.IO.File.WriteAllText(installScriptPath, installScriptContent);
+    }
+});
+
 BuildParameters.SetParameters(context: Context,
                             buildSystem: BuildSystem,
                             sourceDirectoryPath: "./Source",
                             solutionFilePath: "./Source/ChocolateyGui.sln",
                             solutionDirectoryPath: "./Source/ChocolateyGui",
                             resharperSettingsFileName: "ChocolateyGui.sln.DotSettings",
-                            title: "Chocolatey GUI",
+                            title: packageDisplayName,
                             repositoryOwner: "chocolatey",
                             repositoryName: "ChocolateyGUI",
                             shouldDownloadMilestoneReleaseNotes: true,
                             treatWarningsAsErrors: false,
-                            productName: "Chocolatey GUI",
-                            productDescription: "Chocolatey GUI is a product of Chocolatey Software, Inc. - All Rights Reserved",
-                            productCopyright: "Copyright 2014 - Present Open Source maintainers of Chocolatey GUI, and Chocolatey Software, Inc. - All Rights Reserved.",
+                            productName: packageDisplayName,
+                            productDescription: string.Format("{0} - All Rights Reserved", packageDisplayName),
+                            productCopyright: string.Format("Copyright 2014 - Present Open Source maintainers and {0} - All Rights Reserved.", companyName),
                             useChocolateyGuiStrongNameKey: true,
                             getScriptsToVerify: getScriptsToVerify,
                             getScriptsToSign: getScriptsToSign,

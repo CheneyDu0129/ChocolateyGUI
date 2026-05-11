@@ -22,8 +22,10 @@
     <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
         <value>[base64 mime encoded serialized .NET Framework object]</value>
     </data>
-    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing"
+  mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework
+  object]</value>
         <comment>This is a comment</comment>
     </data>
                 
@@ -59,7 +61,8 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -112,10 +115,12 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0,
+      Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0,
+      Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Bootstrapper_UnhandledException" xml:space="preserve">
     <value>Unhandled Exception</value>
@@ -495,7 +500,7 @@ Or if there is a traditional way to show sorting by the Title in your language, 
     <value>This PC</value>
   </data>
   <data name="SettingsViewModel_DisplayName" xml:space="preserve">
-    <value>Semight Instrument Package Manager - Settings</value>
+    <value>Instrument Package Manager - Settings</value>
   </data>
   <data name="SettingsViewModel_FeatureFailedToUpdate" xml:space="preserve">
     <value>Failed to update features. Error:
@@ -701,7 +706,8 @@ Or if there is a traditional way to show sorting by the Title in your language, 
   <data name="SettingsView_TogglePreventPreloadDescription" xml:space="preserve">
     <value>Prevents preloading results with a blank search when opening the remote source view.</value>
   </data>
-  <data name="SettingsView_TogglePreventAutomatedOutdatedPackagesCheckDescription" xml:space="preserve">
+  <data name="SettingsView_TogglePreventAutomatedOutdatedPackagesCheckDescription"
+    xml:space="preserve">
     <value>Prevents automated check for outdated packages on local and remote source views.</value>
   </data>
   <data name="SourcesView_AggregatedSourcesId" xml:space="preserve">
@@ -852,7 +858,8 @@ Normal:
     <comment>{0} = The unknown subcommand that the user tried to pass in.  For example, if the user tried to run the command "chocolateyguicli config blah", here "blah" would be unrecognised, but rather than erroring the command, instead, the command "chocolateyguicli config list" will be executed.  i.e. the subcommand has been set to "list"
 {1} = Is equal to 'list'</comment>
   </data>
-  <data name="SettingsView_ConfigOutdatedPackagesCacheDurationInMinutesDescription" xml:space="preserve">
+  <data name="SettingsView_ConfigOutdatedPackagesCacheDurationInMinutesDescription"
+    xml:space="preserve">
     <value>Default timeout for outdated packages to be cached.  Default is 60 minutes.</value>
   </data>
   <data name="Command_FeaturesTitle" xml:space="preserve">
@@ -871,13 +878,15 @@ Normal:
   <data name="SettingsViewModel_SetSourceCertificateAndPasswordMessage" xml:space="preserve">
     <value>NOTE: To remove the Certificate and Password, simply empty both input fields and click Save</value>
   </data>
-  <data name="SettingsViewModel_SetSourceCertificateAndPasswordPasswordWatermark" xml:space="preserve">
+  <data name="SettingsViewModel_SetSourceCertificateAndPasswordPasswordWatermark"
+    xml:space="preserve">
     <value>Certificate Password...</value>
   </data>
   <data name="SettingsViewModel_SetSourceCertificateAndPasswordTitle" xml:space="preserve">
     <value>Set Source Certificate and Password</value>
   </data>
-  <data name="SettingsViewModel_SetSourceCertificateAndPasswordUsernameWatermark" xml:space="preserve">
+  <data name="SettingsViewModel_SetSourceCertificateAndPasswordUsernameWatermark"
+    xml:space="preserve">
     <value>Certificate...</value>
   </data>
   <data name="SettingsViewModel_SetSourceUsernameAndPasswordMessage" xml:space="preserve">
@@ -1076,16 +1085,20 @@ Please contact your System Administrator to enable this operation.</value>
   <data name="AdvancedChocolateyDialog_AllowEmptyChecksums_ToolTip" xml:space="preserve">
     <value>Allow packages to have empty/missing checksums for downloaded resources from non-secure locations (HTTP, FTP). Using this switch is not recommended if using sources that download resources from the internet. Only overrides the value in the configuration when 'On' is specified.</value>
   </data>
-  <data name="AdvancedChocolateyDialog_ApplyInstallArgumentsToDependencies_Header" xml:space="preserve">
+  <data name="AdvancedChocolateyDialog_ApplyInstallArgumentsToDependencies_Header"
+    xml:space="preserve">
     <value>Apply Install Arguments to Dependencies</value>
   </data>
-  <data name="AdvancedChocolateyDialog_ApplyInstallArgumentsToDependencies_ToolTip" xml:space="preserve">
+  <data name="AdvancedChocolateyDialog_ApplyInstallArgumentsToDependencies_ToolTip"
+    xml:space="preserve">
     <value>Should install arguments be applied to dependent packages?</value>
   </data>
-  <data name="AdvancedChocolateyDialog_ApplyPackageParametersToDependencies_Header" xml:space="preserve">
+  <data name="AdvancedChocolateyDialog_ApplyPackageParametersToDependencies_Header"
+    xml:space="preserve">
     <value>Apply Package Parameters to Dependencies</value>
   </data>
-  <data name="AdvancedChocolateyDialog_ApplyPackageParametersToDependencies_ToolTip" xml:space="preserve">
+  <data name="AdvancedChocolateyDialog_ApplyPackageParametersToDependencies_ToolTip"
+    xml:space="preserve">
     <value>Should package parameters be applied to dependent packages?</value>
   </data>
   <data name="AdvancedChocolateyDialog_Buttons_Cancel" xml:space="preserve">

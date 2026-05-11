@@ -80,11 +80,41 @@ If you would like to contribute code or help squash a bug or two, that's awesome
    [Environment]::SetEnvironmentVariable("FXCOPDIR", $FXCOPDIR, 'User')
    refreshenv
    ```
-* Install WiX toolset integration for your Visual Studio Integration from [here](https://marketplace.visualstudio.com/items?itemName=WixToolset.WixToolsetVisualStudio2019Extension)
+* Install WiX toolset integration for Visual Studio from [WiX Toolset Visual Studio 2019 Extension](https://marketplace.visualstudio.com/items?itemName=WixToolset.WixToolsetVisualStudio2019Extension)
 * From an **Administrative** PowerShell Window, navigate to the folder where you have cloned the Chocolatey GUI repository and run `build.ps1`, this will run Cake and it will go through the build script.
-  ```
+
+  ```ps1
   ./build.ps1
   ```
+
+#### Branding Parameters
+
+The build now supports company branding profiles through Cake arguments.
+
+* Default profile is `semight` (no extra arguments required).
+* Supported `companyProfile` values: `semight`, `nexustest`.
+* Package id defaults to `instr-pkgmgr`.
+* Optional `packagePrefix` can be used for future id split (for example: `semight-instr-pkgmgr`).
+* Default package version uses stable `Major.Minor.Patch` and does not follow branch prerelease label.
+* Optional `packageVersion` can be used to set an explicit package version.
+* Optional `useBranchPackageVersion=true` restores the old branch-derived prerelease package version behavior.
+
+Examples:
+
+```ps1
+./build.ps1 --companyProfile=semight
+./build.ps1 --companyProfile=nexustest
+./build.ps1 --companyProfile=semight --packagePrefix=semight
+./build.ps1 --companyProfile=semight --packageVersion=3.0.2
+./build.ps1 --companyProfile=semight --useBranchPackageVersion=true
+```
+
+#### Version and Release Notes Ownership
+
+* Version rules are maintained in `GitVersion.yml`.
+* Release notes are maintained by the team in `CHANGELOG.md`.
+* Package metadata `releaseNotes` is injected from `CHANGELOG.md` during packaging.
+* `chocolateyInstall.ps1` package display name is profile-driven during packaging (semight/nexustest) without changing source script signatures.
 
 ### Localization
 

@@ -14,5 +14,6 @@
     "transifexrc",
     "uninstall",
     "wixtoolset"
-  ]
+  ],
+  "xml.format.maxLineWidth": 0
 }

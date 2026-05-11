@@ -112,6 +112,20 @@ There are some barebones Pester tests used to test the very basic functionalitie
 
 It is **not currently** expected that these Pester tests are run before submitting a PR. Their purpose at the moment is to establish a base to build upon.
 
+### Branding and Release Maintenance
+
+This repository supports branding-aware builds from a single pipeline.
+
+ * Build profile argument: `--companyProfile=semight|nexustest` (default is `semight`).
+ * Package id defaults to `instr-pkgmgr`.
+ * Optional id prefix is available through `--packagePrefix=<prefix>` for future split packaging.
+
+Version and release notes are team-maintained:
+
+ * Update version strategy and baseline in `GitVersion.yml`.
+ * Update release notes in `CHANGELOG.md` for each release.
+ * Keep package metadata release notes aligned with repository-maintained release notes.
+
 ### Debugging with Chocolatey library information
 
 In order to debug Chocolatey GUI, you need Chocolatey.Lib referenced in the project to match the Chocolatey version installed locally on your system. The easiest way to do this is to run `./Update-DebugConfiguration.ps1` from the root of the repository.

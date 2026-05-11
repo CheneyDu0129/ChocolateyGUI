@@ -10,13 +10,16 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Input;
+using System.Xml.Linq;
 using AutoMapper;
 using Caliburn.Micro;
+using chocolatey;
 using ChocolateyGui.Common.Base;
 using ChocolateyGui.Common.Enums;
 using ChocolateyGui.Common.Models;
@@ -53,9 +56,9 @@ namespace ChocolateyGui.Common.Windows.ViewModels
         private string _searchQuery;
         private bool _showOnlyPackagesWithUpdate;
         private bool _isShowOnlyPackagesWithUpdateEnabled;
-        private bool _showOnlyProvidedPackages;
-        private readonly HashSet<string> _providedPackageSources = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-        private readonly HashSet<string> _providedPackageSourceHosts = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        private bool _showOnlyProvidedPackages = true;
+        private const string ProvidedPackagesWhitelistPath = @"C:\ProgramData\Semight Instruments\chocogui-packages-whitelist.xml";
+        private readonly HashSet<string> _providedPackageIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         private string _sortColumn;
         private bool _sortDescending;
         private bool _isLoading;
@@ -467,26 +470,10 @@ namespace ChocolateyGui.Common.Windows.ViewModels
 
             IsLoading = true;
             IsShowOnlyPackagesWithUpdateEnabled = false;
-            _providedPackageSources.Clear();
-            _providedPackageSourceHosts.Clear();
- 
-             var providedSources = await _chocolateyService.GetSources();
-             foreach (var source in providedSources.Where(source => !source.Disabled && IsProvidedSource(source)))
-             {
-                 Uri sourceUri;
-                 if (Uri.TryCreate(source.Value, UriKind.Absolute, out sourceUri))
-                 {
-                     _providedPackageSources.Add(NormalizeSource(sourceUri));
- 
-                    if (!sourceUri.IsFile && !string.IsNullOrWhiteSpace(sourceUri.Host))
-                    {
-                        _providedPackageSourceHosts.Add(sourceUri.Host);
-                    }
-                 }
-             }
- 
-             _packages.Clear();
-             Packages.Clear();
+            LoadProvidedPackageWhitelist();
+
+            _packages.Clear();
+            Packages.Clear();
 
             var packages = (await _chocolateyService.GetInstalledPackages())
                 .Select(Mapper.Map<IPackageViewModel>).ToList();
@@ -501,7 +488,42 @@ namespace ChocolateyGui.Common.Windows.ViewModels
 
             await CheckOutdated(false);
         }
- 
+
+        private void LoadProvidedPackageWhitelist()
+        {
+            _providedPackageIds.Clear();
+
+            try
+            {
+                if (!File.Exists(ProvidedPackagesWhitelistPath))
+                {
+                    return;
+                }
+
+                var doc = XDocument.Load(ProvidedPackagesWhitelistPath);
+                if (doc.Root == null)
+                {
+                    return;
+                }
+
+                var packageIds = doc.Descendants()
+                    .Select(node =>
+                        node.Attribute("Id")?.Value
+                        ?? node.Attribute("PackageId")?.Value
+                        ?? (string.Equals(node.Name.LocalName, "Package", StringComparison.OrdinalIgnoreCase) ? node.Value : null))
+                    .Where(id => !string.IsNullOrWhiteSpace(id))
+                    .Select(id => id.Trim());
+
+                foreach (var packageId in packageIds)
+                {
+                    _providedPackageIds.Add(packageId);
+                }
+            }
+            catch
+            {
+            }
+        }
+
         private static bool IsProvidedSource(ChocolateySource source)
         {
             if (source == null)
@@ -520,36 +542,12 @@ namespace ChocolateyGui.Common.Windows.ViewModels
 
         private bool IsFromProvidedSource(IPackageViewModel package)
         {
-            if (package == null)
+            if (package == null || string.IsNullOrWhiteSpace(package.Id))
             {
                 return false;
             }
 
-            // Installed package metadata may not always include source.
-            // Do not hide such packages to avoid empty lists.
-            if (package.Source == null)
-            {
-                return true;
-            }
-
-            // If no configured provided source could be normalized, keep package visible.
-            if (_providedPackageSources.Count == 0 && _providedPackageSourceHosts.Count == 0)
-            {
-                return true;
-            }
- 
-            var normalizedSource = NormalizeSource(package.Source);
-            if (_providedPackageSources.Contains(normalizedSource))
-            {
-                return true;
-            }
- 
-            if (!package.Source.IsFile && !string.IsNullOrWhiteSpace(package.Source.Host))
-            {
-                return _providedPackageSourceHosts.Contains(package.Source.Host);
-            }
- 
-            return false;
+            return _providedPackageIds.Contains(package.Id);
         }
 
         private static string NormalizeSource(Uri source)

@@ -22,7 +22,11 @@ namespace ChocolateyGui.Common.Services
 
         public string DisplayVersion
         {
-            get { return string.Format("{0} v{1}", "Instrument Package Manager", Version); }
+            get
+            {
+                var productName = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyProductAttribute>()?.Product ?? "Instrument Package Manager";
+                return string.Format("{0} v{1}", productName, Version);
+            }
         }
     }
 }
