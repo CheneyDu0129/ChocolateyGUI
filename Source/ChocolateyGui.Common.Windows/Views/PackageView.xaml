@@ -226,19 +226,26 @@
                        Target="{Binding ElementName=Version}" />
                 <Grid>
                     <ComboBox x:Name="Version"
-                              MinWidth="180"
-                              IsEnabled="{Binding AvailableVersions.IsSuccessfullyCompleted}"
-                              ItemsSource="{Binding AvailableVersions.Result, Mode=OneWay}"
-                              SelectedItem="{Binding SelectedVersion, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                              IsEditable="True" />
+                               MinWidth="180"
+                               IsEnabled="{Binding AvailableVersions.IsSuccessfullyCompleted}"
+                               ItemsSource="{Binding AvailableVersions.Result, Mode=OneWay}"
+                               SelectedItem="{Binding SelectedVersion, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                               IsEditable="True" />
+                    <mah:ProgressRing Width="16"
+                                       Height="16"
+                                       IsActive="{Binding AvailableVersions.IsNotCompleted}"
+                                       IsLarge="False"
+                                       HorizontalAlignment="Left"
+                                       VerticalAlignment="Center"
+                                       Margin="5 0 0 0" />
                     <mah:ProgressRing Width="16"
                                       Height="16"
-                                      IsActive="{Binding AvailableVersions.IsNotCompleted}"
+                                      IsActive="{Binding IsRefreshingSelectedVersionDetails}"
                                       IsLarge="False"
-                                      HorizontalAlignment="Left"
+                                      HorizontalAlignment="Right"
                                       VerticalAlignment="Center"
-                                      Margin="5 0 0 0" />
-                </Grid>
+                                      Margin="0 0 5 0" />
+                 </Grid>
 
                 <CheckBox Margin="0 8 0 0"
                           VerticalAlignment="Center"
@@ -246,6 +253,12 @@
                           ToolTip="{lang:Localize AdvancedChocolateyDialog_IncludePreRelease_ToolTip}"
                           IsEnabled="{Binding AvailableVersions.IsSuccessfullyCompleted}"
                           IsChecked="{Binding IncludePreRelease}" />
+
+                <TextBlock Margin="0 8 0 0"
+                           Foreground="OrangeRed"
+                           TextWrapping="Wrap"
+                           Text="{Binding SourceRefreshError}"
+                           Visibility="{Binding SourceRefreshError, Converter={StaticResource NullToVisibility}}" />
 
                 <Label Style="{StaticResource PackageResourceLabel}" Content="{lang:Localize PackageView_Downloads}"
                        Target="{Binding ElementName=VersionDownloadCount}"
@@ -313,7 +326,7 @@
                            Foreground="{DynamicResource {x:Static theming:ChocolateyBrushes.PreReleaseForegroundKey}}"
                            Visibility="{Binding IsPrerelease, Converter={StaticResource BoolToVis}}"/>
                 <TextBlock Style="{StaticResource StatusBadgeStyle}"
-                           Text="{lang:Localize PackagesView_Installed}"
+                           Text="{Binding InstalledBadgeText}"
                            Background="{DynamicResource {x:Static theming:ChocolateyBrushes.IsInstalledKey}}"
                            Foreground="{DynamicResource {x:Static theming:ChocolateyBrushes.IsInstalledForegroundKey}}">
                     <TextBlock.Visibility>

@@ -23,7 +23,7 @@ namespace ChocolateyGui.Common.Services
 
         Task<PackageResults> Search(string query, PackageSearchOptions options);
 
-        Task<Package> GetByVersionAndIdAsync(string id, string version, bool isPrerelease);
+        Task<Package> GetByVersionAndIdAsync(string id, string version, bool isPrerelease, Uri source = null);
 
         Task<List<NuGetVersion>> GetAvailableVersionsForPackageIdAsync(string id, int page, int pageSize, bool includePreRelease, Uri source = null);
 

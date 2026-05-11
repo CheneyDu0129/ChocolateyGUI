@@ -120,6 +120,9 @@ namespace ChocolateyGui.Common.Windows.ViewModels.Items
         private bool _availableVersionsLoaded;
         private bool _availableVersionsLoading;
         private bool _includePreRelease = true;
+        private bool _isSourceAvailable = true;
+        private string _sourceRefreshError;
+        private bool _isRefreshingSelectedVersionDetails;
 
         public PackageViewModel(
             IChocolateyService chocolateyService,
@@ -166,11 +169,11 @@ namespace ChocolateyGui.Common.Windows.ViewModels.Items
 
         public bool CanInstall => !IsInstalled;
 
-        public bool IsInstallAllowed => _allowedCommandsService.IsInstallCommandAllowed;
+        public bool IsInstallAllowed => _allowedCommandsService.IsInstallCommandAllowed && IsSourceAvailable;
 
         public bool CanReinstall => IsInstalled;
 
-        public bool IsReinstallAllowed => _allowedCommandsService.IsInstallCommandAllowed;
+        public bool IsReinstallAllowed => _allowedCommandsService.IsInstallCommandAllowed && IsSourceAvailable;
 
         public bool CanUninstall => IsInstalled;
 
@@ -247,6 +250,7 @@ namespace ChocolateyGui.Common.Windows.ViewModels.Items
                 if (SetPropertyValue(ref _isInstalled, value))
                 {
                     NotifyPropertyChanged(nameof(CanUpdate));
+                    NotifyPropertyChanged(nameof(InstalledBadgeText));
                 }
             }
         }
@@ -394,6 +398,8 @@ namespace ChocolateyGui.Common.Windows.ViewModels.Items
                 {
                     SelectedVersion = value.ToNormalizedStringChecked();
                 }
+
+                NotifyPropertyChanged(nameof(InstalledBadgeText));
             }
         }
 
@@ -406,7 +412,35 @@ namespace ChocolateyGui.Common.Windows.ViewModels.Items
         public string SelectedVersion
         {
             get { return _selectedVersion; }
-            set { SetPropertyValue(ref _selectedVersion, value); }
+            set
+            {
+                if (SetPropertyValue(ref _selectedVersion, value))
+                {
+                    NotifyPropertyChanged(nameof(InstalledBadgeText));
+                    RefreshSelectedVersionDetails();
+                }
+            }
+        }
+
+        public string InstalledBadgeText
+        {
+            get
+            {
+                var installedText = L(nameof(Resources.PackagesView_Installed));
+                var installedVersion = Version?.ToNormalizedStringChecked();
+
+                if (!IsInstalled || string.IsNullOrWhiteSpace(installedVersion) || string.IsNullOrWhiteSpace(SelectedVersion))
+                {
+                    return installedText;
+                }
+
+                if (string.Equals(SelectedVersion, installedVersion, StringComparison.OrdinalIgnoreCase))
+                {
+                    return installedText;
+                }
+
+                return $"{installedText}: {installedVersion}";
+            }
         }
 
         public bool IncludePreRelease
@@ -419,6 +453,31 @@ namespace ChocolateyGui.Common.Windows.ViewModels.Items
                     EnsureAvailableVersionsLoaded(true);
                 }
             }
+        }
+
+        public bool IsSourceAvailable
+        {
+            get { return _isSourceAvailable; }
+            private set
+            {
+                if (SetPropertyValue(ref _isSourceAvailable, value))
+                {
+                    NotifyPropertyChanged(nameof(IsInstallAllowed));
+                    NotifyPropertyChanged(nameof(IsReinstallAllowed));
+                }
+            }
+        }
+
+        public string SourceRefreshError
+        {
+            get { return _sourceRefreshError; }
+            private set { SetPropertyValue(ref _sourceRefreshError, value); }
+        }
+
+        public bool IsRefreshingSelectedVersionDetails
+        {
+            get { return _isRefreshingSelectedVersionDetails; }
+            private set { SetPropertyValue(ref _isRefreshingSelectedVersionDetails, value); }
         }
 
         public long VersionDownloadCount
@@ -461,11 +520,27 @@ namespace ChocolateyGui.Common.Windows.ViewModels.Items
 
         public async Task Install()
         {
+            if (!IsSourceAvailable)
+            {
+                await _dialogService.ShowMessageAsync(
+                    L(nameof(Resources.RemoteSourceViewModel_FailedToLoad)),
+                    SourceRefreshError ?? L(nameof(Resources.RemoteSourceViewModel_UnableToConnectToFeed), Source));
+                return;
+            }
+
             await InstallPackage(GetInstallVersion());
         }
 
         public async Task InstallAdvanced()
         {
+            if (!IsSourceAvailable)
+            {
+                await _dialogService.ShowMessageAsync(
+                    L(nameof(Resources.RemoteSourceViewModel_FailedToLoad)),
+                    SourceRefreshError ?? L(nameof(Resources.RemoteSourceViewModel_UnableToConnectToFeed), Source));
+                return;
+            }
+
             var dataContext = new AdvancedInstallViewModel(_chocolateyService, _persistenceService, Id, Version, Source);
 
             var result = await _dialogService.ShowChildWindowAsync<AdvancedInstallViewModel, AdvancedInstallViewModel>(
@@ -489,6 +564,14 @@ namespace ChocolateyGui.Common.Windows.ViewModels.Items
 
         public async Task Reinstall()
         {
+            if (!IsSourceAvailable)
+            {
+                await _dialogService.ShowMessageAsync(
+                    L(nameof(Resources.RemoteSourceViewModel_FailedToLoad)),
+                    SourceRefreshError ?? L(nameof(Resources.RemoteSourceViewModel_UnableToConnectToFeed), Source));
+                return;
+            }
+
             try
             {
                 var confirmationResult = MessageDialogResult.Affirmative;
@@ -501,11 +584,13 @@ namespace ChocolateyGui.Common.Windows.ViewModels.Items
 
                 if (confirmationResult == MessageDialogResult.Affirmative)
                 {
+                    var reinstallVersion = GetInstallVersion();
+
                     using (await StartProgressDialog(L(nameof(Resources.PackageViewModel_ReinstallingPackage)), L(nameof(Resources.PackageViewModel_ReinstallingPackage)), Id))
                     {
-                        await _chocolateyService.InstallPackage(Id, Version.ToNormalizedStringChecked(), Source, true);
+                        await _chocolateyService.InstallPackage(Id, reinstallVersion, Source, true);
                         _chocolateyGuiCacheService.PurgeOutdatedPackages();
-                        await _eventAggregator.PublishOnUIThreadAsync(new PackageChangedMessage(Id, PackageChangeType.Installed, Version));
+                        _eventAggregator.BeginPublishOnUIThread(new PackageChangedMessage(Id, PackageChangeType.Installed, Version));
                     }
                 }
             }
@@ -813,6 +898,80 @@ namespace ChocolateyGui.Common.Windows.ViewModels.Items
             return SelectedVersion;
         }
 
+        private void RefreshSelectedVersionDetails()
+        {
+#pragma warning disable 4014
+            RefreshSelectedVersionDetailsAsync();
+#pragma warning restore 4014
+        }
+
+        private async Task RefreshSelectedVersionDetailsAsync()
+        {
+            if (_isRefreshingSelectedVersionDetails || string.IsNullOrWhiteSpace(SelectedVersion))
+            {
+                return;
+            }
+
+            if (string.Equals(SelectedVersion, Resources.AdvancedChocolateyDialog_LatestVersion, StringComparison.OrdinalIgnoreCase))
+            {
+                return;
+            }
+
+            NuGetVersion selectedVersion;
+            if (!NuGetVersion.TryParse(SelectedVersion, out _))
+            {
+                return;
+            }
+
+            IsRefreshingSelectedVersionDetails = true;
+
+            try
+            {
+                var package = await _chocolateyService.GetByVersionAndIdAsync(Id, SelectedVersion, IncludePreRelease, Source);
+                if (package != null)
+                {
+                    Authors = package.Authors;
+                    Copyright = package.Copyright;
+                    Dependencies = package.Dependencies;
+                    Description = package.Description;
+                    DownloadCount = package.DownloadCount;
+                    GalleryDetailsUrl = package.GalleryDetailsUrl;
+                    IconUrl = package.IconUrl;
+                    Language = package.Language;
+                    LicenseUrl = package.LicenseUrl;
+                    Owners = package.Owners;
+                    PackageHash = package.PackageHash;
+                    PackageHashAlgorithm = package.PackageHashAlgorithm;
+                    PackageSize = package.PackageSize;
+                    ProjectUrl = package.ProjectUrl;
+                    Published = package.Published;
+                    ReleaseNotes = package.ReleaseNotes;
+                    ReportAbuseUrl = package.ReportAbuseUrl;
+                    RequireLicenseAcceptance = package.RequireLicenseAcceptance;
+                    Summary = package.Summary;
+                    Tags = package.Tags;
+                    Title = package.Title;
+                    VersionDownloadCount = package.VersionDownloadCount;
+                    IsPrerelease = package.IsPrerelease;
+                    NotifyPropertyChanged(nameof(IsDownloadCountAvailable));
+                    NotifyPropertyChanged(nameof(IsPackageSizeAvailable));
+                }
+
+                IsSourceAvailable = true;
+                SourceRefreshError = null;
+            }
+            catch (Exception ex)
+            {
+                IsSourceAvailable = false;
+                SourceRefreshError = L(nameof(Resources.RemoteSourceViewModel_UnableToConnectToFeed), Source?.ToString() ?? string.Empty);
+                Logger.Warning(ex, "Unable to refresh package details for {Id}, version {Version}, from {Source}.", Id, SelectedVersion, Source);
+            }
+            finally
+            {
+                IsRefreshingSelectedVersionDetails = false;
+            }
+        }
+
         private void EnsureAvailableVersionsLoaded(bool forceReload = false)
         {
             if (_availableVersionsLoading)
@@ -858,10 +1017,14 @@ namespace ChocolateyGui.Common.Windows.ViewModels.Items
                 }
 
                 loadedFromSource = true;
+                IsSourceAvailable = true;
+                SourceRefreshError = null;
             }
-            catch
+            catch (Exception ex)
             {
-                // Ignore errors when fetching versions
+                IsSourceAvailable = false;
+                SourceRefreshError = L(nameof(Resources.RemoteSourceViewModel_UnableToConnectToFeed), Source?.ToString() ?? string.Empty);
+                Logger.Warning(ex, "Unable to refresh package versions for {Id} from {Source}.", Id, Source);
             }
             finally
             {

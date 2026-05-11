@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Sockets;
 using System.Threading.Tasks;
 using AutoMapper;
 using chocolatey;
@@ -280,6 +281,27 @@ namespace ChocolateyGui.Common.Windows.Services
 
         public async Task<PackageResults> Search(string query, PackageSearchOptions options)
         {
+            var sources = options.Source;
+            if (string.IsNullOrWhiteSpace(sources))
+            {
+                sources = string.Join(";", _configSettingsService.ListSources(_choco.GetConfiguration())
+                    .Select(s => s.Value)
+                    .Where(s => !string.IsNullOrWhiteSpace(s)));
+            }
+
+            if (!string.IsNullOrWhiteSpace(sources))
+            {
+                sources = await GetReachableSourcesAsync(sources);
+                if (string.IsNullOrWhiteSpace(sources))
+                {
+                    return new PackageResults
+                    {
+                        Packages = Array.Empty<Package>(),
+                        TotalCount = 0
+                    };
+                }
+            }
+
             _choco.Set(
                 config =>
                     {
@@ -296,9 +318,9 @@ namespace ChocolateyGui.Common.Windows.Services
                                                                    || options.SortColumn == "DownloadCount";
                         }
                         config.ListCommand.Exact = options.MatchQuery;
-                        if (!string.IsNullOrWhiteSpace(options.Source))
+                        if (!string.IsNullOrWhiteSpace(sources))
                         {
-                            config.Sources = options.Source;
+                            config.Sources = sources;
                         }
 #if !DEBUG
                         config.Verbose = false;
@@ -316,7 +338,7 @@ namespace ChocolateyGui.Common.Windows.Services
             };
         }
 
-        public async Task<Package> GetByVersionAndIdAsync(string id, string version, bool isPrerelease)
+        public async Task<Package> GetByVersionAndIdAsync(string id, string version, bool isPrerelease, Uri source = null)
         {
             _choco.Set(
                 config =>
@@ -325,8 +347,14 @@ namespace ChocolateyGui.Common.Windows.Services
                     config.Input = id;
                     config.ListCommand.Exact = true;
                     config.Version = version;
+                    config.Prerelease = isPrerelease;
                     config.QuietOutput = true;
                     config.RegularOutput = false;
+
+                    if (source != null)
+                    {
+                        config.Sources = source.ToString();
+                    }
 #if !DEBUG
                     config.Verbose = false;
 #endif // DEBUG
@@ -350,6 +378,16 @@ namespace ChocolateyGui.Common.Windows.Services
         {
             using (await Lock.WriteLockAsync())
             {
+                string sourceValue = null;
+                if (source != null)
+                {
+                    sourceValue = await GetReachableSourcesAsync(source.ToString());
+                    if (string.IsNullOrWhiteSpace(sourceValue))
+                    {
+                        return new List<NuGetVersion>();
+                    }
+                }
+
                 _choco.Set(
                     config =>
                     {
@@ -363,9 +401,9 @@ namespace ChocolateyGui.Common.Windows.Services
                         config.QuietOutput = true;
                         config.RegularOutput = false;
 
-                        if (source != null)
+                        if (!string.IsNullOrWhiteSpace(sourceValue))
                         {
-                            config.Sources = source.ToString();
+                            config.Sources = sourceValue;
                         }
 #if !DEBUG
                                     config.Verbose = false;
@@ -788,6 +826,68 @@ namespace ChocolateyGui.Common.Windows.Services
                 await Task.Run(
                     () => xmlService.Deserialize<ConfigFileSettings>(chocolatey.infrastructure.app.ApplicationParameters.GlobalConfigFileLocation));
             return config;
+        }
+
+        private async Task<string> GetReachableSourcesAsync(string sources)
+        {
+            var sourceValues = sources.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries)
+                .Select(s => s.Trim())
+                .Where(s => !string.IsNullOrWhiteSpace(s))
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .ToArray();
+
+            var checks = await Task.WhenAll(sourceValues.Select(async s => new
+            {
+                Source = s,
+                Reachable = await IsSourceReachableAsync(s)
+            }));
+
+            return string.Join(";", checks.Where(c => c.Reachable).Select(c => c.Source));
+        }
+
+        private static async Task<bool> IsSourceReachableAsync(string source)
+        {
+            Uri uri;
+            if (!Uri.TryCreate(source, UriKind.Absolute, out uri))
+            {
+                return true;
+            }
+
+            if (uri.IsFile)
+            {
+                return true;
+            }
+
+            if (uri.Scheme != Uri.UriSchemeHttp && uri.Scheme != Uri.UriSchemeHttps)
+            {
+                return true;
+            }
+
+            var port = uri.IsDefaultPort
+                ? (uri.Scheme == Uri.UriSchemeHttps ? 443 : 80)
+                : uri.Port;
+
+            try
+            {
+                using (var client = new TcpClient())
+                {
+                    var connectTask = client.ConnectAsync(uri.Host, port);
+                    var timeoutTask = Task.Delay(TimeSpan.FromMilliseconds(1200));
+                    var completedTask = await Task.WhenAny(connectTask, timeoutTask);
+
+                    if (completedTask != connectTask)
+                    {
+                        return false;
+                    }
+
+                    await connectTask;
+                    return client.Connected;
+                }
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }
