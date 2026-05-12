@@ -11,7 +11,6 @@ namespace ChocolateyGui.UITests.Screens
 {
     public class MainScreen : ChocolateyGuiBaseScreen
     {
-
         public MainScreen(FrameworkAutomationElementBase frameworkAutomationElement)
             : base(frameworkAutomationElement)
         {
@@ -19,7 +18,7 @@ namespace ChocolateyGui.UITests.Screens
 
         public AboutScreen OpenAndGetAboutScreen()
         {
-            var aboutButton = FindFirstDescendant(cf => cf.ByAutomationId(AutomationIds.SHOW_ABOUT)).AsButton();
+            var aboutButton = FindFirstDescendant(cf => cf.ByAutomationId(AutomationIds.SHOW_ABOUT_BUTTON)).AsButton();
             aboutButton.Click();
 
             // Do a retry to wait for the window
@@ -36,7 +35,7 @@ namespace ChocolateyGui.UITests.Screens
 
         public SettingsScreen OpenAndGetSettingsScreen()
         {
-            var settingsButton = FindFirstDescendant(cf => cf.ByAutomationId(AutomationIds.SHOW_SETTINGS)).AsButton();
+            var settingsButton = FindFirstDescendant(cf => cf.ByAutomationId(AutomationIds.SHOW_SETTINGS_BUTTON)).AsButton();
             settingsButton.Click();
 
             // Do a retry to wait for the window
@@ -68,9 +67,7 @@ namespace ChocolateyGui.UITests.Screens
                     ThrowOnTimeout = true,
                     TimeoutMessage = "Failed to find remote source screen"
                 }).As<RemoteSourceScreen>();
-
         }
-
 
         public void WaitForDialog()
         {

@@ -47,7 +47,7 @@ namespace ChocolateyGui.UITests
             targetPackage.Click();
             Thread.Sleep(100); // Without waiting, sometimes this fails...
             targetPackage.DoubleClick();
-            var versionItem = MainScreen.FindFirstDescendant(cf => cf.ByAutomationId("Version"));
+            var versionItem = MainScreen.FindFirstDescendant(cf => cf.ByAutomationId(AutomationIds.VERSION_TEXT));
 
             Assert.That(string.Equals(LATEST_STABLE_VERSION, versionItem.Name));
         }
@@ -66,11 +66,10 @@ namespace ChocolateyGui.UITests
             targetPackage.Click();
             Thread.Sleep(100);
             targetPackage.DoubleClick();
-            var versionItem = MainScreen.FindFirstDescendant(cf => cf.ByAutomationId("Version"));
+            var versionItem = MainScreen.FindFirstDescendant(cf => cf.ByAutomationId(AutomationIds.VERSION_TEXT));
 
             Assert.That(string.Equals(LATEST_BETA_VERSION, versionItem.Name));
         }
-
 
         [Test]
         public void RemoteScreenFindsAllStableVersionsOfDesiredPackage()
@@ -86,7 +85,7 @@ namespace ChocolateyGui.UITests
             targetPackage.Click();
             Thread.Sleep(100);
             targetPackage.DoubleClick();
-            var versionItem = MainScreen.FindFirstDescendant(cf => cf.ByAutomationId("Version"));
+            var versionItem = MainScreen.FindFirstDescendant(cf => cf.ByAutomationId(AutomationIds.VERSION_TEXT));
 
             Assert.That(string.Equals(LATEST_STABLE_VERSION, versionItem.Name));
         }
@@ -108,7 +107,7 @@ namespace ChocolateyGui.UITests
             targetPackage.Click();
             Thread.Sleep(100);
             targetPackage.DoubleClick();
-            var versionItem = MainScreen.FindFirstDescendant(cf => cf.ByAutomationId("Version"));
+            var versionItem = MainScreen.FindFirstDescendant(cf => cf.ByAutomationId(AutomationIds.VERSION_TEXT));
 
             Assert.That(string.Equals(LATEST_BETA_VERSION, versionItem.Name));
         }

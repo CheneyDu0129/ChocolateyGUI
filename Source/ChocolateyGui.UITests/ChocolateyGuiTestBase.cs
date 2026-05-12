@@ -18,8 +18,8 @@ namespace ChocolateyGui.UITests
 
         protected override Application StartApplication()
         {
-            var mine = TestContext.CurrentContext.TestDirectory.Replace(".UITests", "");
-            var application = Application.Launch(System.IO.Path.Combine(mine, "ChocolateyGUI.exe"));
+            var testDirectory = TestContext.CurrentContext.TestDirectory.Replace(".UITests", "");
+            var application = Application.Launch(System.IO.Path.Combine(testDirectory, "ChocolateyGUI.exe"));
 
             var window = Retry.Find(
                 () => application.GetMainWindow(Automation).FindFirstDescendant(cf => cf.ByAutomationId("PART_TitleBar")),

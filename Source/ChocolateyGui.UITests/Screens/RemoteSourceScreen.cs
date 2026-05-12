@@ -19,7 +19,7 @@ namespace ChocolateyGui.UITests.Screens
 
         public PackageDetailsScreen GetPackageDetailsScreen(string packageTitle)
         {
-            var packagesListView = this.Parent.FindFirstDescendant(cf => cf.ByAutomationId("Packages"));
+            var packagesListView = this.Parent.FindFirstDescendant(cf => cf.ByAutomationId(AutomationIds.PACKAGES_LIST));
             var adobeReaderListItem = FindItemByTextBlockName(packagesListView, packageTitle);
             adobeReaderListItem.AsListBoxItem().Click();
             adobeReaderListItem.AsListBoxItem().DoubleClick();
@@ -47,7 +47,7 @@ namespace ChocolateyGui.UITests.Screens
         public AutomationElement[] GetPackageList()
         {
             return Parent
-                .FindFirstDescendant(cf => cf.ByAutomationId("Packages"))
+                .FindFirstDescendant(cf => cf.ByAutomationId(AutomationIds.PACKAGES_LIST))
                 .FindAllDescendants(cf => cf.ByControlType(ControlType.ListItem));
         }
     }

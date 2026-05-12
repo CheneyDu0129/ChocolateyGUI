@@ -10,6 +10,6 @@ namespace ChocolateyGui.UITests.Screens
         {
         }
 
-        public Button BackButton => this.Parent.FindFirstDescendant(cf => cf.ByAutomationId("Back")).AsButton();
+        public Button BackButton => this.Parent.FindFirstDescendant(cf => cf.ByAutomationId(AutomationIds.BACK_BUTTON)).AsButton();
     }
 }
