@@ -7,6 +7,7 @@
 
 using System;
 using chocolatey.infrastructure.filesystem;
+using ChocolateyGui.Common.Constants;
 
 namespace ChocolateyGui.Common.Services
 {
@@ -22,7 +23,10 @@ namespace ChocolateyGui.Common.Services
             _fileStorageService = fileStorageService;
             _fileSystem = fileSystem;
 
-            _localAppDataPath = _fileSystem.CombinePaths(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData, Environment.SpecialFolderOption.DoNotVerify), "Chocolatey GUI");
+            _localAppDataPath = _fileSystem.CombinePaths(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData, Environment.SpecialFolderOption.DoNotVerify),
+                BrandingConstants.CompanyDirectoryName,
+                BrandingConstants.ProductDirectoryName);
         }
 
         public void PurgeIcons()

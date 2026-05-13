@@ -1,9 +1,7 @@
 {
-    "name": "Chocolatey GUI",
+    "name": "Semight Instrument Package Manager",
     "isPrivate": false,
-    "link": "https://github.com/chocolatey/ChocolateyGUI",
     "licenseName": "LICENSE.txt",
-    "licenseLink": "https://github.com/chocolatey/ChocolateyGUI/blob/master/LICENSE.txt",
     "version": "3.0.0",
     "dependencies": [
         {

@@ -5,9 +5,11 @@ $fileLocation = Join-Path $toolsDir 'ChocolateyGUI.msi'
 if(!$PSScriptRoot){ $PSScriptRoot = Split-Path $MyInvocation.MyCommand.Path -Parent }
 . "$PSScriptRoot\helper.ps1"
 
+$softwareName = if ($env:ChocolateyPackageTitle) { $env:ChocolateyPackageTitle } else { $env:ChocolateyPackageName }
+
 $packageArgs = @{
   packageName   = $env:ChocolateyPackageName
-  softwareName  = 'Chocolatey GUI'
+  softwareName  = $softwareName
   file          = $fileLocation
   fileType      = 'msi'
   silentArgs    = "/qn /norestart /l*v `"$env:TEMP\$env:ChocolateyPackageName.$env:ChocolateyPackageVersion.log`""
@@ -21,8 +23,8 @@ Remove-Item -Force $packageArgs.file
 $installDirectory = Get-AppInstallLocation $packageArgs.softwareName
 
 if ($installDirectory) {
-  Install-BinFile -Name "chocolateygui" -Path "$installDirectory\ChocolateyGui.exe" -UseStart
-  Install-BinFile -Name "chocolateyguicli" -Path "$installDirectory\ChocolateyGuiCli.exe"
+  Install-BinFile -Name "$env:ChocolateyPackageName" -Path "$installDirectory\ChocolateyGui.exe" -UseStart
+  Install-BinFile -Name "$env:ChocolateyPackageName-cli" -Path "$installDirectory\ChocolateyGuiCli.exe"
 }
 
 Update-SessionEnvironment

@@ -1,1 +1,2 @@
-﻿Chocolatey GUI is from Chocolatey Software, and we maintain the package.
+﻿This package is a customized distribution maintained by the package publisher.
+It is based on upstream open source components and includes the required license notices in the legal folder.

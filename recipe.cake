@@ -134,7 +134,7 @@ Func<FilePathCollection> getMsisToSign = () =>
 
 var companyProfile = Argument("companyProfile", "semight");
 var packagePrefix = Argument("packagePrefix", string.Empty);
-var packageVersionOverride = Argument("packageVersion", string.Empty);
+var packageVersionOverride = Argument("packageVersion", "1.0.0");
 var useBranchPackageVersion = Argument("useBranchPackageVersion", false);
 
 var supportedCompanyProfiles = new[] { "semight", "nexustest" };
@@ -149,11 +149,12 @@ if (companyProfile.Equals("nexustest", StringComparison.OrdinalIgnoreCase))
     companyName = "Nexustest";
 }
 
-var packageDisplayName = string.Format("{0} Package Manager", companyName);
+var packageDisplayName = "Package Manager";
 var packageId = string.IsNullOrWhiteSpace(packagePrefix)
     ? "instr-pkgmgr"
     : string.Format("{0}-instr-pkgmgr", packagePrefix.ToLowerInvariant());
 var releaseNotesSourcePath = MakeAbsolute(File("./CHANGELOG.md")).FullPath;
+var packageCopyright = string.Format("Copyright 2014 - Present Open Source maintainers and {0}.", companyName);
 
 Func<string, string> getReleaseNotesContent = targetVersion =>
 {
@@ -250,6 +251,8 @@ Func<string> resolvePackageVersion = () =>
     return BuildParameters.Version?.MajorMinorPatch;
 };
 
+string originalPackageVersionForChocolatey = null;
+
 TaskSetup(taskSetupContext =>
 {
     if (!string.Equals(taskSetupContext.Task.Name, "Create-Chocolatey-Packages", StringComparison.OrdinalIgnoreCase))
@@ -258,6 +261,11 @@ TaskSetup(taskSetupContext =>
     }
 
     var effectivePackageVersion = resolvePackageVersion();
+    if (originalPackageVersionForChocolatey == null)
+    {
+        originalPackageVersionForChocolatey = BuildParameters.Version?.PackageVersion;
+    }
+
     if (!string.IsNullOrWhiteSpace(effectivePackageVersion)
         && !string.Equals(BuildParameters.Version?.PackageVersion, effectivePackageVersion, StringComparison.OrdinalIgnoreCase))
     {
@@ -274,17 +282,57 @@ TaskSetup(taskSetupContext =>
             .Replace("__PACKAGE_TITLE__", packageDisplayName)
             .Replace("__PACKAGE_AUTHORS__", companyName)
             .Replace("__PACKAGE_OWNERS__", companyName)
+            .Replace("__PACKAGE_COPYRIGHT__", packageCopyright)
             .Replace("__RELEASE_NOTES__", getReleaseNotesContent(BuildParameters.Version.PackageVersion));
         System.IO.File.WriteAllText(nuspecFile.FullPath, nuspecContent);
+    }
+
+    var creditsMarkdownPath = MakeAbsolute(File("./CREDITS.md")).FullPath;
+    if (System.IO.File.Exists(creditsMarkdownPath))
+    {
+        var creditsMarkdownContent = System.IO.File.ReadAllText(creditsMarkdownPath);
+        creditsMarkdownContent = creditsMarkdownContent
+            .Replace("__PRODUCT_NAME__", packageDisplayName);
+        System.IO.File.WriteAllText(creditsMarkdownPath, creditsMarkdownContent);
+    }
+
+    var creditsJsonPath = MakeAbsolute(File("./CREDITS.json")).FullPath;
+    if (System.IO.File.Exists(creditsJsonPath))
+    {
+        var creditsJsonContent = System.IO.File.ReadAllText(creditsJsonPath);
+        creditsJsonContent = creditsJsonContent
+            .Replace("__PRODUCT_NAME__", packageDisplayName);
+        System.IO.File.WriteAllText(creditsJsonPath, creditsJsonContent);
     }
 
     var installScriptPath = BuildParameters.Paths.Directories.ChocolateyNuspecDirectory.CombineWithFilePath("chocolateyInstall.ps1").FullPath;
     if (System.IO.File.Exists(installScriptPath))
     {
         var installScriptContent = System.IO.File.ReadAllText(installScriptPath);
-        installScriptContent = installScriptContent.Replace("'Chocolatey GUI'", string.Format("'{0}'", packageDisplayName));
+        installScriptContent = installScriptContent.Replace("$env:ChocolateyPackageName", string.Format("'{0}'", packageDisplayName));
         System.IO.File.WriteAllText(installScriptPath, installScriptContent);
     }
+});
+
+TaskTeardown(taskTeardownContext =>
+{
+    if (!string.Equals(taskTeardownContext.Task.Name, "Create-Chocolatey-Packages", StringComparison.OrdinalIgnoreCase))
+    {
+        return;
+    }
+
+    if (string.IsNullOrWhiteSpace(originalPackageVersionForChocolatey))
+    {
+        return;
+    }
+
+    if (string.Equals(BuildParameters.Version?.PackageVersion, originalPackageVersionForChocolatey, StringComparison.OrdinalIgnoreCase))
+    {
+        return;
+    }
+
+    Information("Restoring package version back to '{0}' for subsequent packaging tasks.", originalPackageVersionForChocolatey);
+    setBuildVersionProperty("PackageVersion", originalPackageVersionForChocolatey);
 });
 
 BuildParameters.SetParameters(context: Context,

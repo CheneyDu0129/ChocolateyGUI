@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "skills": {
+    "opensource-guide-coach": {
+      "source": "xixu-me/skills",
+      "sourceType": "github",
+      "skillPath": "skills/opensource-guide-coach/SKILL.md",
+      "computedHash": "720db6b59f331be3bcabbf9082bbae9d2eb7d63483db7001578aa105a4d87985"
+    }
+  }
+}

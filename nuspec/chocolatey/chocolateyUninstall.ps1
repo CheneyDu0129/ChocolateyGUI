@@ -1,5 +1,5 @@
-Uninstall-BinFile -Name "chocolateygui"
-Uninstall-BinFile -Name "chocolateyguicli"
+Uninstall-BinFile -Name "$env:ChocolateyPackageName"
+Uninstall-BinFile -Name "$env:ChocolateyPackageName-cli"
 # SIG # Begin signature block
 # MIInKwYJKoZIhvcNAQcCoIInHDCCJxgCAQExDzANBglghkgBZQMEAgEFADB5Bgor
 # BgEEAYI3AgEEoGswaTA0BgorBgEEAYI3AgEeMCYCAwEAAAQQH8w7YFlLCE63JNLG

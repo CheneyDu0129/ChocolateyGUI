@@ -1,37 +1,34 @@
-# Chocolatey GUI
+# Package Manager
 
-Chocolatey GUI is a user interface for [Chocolatey](http://chocolatey.org) (the Machine Package Manager for Windows).
+This repository contains a company-branded package manager distribution based on upstream Chocolatey GUI.
+It is intended for customized redistribution and internal or commercial deployment by the current package publisher.
 
 ## Installation
 
-You can install Chocolatey GUI via Chocolatey itself by executing:
+The default package id produced by this fork is `instr-pkgmgr`.
+Install the published package provided by your package publisher or internal repository:
 
-```choco install ChocolateyGUI```
+```powershell
+choco install instr-pkgmgr
+```
 
-## Build Status
+If your organization uses a branded package prefix, install the published package id that matches that branding profile.
 
-| GitHub Action                                                                                                                                                                                                  |
-|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/chocolatey/ChocolateyGUI/Build/develop?logo=github)](https://github.com/chocolatey/ChocolateyGUI/actions/workflows/build.yml)  |
+## Support
 
-
-## Chat Room
-
-Come join in the conversation about Chocolatey GUI in our Community Chat Room
-
-[![Discord](https://img.shields.io/discord/778552361454141460?logo=Discord)](https://ch0.co/community)
-
-Or, you can find us in IRC at #chocolatey.
+For support, documentation, and issue reporting, use the support channel operated by the publisher of this distribution.
+Do not report issues for this fork to upstream Chocolatey community channels unless the problem is confirmed to exist in the upstream project itself.
 
 ## Information
 
-* [Chocolatey Community Repository](https://community.chocolatey.org)
-* [Chocolatey Documentation](https://docs.chocolatey.org)
-* [Twitter](https://twitter.com/chocolateynuget)
+* Upstream project history and attribution are retained in [ABOUT.md](ABOUT.md).
+* Contribution expectations for this fork are described in [CONTRIBUTING.md](CONTRIBUTING.md).
+* Third-party licenses and redistribution notices are listed in [CREDITS.md](CREDITS.md).
 
 ### Documentation
 
-You can find information about Chocolatey GUI here: [https://docs.chocolatey.org/en-us/chocolatey-gui/](https://docs.chocolatey.org/en-us/chocolatey-gui/)
+Publisher-specific documentation should be distributed together with the package or maintained in the repository that publishes this fork.
+Upstream Chocolatey GUI documentation can still be useful for historical reference, but it does not describe support obligations for this distribution.
 
 ### Requirements
 
@@ -40,33 +37,34 @@ You can find information about Chocolatey GUI here: [https://docs.chocolatey.org
 
 ### License / Credits
 
-Apache 2.0 - see [LICENSE](https://github.com/chocolatey/chocolateygui/blob/develop/LICENSE.txt) and [NOTICE](https://github.com/chocolatey/chocolateygui/blob/develop/NOTICE) files.
+This distribution includes upstream open source components and local modifications.
+See [LICENSE.txt](LICENSE.txt), [NOTICE](NOTICE), and [CREDITS.md](CREDITS.md) for the applicable license and attribution information.
 
 ## Submitting Issues
 
-If you have found an issue with Chocolatey GUI, this is the place to submit.
+If you have found an issue in this distribution, report it to the current package publisher or the repository that distributes this fork.
 
 Observe the following help for submitting an issue:
 
 Prerequisites:
 
-* The issue has to do with Chocolatey GUI itself and is not a package or website issue.
+* The issue has to do with this distribution itself and is not just a packaging or environment-specific deployment issue.
 * Please check to see if your issue already exists with a quick search of the issues. Start with one relevant term and then add if you get too many results.
-* You are not submitting an Enhancement. Enhancements should observe [CONTRIBUTING](https://github.com/chocolatey/chocolateygui/blob/develop/CONTRIBUTING.md) guidelines.
+* Enhancements and code contributions should observe the guidance in [CONTRIBUTING.md](CONTRIBUTING.md).
 
 Submitting a ticket:
 
 * We'll need debug and verbose output, so please run and capture the log with `-dv` or `--debug --verbose`. You can submit that with the issue or create a gist and link it.
-* **Please note** that the debug/verbose output for some commands may have sensitive data (passwords or apiKeys) related to Chocolatey, so please remove those if they are there prior to submitting the issue.
+* **Please note** that the debug/verbose output for some commands may contain sensitive data such as passwords or apiKeys, so remove those before sharing logs.
 * choco.exe logs to a file in `$env:ChocolateyInstall\log\`. You can grab the specific log output from there so you don't have to capture or redirect screen output. Please limit the amount included to just the command run (the log is appended to with every command).
-* Please save the log output in a [gist](https://gist.github.com) (save the file as `log.sh`) and link to the gist from the issue. Feel free to create it as secret so it doesn't fill up against your public gists. Anyone with a direct link can still get to secret gists. If you accidentally include secret information in your gist, please delete it and create a new one (gist history can be seen by anyone) and update the link in the ticket (issue history is not retained except by email - deleting the gist ensures that no one can get to it). Using gists this way also keeps accidental secrets from being shared in the ticket in the first place as well.
+* Save the log output in the issue system accepted by your publisher. If you use a gist or similar sharing mechanism, make sure the log does not contain secrets.
 * We'll need the entire log output from the run, so please don't limit it down to areas you feel are relevant. You may miss some important details we'll need to know. This will help expedite issue triage.
 * It's helpful to include the version of choco, the version of the OS, and the version of PowerShell (Posh), but the debug script should capture all of those pieces of information.
 * Include screenshots and/or animated gif's whenever possible, they help show us exactly what the problem is.
 
 ## Contributing
 
-If you would like to contribute code or help squash a bug or two, that's awesome. Please familiarize yourself with [CONTRIBUTING](https://github.com/chocolatey/chocolateygui/blob/develop/CONTRIBUTING.md).
+If you would like to contribute code or help fix bugs in this fork, please review [CONTRIBUTING.md](CONTRIBUTING.md) for the current maintainer workflow.
 
 ### Building
 
@@ -74,14 +72,15 @@ If you would like to contribute code or help squash a bug or two, that's awesome
 * `choco install wixtoolset -y`
 * **Add By DU JIAWEI**: `Install-Module -Name ConvertToSARIF -RequiredVersion 1.0.0 -SkipPublisherCheck -Force -Scope CurrentUser`
 * **OPTIONAL:** Set `FXCOPDIR` environment variable, which can be set using [vswhere](https://chocolatey.org/packages/vswhere) and the following command:
-   
+
    ```ps1
    $FXCOPDIR = vswhere -products * -latest -prerelease -find **/FxCopCmd.exe
    [Environment]::SetEnvironmentVariable("FXCOPDIR", $FXCOPDIR, 'User')
    refreshenv
    ```
+
 * Install WiX toolset integration for Visual Studio from [WiX Toolset Visual Studio 2019 Extension](https://marketplace.visualstudio.com/items?itemName=WixToolset.WixToolsetVisualStudio2019Extension)
-* From an **Administrative** PowerShell Window, navigate to the folder where you have cloned the Chocolatey GUI repository and run `build.ps1`, this will run Cake and it will go through the build script.
+* From an **Administrative** PowerShell Window, navigate to the folder where you have cloned this repository and run `build.ps1`, this will run Cake and it will go through the build script.
 
   ```ps1
   ./build.ps1
@@ -95,9 +94,40 @@ The build now supports company branding profiles through Cake arguments.
 * Supported `companyProfile` values: `semight`, `nexustest`.
 * Package id defaults to `instr-pkgmgr`.
 * Optional `packagePrefix` can be used for future id split (for example: `semight-instr-pkgmgr`).
-* Default package version uses stable `Major.Minor.Patch` and does not follow branch prerelease label.
-* Optional `packageVersion` can be used to set an explicit package version.
-* Optional `useBranchPackageVersion=true` restores the old branch-derived prerelease package version behavior.
+* Chocolatey package (`instr-pkgmgr`) defaults to version `1.0.0`.
+* Optional `packageVersion` sets an explicit Chocolatey package version (recommended release form: `./build.ps1 --companyProfile=semight --packageVersion=xxx`).
+* Optional `useBranchPackageVersion=true` uses the branch-derived prerelease version for the Chocolatey package.
+* NuGet packages (`ChocolateyGui.Common*`) continue to use the GitVersion-calculated version.
+
+#### Company Rename Checklist
+
+If you need to change the company name (for example, from `Semight Instruments` to another organization), use the checklist below to avoid path or packaging mismatches.
+
+1. Runtime path constants (single source of truth)
+  - Update `CompanyDirectoryName` (and `ProductDirectoryName` when needed) in `Source/ChocolateyGui.Common/Constants/BrandingConstants.cs`.
+  - This controls runtime `ProgramData` and `LocalAppData` path segments used by both GUI and CLI.
+
+2. MSI installer directory variables
+  - Update `CompanyDirectoryName` and `ProductDirectoryName` in `Source/ChocolateyGui.Install/Product.wxs`.
+  - This controls installer-created folders under:
+    - `C:\ProgramData\<CompanyDirectoryName>\<ProductDirectoryName>\Config`
+    - `%LOCALAPPDATA%\<CompanyDirectoryName>\<ProductDirectoryName>`
+    - `C:\<CompanyDirectoryName>\<ProductDirectoryName>` (current install root strategy)
+
+3. Product display metadata (if brand text changes)
+  - Update `ProductName` and `Manufacturer` in `Source/ChocolateyGui.Install/Product.wxs`.
+  - Update assembly metadata in `Source/SolutionVersion.cs` when required.
+
+4. Packaging/company profile metadata
+  - Check company profile mapping in `recipe.cake` (`companyProfile`, `companyName`, `packageDisplayName`, `packageId`).
+  - Build with the target profile and verify generated package id/title.
+
+5. Documentation and legal artifacts
+  - Review `README.md`, `ABOUT.md`, `CONTRIBUTING.md`, `CREDITS.md`, and `CREDITS.json` for visible company naming.
+
+6. Final validation after rename
+  - Run `./build.ps1 --companyProfile=<target>`.
+  - Verify installed paths, ARP display name/manufacturer, and CLI shim command names.
 
 Examples:
 
@@ -105,7 +135,7 @@ Examples:
 ./build.ps1 --companyProfile=semight
 ./build.ps1 --companyProfile=nexustest
 ./build.ps1 --companyProfile=semight --packagePrefix=semight
-./build.ps1 --companyProfile=semight --packageVersion=3.0.2
+./build.ps1 --companyProfile=semight --packageVersion=xxx
 ./build.ps1 --companyProfile=semight --useBranchPackageVersion=true
 ```
 
@@ -118,21 +148,19 @@ Examples:
 
 ### Localization
 
-If you are interested in helping with the effort in translating the various portions of the Chocolatey GUI UI into different languages, you can find out more about using the [transifex](https://www.transifex.com/) service in this [how to article](https://docs.chocolatey.org/en-us/chocolatey-gui/localization).
+If you are interested in localizing this distribution, follow the localization workflow defined by the current maintainer team.
 
 ## Committers
 
-Committers, you should be very familiar with [COMMITTERS](https://github.com/chocolatey/chocolateygui/blob/develop/COMMITTERS.md).
+Committers should follow the maintainer guidance and release process defined for this fork.
 
-## Features:
+## Features
 
 * View all **installed** and **available** packages
 * **Update** installed but outdated packages
 * **Install** and **uninstall** packages
 * See detailed **package information**
 
-![Chocolatey GUI](https://github.com/chocolatey/ChocolateyGUI/blob/10809890189206cece4b64ab038f33d11cf7b840/docs/Screenshots/Application_Loaded.png)
-
 ## Credits
 
-Chocolatey GUI is brought to you by quite a few people and frameworks. See [CREDITS](https://github.com/chocolatey/chocolateygui/blob/develop/CREDITS.md) (just CREDITS.md in the zip folder)
+This distribution depends on a number of upstream projects and libraries. See [CREDITS.md](CREDITS.md) for the full attribution list.

@@ -1,31 +1,28 @@
 Contributors
 ============
 
-Submitting an Issue? See the [Submitting Issues](https://github.com/chocolatey/chocolateygui#submitting-issues) section in the README.
+Submitting an issue? See the local README for the current fork support and issue-reporting guidance.
 
 The process for contributions is roughly as follows:
 
 ## Prerequisites
 
- * Ensure you have signed the Contributor License Agreement (CLA) - without this we are not able to take contributions that are not trivial.
-  * [Sign the Contributor License Agreement.](https://cla-assistant.io/chocolatey/ChocolateyGUI)
-  * You must do this for each Chocolatey project that requires it.
-  * If you are curious why we would require a CLA, we agree with Julien Ponge - take a look at his [post](https://julien.ponge.org/blog/in-defense-of-contributor-license-agreements/).
+ * Ensure you have completed any contributor agreement or internal approval process required by the current maintainer team before submitting non-trivial changes.
 
 ## Contributing Process
 
 ### Get Buyoff Or Find Open Community Issues/Features
 
- * Through [GitHub discussions](https://github.com/chocolatey/ChocolateyGUI/discussions) you talk about a feature you would like to see (or a bug), and why it should be in Chocolatey GUI.
- * If approved, ensure the accompanying [GitHub issue](https://github.com/chocolatey/ChocolateyGUI/issues) is created with information and a link back to the GitHub discussion.
- * Once you get a nod from one of the [Chocolatey Team](https://github.com/chocolatey?tab=members), you can start on the feature.
- * Alternatively, if a feature is on the issues list with the [community tag](https://github.com/chocolatey/chocolateygui/labels/Community), it is open for a patch. You should comment that you are signing up for it on the issue so someone else doesn't also sign up for the work.
+ * Discuss the feature or bug with the current maintainer team through the workflow used by this fork.
+ * If approved, ensure the accompanying issue is created with the necessary context and linked discussion.
+ * Once you receive maintainer approval, you can start work on the feature.
+ * If a feature is already marked as available for contribution, comment on the issue so work is not duplicated.
 
 ### Set Up Your Environment
 
- * You create, or update, a fork of chocolatey/chocolateygui under your GitHub account.
- * Clone the forked repo to your computer. `git clone https://github.com/your-github/ChocolateyGUI.git`
- * Set the remote upstream. `git remote add upstream https://github.com/chocolatey/ChocolateyGUI.git`
+ * Create or update a working branch from the repository maintained by the current publisher.
+ * Clone the repository to your computer using the repository URL provided by the maintainer team.
+ * If you also track the original upstream project, keep that remote clearly separated from the maintained fork.
  * From there you create a branch named specific to the feature. `git checkout -b feature-name`
  * In the branch you do work specific to the feature.
  * Please also observe the following:
@@ -80,10 +77,10 @@ Prerequisites:
 
 Submitting PR:
 
- * Once you feel it is ready, submit the pull request to the `chocolatey/chocolateygui` repository against the ````develop```` branch ([more information on this can be found here](https://help.github.com/articles/creating-a-pull-request)).
+ * Once you feel it is ready, submit the pull request to the repository maintained for this fork against the branch required by the current maintainer workflow.
  * In the pull request, outline what you did and point to specific conversations (as in URLs) and issues that you are are resolving. This is a tremendous help for us in evaluation and acceptance.
  * Once the pull request is in, please do not delete the branch or close the pull request (unless something is wrong with it).
- * One of the Chocolatey Team members, or one of the committers, will evaluate it within a reasonable time period (which is to say usually within 2-4 weeks). Some things get evaluated faster or fast tracked. We are human and we have active lives outside of open source so don't fret if you haven't seen any activity on your pull request within a month or two. We don't have a Service Level Agreement (SLA) for pull requests. Just know that we will evaluate your pull request.
+ * One of the maintainers or committers for this fork will evaluate it within a reasonable time period. Some things get evaluated faster or fast tracked. We do not commit to a formal SLA for pull requests.
 
 ### Respond to Feedback on Pull Request
 
@@ -93,13 +90,13 @@ If we have comments or questions when we do evaluate it and receive no response,
 
 Sometimes we may need you to rebase your commit against the latest code before we can review it further. If this happens, you can do the following:
 
- * `git fetch upstream` (upstream would be the mainstream repo or `chocolatey/chocolateygui` in this case)
+ * `git fetch upstream` (if you keep a separate remote for the original upstream project)
  * `git checkout develop`
  * `git rebase upstream/develop`
  * `git checkout your-branch`
  * `git rebase develop`
  * Fix any merge conflicts
- * `git push origin your-branch` (origin would be your GitHub repo or `your-github-username/chocolateygui` in this case). You may need to `git push origin your-branch --force` to get the commits pushed. This is generally acceptable with topic branches not in the mainstream repository.
+ * `git push origin your-branch` and, if required by your workflow, `git push origin your-branch --force` for topic branches under your control.
 
 The only reasons a pull request should be closed and resubmitted are as follows:
 
@@ -128,7 +125,7 @@ Version and release notes are team-maintained:
 
 ### Debugging with Chocolatey library information
 
-In order to debug Chocolatey GUI, you need Chocolatey.Lib referenced in the project to match the Chocolatey version installed locally on your system. The easiest way to do this is to run `./Update-DebugConfiguration.ps1` from the root of the repository.
+In order to debug this distribution, you need Chocolatey.Lib referenced in the project to match the Chocolatey version installed locally on your system. The easiest way to do this is to run `./Update-DebugConfiguration.ps1` from the root of the repository.
 
 > :warning: **NOTE**
 >
@@ -138,6 +135,6 @@ In order to debug Chocolatey GUI, you need Chocolatey.Lib referenced in the proj
 
 ## Other General Information
 
-If you reformat code or hit core functionality without an approval from a person on the Chocolatey Team, it's likely that no matter how awesome it looks afterwards, it will probably not get accepted. Reformatting code makes it harder for us to evaluate exactly what was changed.
+If you reformat code or change core functionality without maintainer approval, it is much less likely to be accepted. Reformatting code makes it harder to evaluate exactly what changed.
 
 If you follow the guidelines we have above it will make evaluation and acceptance easy. If you stray from them it doesn't mean we are going to ignore your pull request, but it will make things harder for us. Harder for us roughly translates to a longer SLA for your pull request.

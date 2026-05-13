@@ -1,15 +1,16 @@
-## History
+# About This Distribution
 
-Chocolatey GUI, formerly known as Chocolatey Explorer or Chocolatey PackageManager, was originally created by [Christiaan Baes](https://twitter.com/chrissie1).  For information about the original version, you can see the following blog posts:
+## Attribution
 
-* [All new Chocolatey GUI](http://blogs.lessthandot.com/index.php/SysAdmins/OS/Windows/all-new-chocolateygui/)
-* [Making a chocolatey package for Chocolatey GUI](http://blogs.lessthandot.com/index.php/DesktopDev/MSTech/making-a-chocolatey-package/)
-* [Chocolatey GUI](http://blogs.lessthandot.com/index.php/DesktopDev/MSTech/chocolatey-gui/)
+This distribution is based on the upstream Chocolatey GUI project and includes local modifications for branded redistribution.
+Upstream project history and original contributor attribution are preserved in this repository to satisfy open source license obligations.
 
-In 2013, Christiaan handed over maintainance of Chocolatey GUI to [Gary Ewan Park](http://www.gep13.co.uk/about/), who later, under the supervision of [Rob Reynolds](https://twitter.com/ferventcoder) (creator of [Chocolatey](https://chocolatey.org/)), brought the application under the main Chocolatey Organisation on [GitHub](https://github.com/chocolatey).
+## Scope
 
-Since then, with a set of major contributions from [Richard Simpson](https://twitter.com/richardsimp), Chocolatey GUI has changed from a Windows Forms application to a WPF application, with a much richer User Interface.
+This repository is maintained as a customized distribution for internal or commercial release by the current package publisher.
+It is not an official support channel for upstream Chocolatey GUI.
 
 ## Support
 
-If you have any questions, comments, concerns, or problems with Chocolatey GUI, please feel free to get in touch with us.  The best starting place would be our [Community Chat Room](https://ch0.co/community), and from there, you may be directed to raise an issue on our [Issues List](https://github.com/chocolatey/ChocolateyGUI/issues).
+For questions, issues, and release support, contact the maintainer team or support channel provided by the current package publisher.
+Use upstream community channels only when an issue is confirmed to reproduce on upstream Chocolatey GUI independently of this fork.

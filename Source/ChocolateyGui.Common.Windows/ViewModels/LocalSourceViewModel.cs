@@ -21,6 +21,7 @@ using AutoMapper;
 using Caliburn.Micro;
 using chocolatey;
 using ChocolateyGui.Common.Base;
+using ChocolateyGui.Common.Constants;
 using ChocolateyGui.Common.Enums;
 using ChocolateyGui.Common.Models;
 using ChocolateyGui.Common.Models.Messages;
@@ -57,7 +58,10 @@ namespace ChocolateyGui.Common.Windows.ViewModels
         private bool _showOnlyPackagesWithUpdate;
         private bool _isShowOnlyPackagesWithUpdateEnabled;
         private bool _showOnlyProvidedPackages = true;
-        private const string ProvidedPackagesWhitelistPath = @"C:\ProgramData\Semight Instruments\chocogui-packages-whitelist.xml";
+        private static readonly string ProvidedPackagesWhitelistPath = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData, Environment.SpecialFolderOption.DoNotVerify),
+            BrandingConstants.CompanyDirectoryName,
+            "chocogui-packages-whitelist.xml");
         private readonly HashSet<string> _providedPackageIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         private string _sortColumn;
         private bool _sortDescending;

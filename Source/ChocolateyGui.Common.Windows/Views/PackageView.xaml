@@ -230,7 +230,7 @@
                                IsEnabled="{Binding AvailableVersions.IsSuccessfullyCompleted}"
                                ItemsSource="{Binding AvailableVersions.Result, Mode=OneWay}"
                                SelectedItem="{Binding SelectedVersion, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                               IsEditable="True" />
+                               IsEditable="False" />
                     <mah:ProgressRing Width="16"
                                        Height="16"
                                        IsActive="{Binding AvailableVersions.IsNotCompleted}"

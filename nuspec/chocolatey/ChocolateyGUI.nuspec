@@ -6,14 +6,8 @@
     <title>__PACKAGE_TITLE__</title>
     <authors>__PACKAGE_AUTHORS__</authors>
     <owners>__PACKAGE_OWNERS__</owners>
-    <projectUrl>https://github.com/chocolatey/ChocolateyGUI</projectUrl>
-    <projectSourceUrl>https://github.com/chocolatey/ChocolateyGUI</projectSourceUrl>
-    <packageSourceUrl>https://github.com/chocolatey/ChocolateyGUI/tree/develop/nuspec/chocolatey</packageSourceUrl>
-    <iconUrl>https://img.chocolatey.org/nupkg/chocolateyicon.png</iconUrl>
-    <licenseUrl>https://raw.githubusercontent.com/chocolatey/ChocolateyGUI/develop/LICENSE.txt</licenseUrl>
-    <bugTrackerUrl>https://github.com/chocolatey/ChocolateyGUI/issues</bugTrackerUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <copyright>2017-2023 Chocolatey Software, Inc</copyright>
+    <copyright>__PACKAGE_COPYRIGHT__</copyright>
     <description>
       Package Manager is the company package management tool, providing a GUI on top of the Chocolatey command-line tool.
     </description>
@@ -34,6 +28,7 @@
     <file src="helper.ps1" target="tools" />
     <file src="..\..\..\ChocolateyGUI.msi" target="tools" />
     <file src="..\..\..\..\LICENSE.txt" target="legal\LICENSE.txt" />
+    <file src="..\..\..\..\NOTICE" target="legal\NOTICE.txt" />
     <file src="..\..\..\..\CREDITS.md" target="legal\CREDITS.md" />
     <file src="..\..\..\..\CREDITS.json" target="legal\CREDITS.json" />
     <file src="..\..\..\..\CREDITS.pdf" target="legal\CREDITS.pdf" />

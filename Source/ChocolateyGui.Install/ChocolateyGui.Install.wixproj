@@ -24,13 +24,13 @@
     <OutputPath>..\..\code_drop\</OutputPath>
     <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
     <DefineConstants>Debug</DefineConstants>
-    <SuppressIces>ICE38;ICE43;ICE18;ICE61</SuppressIces>
+    <SuppressIces>ICE38;ICE43;ICE18;ICE61;ICE99</SuppressIces>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <OutputPath>..\..\code_drop\</OutputPath>
     <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
     <SuppressPdbOutput>True</SuppressPdbOutput>
-    <SuppressIces>ICE38;ICE43;ICE18;ICE61</SuppressIces>
+    <SuppressIces>ICE38;ICE43;ICE18;ICE61;ICE99</SuppressIces>
   </PropertyGroup>
   <PropertyGroup>
     <_GuiProjectFolder>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\..\ChocolateyGui'))</_GuiProjectFolder>
@@ -41,7 +41,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'ReleaseOfficial|x86' ">
     <SuppressPdbOutput>True</SuppressPdbOutput>
-    <SuppressIces>ICE38;ICE43;ICE18;ICE61</SuppressIces>
+    <SuppressIces>ICE38;ICE43;ICE18;ICE61;ICE99</SuppressIces>
     <OutputPath>bin\$(Platform)\$(Configuration)\</OutputPath>
     <IntermediateOutputPath>obj\$(Platform)\$(Configuration)\</IntermediateOutputPath>
   </PropertyGroup>
@@ -69,6 +69,7 @@
       <SuppressRootDirectory>True</SuppressRootDirectory>
       <SuppressRegistry>True</SuppressRegistry>
       <ComponentGroupName>ApplicationContent</ComponentGroupName>
+        <GenerateGuidsNow>True</GenerateGuidsNow>
       <PreprocessorVariable>var.GuiTargetDir</PreprocessorVariable>
       <Transforms>ApplicationContent.Transform.xsl</Transforms>
       <Link>$(Configuration)</Link>

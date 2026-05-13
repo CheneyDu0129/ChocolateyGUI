@@ -19,6 +19,7 @@ using chocolatey.infrastructure.app.nuget;
 using chocolatey.infrastructure.app.services;
 using chocolatey.infrastructure.results;
 using chocolatey.infrastructure.services;
+using ChocolateyGui.Common.Constants;
 using ChocolateyGui.Common.Models;
 using ChocolateyGui.Common.Properties;
 using ChocolateyGui.Common.Services;
@@ -60,7 +61,10 @@ namespace ChocolateyGui.Common.Windows.Services
             _configService = configService;
             _choco = Lets.GetChocolatey(initializeLogging: false).SetCustomLogging(new SerilogLogger(Logger, _progressService), logExistingMessages: false, addToExistingLoggers: true);
 
-            _localAppDataPath = _fileSystem.CombinePaths(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData, Environment.SpecialFolderOption.DoNotVerify), "Chocolatey GUI");
+            _localAppDataPath = _fileSystem.CombinePaths(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData, Environment.SpecialFolderOption.DoNotVerify),
+                BrandingConstants.CompanyDirectoryName,
+                BrandingConstants.ProductDirectoryName);
         }
 
         public Task<bool> IsElevated()

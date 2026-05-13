@@ -17,6 +17,7 @@ using AutoMapper;
 using Caliburn.Micro;
 using chocolatey;
 using chocolatey.infrastructure.filesystem;
+using ChocolateyGui.Common.Constants;
 using ChocolateyGui.Common.Models;
 using ChocolateyGui.Common.Properties;
 using ChocolateyGui.Common.Services;
@@ -74,7 +75,8 @@ namespace ChocolateyGui.Common.Windows
         public static readonly string UnofficialChocolateyGuiPublicKey = "ffc115b9f4eb5c26";
         public static readonly string OfficialChocolateyGuiPublicKey = "dfd1909b30b79d8b";
 
-        public static readonly string Name = "Chocolatey GUI";
+        public static readonly string CommonAppDataName = BrandingConstants.ProductPathName;
+        public static readonly string LocalAppDataName = BrandingConstants.ProductPathName;
 
         public static readonly string LicensedChocolateyGuiAssemblySimpleName = "chocolateygui.licensed";
 #pragma warning restore SA1202
@@ -94,9 +96,9 @@ namespace ChocolateyGui.Common.Windows
 
         public static string ApplicationFilesPath { get; } = Path.GetDirectoryName((Assembly.GetEntryAssembly() ?? Assembly.GetExecutingAssembly()).Location);
 
-        public static string AppDataPath { get; } = LogSetup.GetAppDataPath(Name);
+        public static string AppDataPath { get; } = LogSetup.GetAppDataPath(CommonAppDataName);
 
-        public static string LocalAppDataPath { get; } = LogSetup.GetLocalAppDataPath(Name);
+        public static string LocalAppDataPath { get; } = LogSetup.GetLocalAppDataPath(LocalAppDataName);
 
         public static string UserConfigurationDatabaseName { get; } = "UserDatabase";
 

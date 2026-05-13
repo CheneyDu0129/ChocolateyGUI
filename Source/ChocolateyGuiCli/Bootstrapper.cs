@@ -11,6 +11,7 @@ using System.Reflection;
 using Autofac;
 using chocolatey.infrastructure.filesystem;
 using ChocolateyGui.Common;
+using ChocolateyGui.Common.Constants;
 using ChocolateyGui.Common.Startup;
 using ChocolateyGui.Common.Utilities;
 using Serilog;
@@ -63,7 +64,8 @@ namespace ChocolateyGuiCli
         public static readonly string UnofficialChocolateyGuiPublicKey = "ffc115b9f4eb5c26";
         public static readonly string OfficialChocolateyGuiPublicKey = "dfd1909b30b79d8b";
 
-        public static readonly string Name = "Chocolatey GUI";
+        public static readonly string CommonAppDataName = BrandingConstants.ProductPathName;
+        public static readonly string LocalAppDataName = BrandingConstants.ProductPathName;
 
         public static readonly string LicensedChocolateyGuiAssemblySimpleName = "chocolateygui.licensed";
 #pragma warning restore SA1202
@@ -72,9 +74,9 @@ namespace ChocolateyGuiCli
 
         internal static IContainer Container { get; private set; }
 
-        internal static string AppDataPath { get; } = LogSetup.GetAppDataPath(Name);
+        internal static string AppDataPath { get; } = LogSetup.GetAppDataPath(CommonAppDataName);
 
-        internal static string LocalAppDataPath { get; } = LogSetup.GetLocalAppDataPath(Name);
+        internal static string LocalAppDataPath { get; } = LogSetup.GetLocalAppDataPath(LocalAppDataName);
 
         internal static string UserConfigurationDatabaseName { get; } = "UserDatabase";
 
