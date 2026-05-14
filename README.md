@@ -94,10 +94,9 @@ The build now supports company branding profiles through Cake arguments.
 * Supported `companyProfile` values: `semight`, `nexustest`.
 * Package id defaults to `instr-pkgmgr`.
 * Optional `packagePrefix` can be used for future id split (for example: `semight-instr-pkgmgr`).
-* Chocolatey package (`instr-pkgmgr`) defaults to version `1.0.0`.
-* Optional `packageVersion` sets an explicit Chocolatey package version (recommended release form: `./build.ps1 --companyProfile=semight --packageVersion=xxx`).
-* Optional `useBranchPackageVersion=true` uses the branch-derived prerelease version for the Chocolatey package.
-* NuGet packages (`ChocolateyGui.Common*`) continue to use the GitVersion-calculated version.
+* Default package version uses stable `Major.Minor.Patch` and does not follow branch prerelease label.
+* Optional `packageVersion` can be used to set an explicit package version.
+* Optional `useBranchPackageVersion=true` restores the old branch-derived prerelease package version behavior.
 
 #### Company Rename Checklist
 
@@ -135,7 +134,7 @@ Examples:
 ./build.ps1 --companyProfile=semight
 ./build.ps1 --companyProfile=nexustest
 ./build.ps1 --companyProfile=semight --packagePrefix=semight
-./build.ps1 --companyProfile=semight --packageVersion=xxx
+./build.ps1 --companyProfile=semight --packageVersion=3.0.2
 ./build.ps1 --companyProfile=semight --useBranchPackageVersion=true
 ```
 

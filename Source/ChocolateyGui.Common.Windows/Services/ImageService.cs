@@ -39,7 +39,7 @@ namespace ChocolateyGui.Common.Windows.Services
 
         public Uri ToolbarIconUri
         {
-            get { return new Uri("pack://application:,,,/chocolateyicon.ico"); }
+            get { return new Uri("pack://application:,,,/packagemanagericon.ico"); }
         }
     }
 }

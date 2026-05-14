@@ -66,7 +66,7 @@
     <NoWin32Manifest>true</NoWin32Manifest>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>chocolateyicon.ico</ApplicationIcon>
+    <ApplicationIcon>packagemanagericon.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup Condition="'$(CHOCOLATEYGUI_OFFICIAL_KEY)' == '' OR !Exists('$(CHOCOLATEYGUI_OFFICIAL_KEY')">
     <SignAssembly>true</SignAssembly>
@@ -135,7 +135,7 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="chocolateyicon.ico" />
+    <Resource Include="packagemanagericon.ico" />
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDictionary Include="..\CustomDictionary.xml">

@@ -36,7 +36,7 @@
     <MediaTemplate EmbedCab="yes" CompressionLevel="high" />
     <?endif?>
 
-    <Icon Id="icon.ico" SourceFile="$(var.GuiProjectFolder)\chocolateyicon.ico" />
+    <Icon Id="icon.ico" SourceFile="$(var.GuiProjectFolder)\packagemanagericon.ico" />
     <Property Id="ARPPRODUCTICON" Value="icon.ico" />
 
     <Feature Id="ProductFeature" Title="Semight Instrument Package Manager" Level="1">

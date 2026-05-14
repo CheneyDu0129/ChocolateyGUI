@@ -189,7 +189,7 @@
                         <mah:MetroHeader Header="{lang:Localize AdvancedChocolateyDialog_ExecutionTimeoutInSeconds_Header}" Tag="{lang:Localize AdvancedChocolateyDialog_ExecutionTimeoutInSeconds_ToolTip}" Visibility="Collapsed">
                             <mah:NumericUpDown Value="{Binding ExecutionTimeoutInSeconds}" />
                         </mah:MetroHeader>
-                        <mah:MetroHeader Header="{lang:Localize AdvancedChocolateyDialog_Forcex86_Header}" Tag="{lang:Localize AdvancedChocolateyDialog_Forcex86_ToolTip}" Visibility="{Binding Is32BitPlatform, Converter={StaticResource BooleanToVisibilityInverted}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:AdvancedInstallView}}}">
+                        <mah:MetroHeader Header="{lang:Localize AdvancedChocolateyDialog_Forcex86_Header}" Tag="{lang:Localize AdvancedChocolateyDialog_Forcex86_ToolTip}" Visibility="Collapsed">
                             <mah:ToggleSwitch VerticalAlignment="Center" IsOn="{Binding Forcex86}" x:Name="ForceX86Switch" />
                         </mah:MetroHeader>
                     </StackPanel>
@@ -219,7 +219,7 @@
                             <mah:MetroHeader Header="{lang:Localize AdvancedChocolateyDialog_IgnoreHttpCache_Header}" Tag="{lang:Localize AdvancedChocolateyDialog_IgnoreHttpCache_ToolTip}" Visibility="{Binding IgnoreHttpCacheIsAvailable, Converter={StaticResource BooleanToVisibilty}}">
                                 <mah:ToggleSwitch VerticalAlignment="Center" IsOn="{Binding IgnoreHttpCache}" />
                             </mah:MetroHeader>
-                            <mah:MetroHeader Header="{lang:Localize AdvancedChocolateyDialog_OverrideArguments_Header}" Tag="{lang:Localize AdvancedChocolateyDialog_OverrideArguments_ToolTip}">
+                            <mah:MetroHeader Header="{lang:Localize AdvancedChocolateyDialog_OverrideArguments_Header}" Tag="{lang:Localize AdvancedChocolateyDialog_OverrideArguments_ToolTip}" Visibility="Collapsed">
                                 <mah:ToggleSwitch VerticalAlignment="Center" IsOn="{Binding OverrideArguments}">
                                     <mah:ToggleSwitch.IsEnabled>
                                         <MultiBinding Converter="{StaticResource BooleanInverter}">
@@ -239,7 +239,7 @@
                                     </mah:ToggleSwitch.IsEnabled>
                                 </mah:ToggleSwitch>
                             </mah:MetroHeader>
-                            <mah:MetroHeader Header="{lang:Localize AdvancedChocolateyDialog_AllowDowngrade_Header}" Tag="{lang:Localize AdvancedChocolateyDialog_AllowDowngrade_ToolTip}">
+                            <mah:MetroHeader Header="{lang:Localize AdvancedChocolateyDialog_AllowDowngrade_Header}" Tag="{lang:Localize AdvancedChocolateyDialog_AllowDowngrade_ToolTip}" Visibility="Collapsed">
                                 <mah:ToggleSwitch VerticalAlignment="Center" IsOn="{Binding AllowDowngrade}" />
                             </mah:MetroHeader>
                             <mah:MetroHeader Header="{lang:Localize AdvancedChocolateyDialog_SkipPowerShell_Header}" Tag="{lang:Localize AdvancedChocolateyDialog_SkipPowerShell_ToolTip}" Visibility="Collapsed">
