@@ -1,8 +1,9 @@
 {
-    "name": "Semight Instrument Package Manager",
+    "name": "Chocolatey GUI",
     "isPrivate": false,
+    "link": "https://github.com/chocolatey/ChocolateyGUI",
     "licenseName": "LICENSE.txt",
-    "version": "3.0.0",
+    "licenseLink": "https://github.com/chocolatey/ChocolateyGUI/blob/master/LICENSE.txt",
     "dependencies": [
         {
             "name": "Autofac",
@@ -60,6 +61,18 @@
                 {
                     "type": "MIT",
                     "link": "https://github.com/litedb-org/LiteDB/blob/84065086a8e8716063b255d0abb332708d0b2ad3/LICENSE",
+                    "name": "LICENSE"
+                }
+            ]
+        },
+        {
+            "name": "log4net",
+            "link": "https://github.com/apache/logging-log4net",
+            "version": "rel/3.3.1",
+            "licenses": [
+                {
+                    "type": "Apache-2.0",
+                    "link": "https://github.com/apache/logging-log4net/blob/7fcc7f425b81b9df7c8a8719ed90953b938cd10e/LICENSE",
                     "name": "LICENSE"
                 }
             ]

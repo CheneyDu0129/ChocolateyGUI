@@ -1,21 +1,72 @@
-# Semight Instrument Package Manager Third Party Licenses
+<img alt="Chocolatey logo" width="260" style="margin-right: 1rem;" src="https://img.chocolatey.org/logos/chocolatey.png"> <img alt="Chocolatey icon logo" width="200" src="https://img.chocolatey.org/logos/chocolatey-icon.png">
+
+# Chocolatey GUI Third Party Licenses
 
 ---
 
-This distribution uses a number of 3rd party components. Their details are below.
-
-Quick navigation:
+Chocolatey uses a number of 3rd party components. Their details are below.
 
 * [Open Source License Types (Reference)](#open-source-license-types-reference)
-* [Upstream Component Licenses](#upstream-component-licenses)
+  * [Apache v2.0 License](#apache-v20-license)
+  * [BSD-3-Clause](#bsd-3-clause)
+  * [MIT License](#mit-license)
+* [Chocolatey Software Component License](#chocolatey-software-component-licenses)
+  * [Chocolatey Open Source](#chocolatey-open-source)
 * [Chocolatey CLI / Chocolatey.Lib](#chocolatey-cli--chocolateylib)
-* [Package Manager](#package-manager)
+  * [Apache v2.0 License](#apache-v20-license-1)
+    * [Checksum@0.3.1](#checksum031)
+    * [Chocolatey.NuGet.Client@3.5.0](#chocolateynugetclient350)
+    * [log4net@rel/3.3.1](#log4netrel331)
+  * [BSD-3-Clause](#bsd-3-clause-1)
+    * [Rhino.Licensing@1.4.1](#rhinolicensing141)
+  * [MIT License](#mit-license-1)
+    * [AlphaFS@v2.2.6](#alphafsv226)
+    * [Microsoft.Bcl.HashCode@v6.0.0](#microsoftbclhashcodev600)
+    * [SimpleInjector@v5.5.0](#simpleinjectorv550)
+    * [System.Reactive@rxnet-v6.1.0](#systemreactiverxnet-v610)
+  * [Other](#other)
+    * [7-Zip@26.00](#7-zip2600)
+    * [Shim Generator (shimgen)@2.0.0](#shim-generator-\(shimgen\)200)
+* [Chocolatey GUI](#chocolatey-gui)
+  * [Apache v2.0 License](#apache-v20-license-2)
+    * [Chocolatey CLI / Chocolatey.Lib@2.7.0](#chocolatey-cli--chocolateylib270)
+    * [log4net@rel/3.3.1](#log4netrel331-1)
+    * [Serilog@v4.3.0](#serilogv430)
+    * [Serilog.Formatting.Compact@v3.0.0](#serilogformattingcompactv300)
+    * [Serilog.Sinks.Async@v2.1.0](#serilogsinksasyncv210)
+    * [Serilog.Sinks.Console@v6.1.1](#serilogsinksconsolev611)
+    * [Serilog.Sinks.PeriodicBatching@v5.0.0](#serilogsinksperiodicbatchingv500)
+    * [Serilog.Sinks.RollingFile@3.3.0](#serilogsinksrollingfile330)
+  * [BSD-3-Clause](#bsd-3-clause-2)
+    * [Markdig.Signed@0.23.0](#markdigsigned0230)
+  * [MIT License](#mit-license-2)
+    * [Autofac@4.6.1](#autofac461)
+    * [AutoMapper@7.0.1](#automapper701)
+    * [Caliburn.Micro@3.2.0](#caliburnmicro320)
+    * [LiteDB@v5.0.21](#litedbv5021)
+    * [MahApps.Metro@2.4.11](#mahappsmetro2411)
+    * [MahApps.Metro.IconPacks.BoxIcons@6.2.1](#mahappsmetroiconpacksboxicons621)
+    * [MahApps.Metro.IconPacks.Entypo@6.2.1](#mahappsmetroiconpacksentypo621)
+    * [MahApps.Metro.IconPacks.FontAwesome@6.2.1](#mahappsmetroiconpacksfontawesome621)
+    * [MahApps.Metro.IconPacks.Modern@6.2.1](#mahappsmetroiconpacksmodern621)
+    * [MahApps.Metro.IconPacks.Octicons@6.2.1](#mahappsmetroiconpacksocticons621)
+    * [MahApps.Metro.SimpleChildWindow@2.2.1](#mahappsmetrosimplechildwindow221)
+    * [Markdig.Wpf.Signed@0.5.0.1](#markdigwpfsigned0501)
+    * [Microsoft.CSharp@v4.7.0](#microsoftcsharpv470)
+    * [Microsoft.VisualStudio.Threading@v17.14.15](#microsoftvisualstudiothreadingv171415)
+    * [Microsoft.VisualStudio.Validation@v17.13.22](#microsoftvisualstudiovalidationv171322)
+    * [SkiaSharp.HarfBuzz@1.68.3](#skiasharpharfbuzz1683)
+    * [Splat@2.0.0](#splat200)
+    * [Svg.Skia@v3.4.1](#svgskiav341)
+    * [System.Data.DataSetExtensions@v4.5.0](#systemdatadatasetextensionsv450)
+    * [System.Net.Http@4.3.4](#systemnethttp434)
+    * [System.Runtime.Caching@v10.0.2](#systemruntimecachingv1002)
 
 ## Open Source License Types (Reference)
 
 There are some regularly used open source license types - to reduce the sheer size of this document, we will provide a reference to them here. Each particular component will link directly to the actual license or notice file.
 
-### Apache v2.0 License (Reference Text)
+### Apache v2.0 License
 
 The [Apache v2.0 License](https://www.apache.org/licenses/LICENSE-2.0) has the following terms:
 
@@ -198,7 +249,7 @@ TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
 END OF TERMS AND CONDITIONS
 ```
 
-### BSD-3-Clause (Reference Text)
+### BSD-3-Clause
 
 The [BSD 3-Clause License](https://opensource.org/license/bsd-3-clause) has also been called the "New BSD License", "Revised BSD License", or "Modified BSD License." It has the following terms:
 
@@ -228,7 +279,7 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 ```
 
-### MIT License (Reference Text)
+### MIT License
 
 The [MIT License](https://mit-license.org/) has the following terms:
 
@@ -256,9 +307,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-## Upstream Component Licenses
+## Chocolatey Software Component Licenses
 
-### Upstream Open Source Components
+### Chocolatey Open Source
 
 Chocolatey Open Source components fall under the [Apache v2.0 license](https://www.apache.org/licenses/LICENSE-2.0).
 
@@ -267,11 +318,11 @@ https://www.apache.org/licenses/LICENSE-2.0
 ```
 
 * [Chocolatey CLI / Chocolatey.Lib](https://github.com/chocolatey/choco) - [License terms.](https://github.com/chocolatey/choco/blob/master/LICENSE)
-* Package Manager - License terms are provided in the distributed `LICENSE.txt` file.
+* [Chocolatey GUI](https://github.com/chocolatey/ChocolateyGUI) - [License terms.](https://github.com/chocolatey/ChocolateyGUI/blob/master/LICENSE.txt)
 
 ## Chocolatey CLI / Chocolatey.Lib
 
-### Apache v2.0 License (Chocolatey CLI / Chocolatey.Lib)
+### Apache v2.0 License
 
 #### Checksum@0.3.1
 
@@ -281,17 +332,17 @@ https://www.apache.org/licenses/LICENSE-2.0
 
 [Chocolatey.NuGet.Client](https://github.com/NuGet/NuGet.Client) [(modified)](https://github.com/chocolatey/NuGet.Client) - [License terms.](https://github.com/chocolatey/NuGet.Client/blob/d08e5cc246b384fd424e99371168d7cf4534723e/LICENSE.txt)
 
-#### log4net@rel/3.2.0
+#### log4net@rel/3.3.1
 
-[log4net](https://github.com/apache/logging-log4net) - [License terms.](https://github.com/apache/logging-log4net/blob/5e9e2b0ea8a57a441e779d23429f6759a06d93ce/LICENSE)
+[log4net](https://github.com/apache/logging-log4net) - [License terms.](https://github.com/apache/logging-log4net/blob/7fcc7f425b81b9df7c8a8719ed90953b938cd10e/LICENSE)
 
-### BSD-3-Clause (Chocolatey CLI / Chocolatey.Lib)
+### BSD-3-Clause
 
 #### Rhino.Licensing@1.4.1
 
 [Rhino.Licensing](https://github.com/ayende/rhino-licensing) [(modified)](https://github.com/chocolatey/rhino-licensing) - [License terms.](https://github.com/ayende/rhino-licensing/blob/1fc90c984b0c3012465a73afae0a53492c969eb5/license.txt)
 
-### MIT License (Chocolatey CLI / Chocolatey.Lib)
+### MIT License
 
 #### AlphaFS@v2.2.6
 
@@ -529,13 +580,17 @@ Shim Generator ("shimgen.exe") is also offered under personal and commercial
 licenses. You can learn more by contacting Chocolatey at https://chocolatey.org/contact.
 ```
 
-## Package Manager
+## Chocolatey GUI
 
-### Apache v2.0 License (Package Manager)
+### Apache v2.0 License
 
 #### Chocolatey CLI / Chocolatey.Lib@2.7.0
 
 [Chocolatey CLI / Chocolatey.Lib](https://github.com/chocolatey/choco) - [License terms.](https://github.com/chocolatey/choco/blob/044c62398b82e64a4bb1d89307fb2f82ba5c6671/LICENSE)
+
+#### log4net@rel/3.3.1
+
+[log4net](https://github.com/apache/logging-log4net) - [License terms.](https://github.com/apache/logging-log4net/blob/7fcc7f425b81b9df7c8a8719ed90953b938cd10e/LICENSE)
 
 #### Serilog@v4.3.0
 
@@ -561,13 +616,13 @@ licenses. You can learn more by contacting Chocolatey at https://chocolatey.org/
 
 [Serilog.Sinks.RollingFile](https://github.com/serilog/serilog-sinks-rollingfile) - [License terms.](https://github.com/serilog/serilog-sinks-rollingfile/blob/2a24d25b8fb56f9aab7eeb9887b728c060bf50d6/LICENSE)
 
-### BSD-3-Clause (Package Manager)
+### BSD-3-Clause
 
 #### Markdig.Signed@0.23.0
 
 [Markdig.Signed](https://github.com/xoofx/markdig) - [License terms.](https://github.com/xoofx/markdig/blob/751c79fce4e92857f861d8af0854a8eff0b29071/license.txt)
 
-### MIT License (Package Manager)
+### MIT License
 
 #### Autofac@4.6.1
 

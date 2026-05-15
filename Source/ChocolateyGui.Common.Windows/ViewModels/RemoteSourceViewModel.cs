@@ -13,6 +13,7 @@ using System.Linq;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Data;
 using AutoMapper;
 using Caliburn.Micro;
 using ChocolateyGui.Common.Enums;
@@ -26,7 +27,6 @@ using ChocolateyGui.Common.ViewModels.Items;
 using ChocolateyGui.Common.Windows.Services;
 using ChocolateyGui.Common.Windows.Utilities;
 using ChocolateyGui.Common.Windows.Utilities.Extensions;
-using NuGet;
 using NuGet.Packaging;
 using Serilog;
 using ILogger = Serilog.ILogger;
@@ -86,6 +86,7 @@ namespace ChocolateyGui.Common.Windows.ViewModels
             _mapper = mapper;
 
             Packages = new ObservableCollection<IPackageViewModel>();
+            PackageSource = CollectionViewSource.GetDefaultView(Packages);
 
             if (source.Id[0] == '[' && source.Id[source.Id.Length - 1] == ']')
             {
@@ -151,6 +152,8 @@ namespace ChocolateyGui.Common.Windows.ViewModels
             get { return _packageViewModels; }
             set { this.SetPropertyValue(ref _packageViewModels, value); }
         }
+
+        public ICollectionView PackageSource { get; }
 
         public int CurrentPage
         {
@@ -328,13 +331,17 @@ namespace ChocolateyGui.Common.Windows.ViewModels
                                     IncludeAllVersions,
                                     MatchWord,
                                     Source.Value));
-                    var installed = await _chocolateyPackageService.GetInstalledPackages();
+                    var installedPackages = await _chocolateyPackageService.GetInstalledPackages();
+
+                    PackageSource.Refresh();
 
                     PageCount = (int)Math.Ceiling((double)result.TotalCount / (double)PageSize);
                     Packages.Clear();
 
                     result.Packages.ToList().ForEach(p =>
                     {
+                        var remoteVersion = p.Version;
+
                         if (p.Source == null && Source != null && !string.IsNullOrWhiteSpace(Source.Value))
                         {
                             Uri source;
@@ -344,12 +351,18 @@ namespace ChocolateyGui.Common.Windows.ViewModels
                             }
                         }
 
-                        if (installed.Any(package => string.Equals(package.Id, p.Id, StringComparison.OrdinalIgnoreCase)))
+                        var installedPackage = installedPackages.FirstOrDefault(package => string.Equals(package.Id, p.Id, StringComparison.OrdinalIgnoreCase));
+                        if (installedPackage != null)
                         {
+                            p.Version = installedPackage.Version;
+                            p.IsPinned = installedPackage.IsPinned;
                             p.IsInstalled = true;
                         }
 
-                        Packages.Add(Mapper.Map<IPackageViewModel>(p));
+                        var packageViewModel = Mapper.Map<IPackageViewModel>(p);
+                        packageViewModel.ChocolateySource = Source;
+                        packageViewModel.RemoteVersion = remoteVersion;
+                        Packages.Add(packageViewModel);
                     });
 
                     if (_configService.GetEffectiveConfiguration().ExcludeInstalledPackages ?? false)
@@ -360,6 +373,13 @@ namespace ChocolateyGui.Common.Windows.ViewModels
                     if (PageCount < CurrentPage)
                     {
                         CurrentPage = PageCount == 0 ? 1 : PageCount;
+                    }
+
+                    var outdatedPackages = await _chocolateyPackageService.GetOutdatedPackages(IncludePrerelease, forceCheckForOutdatedPackages: forceCheckForOutdatedPackages, source: Source);
+
+                    foreach (var update in outdatedPackages)
+                    {
+                        await _eventAggregator.PublishOnUIThreadAsync(new PackageOutdatedMessage(update.Id, update.Version, source: Source));
                     }
 
                     _hasShownLoadError = false;
@@ -401,7 +421,7 @@ namespace ChocolateyGui.Common.Windows.ViewModels
 
         public async void CheckForOutdatedPackages()
         {
-            _chocolateyGuiCacheService.PurgeOutdatedPackages();
+            _chocolateyGuiCacheService.PurgeOutdatedPackages(Source, IncludePrerelease);
             await LoadPackages(true);
         }
 
