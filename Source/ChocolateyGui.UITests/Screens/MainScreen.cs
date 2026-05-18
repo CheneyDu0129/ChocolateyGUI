@@ -18,55 +18,203 @@ namespace ChocolateyGui.UITests.Screens
 
         public AboutScreen OpenAndGetAboutScreen()
         {
-            var aboutButton = FindFirstDescendant(cf => cf.ByAutomationId(AutomationIds.SHOW_ABOUT_BUTTON)).AsButton();
-            aboutButton.Click();
-
-            // Do a retry to wait for the window
-            return Retry.Find(() => FindFirstChild(cf => cf.ByControlType(ControlType.Window)),
+            var aboutButton = Retry.Find(
+                () =>
+                {
+                    var button = FindFirstDescendant(cf => cf.ByAutomationId(AutomationIds.SHOW_ABOUT_BUTTON));
+                    return button != null && button.IsEnabled ? button : null;
+                },
                 new RetrySettings
                 {
-                    Timeout = TimeSpan.FromSeconds(5),
+                    Timeout = TimeSpan.FromSeconds(20),
+                    Interval = TimeSpan.FromMilliseconds(200),
                     IgnoreException = true,
                     ThrowOnTimeout = true,
-                    TimeoutMessage = "Failed to find about screen"
-                })
-            .As<AboutScreen>();
+                    TimeoutMessage = "Failed to find enabled about button"
+                });
+
+            if (aboutButton.Patterns.Invoke.IsSupported)
+            {
+                aboutButton.Patterns.Invoke.Pattern.Invoke();
+            }
+            else
+            {
+                aboutButton.Click();
+            }
+
+            return Retry.Find(
+                    () =>
+                    {
+                        var window = FindFirstChild(cf => cf.ByControlType(ControlType.Window));
+                        return window != null && !ReferenceEquals(window.FrameworkAutomationElement, FrameworkAutomationElement) ? window : null;
+                    },
+                    new RetrySettings
+                    {
+                        Timeout = TimeSpan.FromSeconds(10),
+                        Interval = TimeSpan.FromMilliseconds(200),
+                        IgnoreException = true,
+                        ThrowOnTimeout = true,
+                        TimeoutMessage = "Failed to find about screen"
+                    })
+                .As<AboutScreen>();
         }
 
         public SettingsScreen OpenAndGetSettingsScreen()
         {
-            var settingsButton = FindFirstDescendant(cf => cf.ByAutomationId(AutomationIds.SHOW_SETTINGS_BUTTON)).AsButton();
-            settingsButton.Click();
-
-            // Do a retry to wait for the window
-            return Retry.Find(() => FindFirstChild(cf => cf.ByControlType(ControlType.Window)),
+            var settingsButton = Retry.Find(
+                () =>
+                {
+                    var button = FindFirstDescendant(cf => cf.ByAutomationId(AutomationIds.SHOW_SETTINGS_BUTTON));
+                    return button != null && button.IsEnabled ? button : null;
+                },
                 new RetrySettings
                 {
-                    Timeout = TimeSpan.FromSeconds(5),
+                    Timeout = TimeSpan.FromSeconds(20),
+                    Interval = TimeSpan.FromMilliseconds(200),
                     IgnoreException = true,
                     ThrowOnTimeout = true,
-                    TimeoutMessage = "Failed to find settings screen"
-                })
-            .As<SettingsScreen>();
+                    TimeoutMessage = "Failed to find enabled settings button"
+                });
+
+            if (settingsButton.Patterns.Invoke.IsSupported)
+            {
+                settingsButton.Patterns.Invoke.Pattern.Invoke();
+            }
+            else
+            {
+                settingsButton.Click();
+            }
+
+            return Retry.Find(
+                    () =>
+                    {
+                        var window = FindFirstChild(cf => cf.ByControlType(ControlType.Window));
+                        return window != null && !ReferenceEquals(window.FrameworkAutomationElement, FrameworkAutomationElement) ? window : null;
+                    },
+                    new RetrySettings
+                    {
+                        Timeout = TimeSpan.FromSeconds(10),
+                        Interval = TimeSpan.FromMilliseconds(200),
+                        IgnoreException = true,
+                        ThrowOnTimeout = true,
+                        TimeoutMessage = "Failed to find settings screen"
+                    })
+                .As<SettingsScreen>();
         }
 
         public RemoteSourceScreen OpenAndGetRemoteSourceScreen(string sourceName = "chocolatey")
         {
-            var sourcesListView = FindFirstDescendant(cf => cf.ByAutomationId(AutomationIds.SOURCES_LIST_VIEW));
-            var chocolateyRemoteSourceListItem = FindItemByTextBlockName(sourcesListView, sourceName);
+            if (!string.IsNullOrWhiteSpace(sourceName))
+            {
+                var sourceComboBox = Retry.Find(
+                        () => FindFirstDescendant(cf => cf.ByControlType(ControlType.ComboBox)),
+                        new RetrySettings
+                        {
+                            Timeout = TimeSpan.FromSeconds(20),
+                            Interval = TimeSpan.FromMilliseconds(200),
+                            IgnoreException = true,
+                            ThrowOnTimeout = true,
+                            TimeoutMessage = "Failed to find source selector"
+                        })
+                    .AsComboBox();
 
-            chocolateyRemoteSourceListItem.AsListBoxItem().Click();
+                var candidateSources = string.Equals(sourceName, "hermes", StringComparison.OrdinalIgnoreCase)
+                    ? new[] { sourceName, "ept-stable" }
+                    : new[] { sourceName };
 
-            WaitForDialog();
+                var selectedText = sourceComboBox.SelectedItem?.Text;
+                var isAlreadySelected = !string.IsNullOrWhiteSpace(selectedText)
+                    && candidateSources.Any(candidate => selectedText.IndexOf(candidate, StringComparison.OrdinalIgnoreCase) >= 0);
 
-            return Retry.Find(() => FindFirstChild(cf => cf.ByControlType(ControlType.Window)),
+                if (!isAlreadySelected)
+                {
+                    sourceComboBox.Expand();
+
+                    var sourceItem = Retry.Find(
+                        () =>
+                        {
+                            var comboItems = sourceComboBox.Items;
+                            var matchFromCombo = comboItems.FirstOrDefault(item => candidateSources.Any(candidate =>
+                                (!string.IsNullOrWhiteSpace(item.Text) && item.Text.IndexOf(candidate, StringComparison.OrdinalIgnoreCase) >= 0)
+                                || (!string.IsNullOrWhiteSpace(item.Name) && item.Name.IndexOf(candidate, StringComparison.OrdinalIgnoreCase) >= 0)));
+
+                            if (matchFromCombo != null)
+                            {
+                                return matchFromCombo;
+                            }
+
+                            var listItems = FindAllDescendants(cf => cf.ByControlType(ControlType.ListItem));
+                            return listItems.FirstOrDefault(item => candidateSources.Any(candidate =>
+                                (!string.IsNullOrWhiteSpace(item.Name) && item.Name.IndexOf(candidate, StringComparison.OrdinalIgnoreCase) >= 0)
+                                || (!string.IsNullOrWhiteSpace(item.Properties.Name.ValueOrDefault) && item.Properties.Name.ValueOrDefault.IndexOf(candidate, StringComparison.OrdinalIgnoreCase) >= 0)));
+                        },
+                        new RetrySettings
+                        {
+                            Timeout = TimeSpan.FromSeconds(8),
+                            Interval = TimeSpan.FromMilliseconds(200),
+                            IgnoreException = true,
+                            ThrowOnTimeout = false
+                        });
+
+                    if (sourceItem != null)
+                    {
+                        if (sourceItem.Patterns.SelectionItem.IsSupported)
+                        {
+                            sourceItem.Patterns.SelectionItem.Pattern.Select();
+                        }
+                        else if (sourceItem.Patterns.Invoke.IsSupported)
+                        {
+                            sourceItem.Patterns.Invoke.Pattern.Invoke();
+                        }
+                        else
+                        {
+                            sourceItem.Click();
+                        }
+
+                        WaitForDialog();
+                    }
+                }
+            }
+
+            Retry.Find(
+                () => FindFirstDescendant(cf => cf.ByAutomationId(AutomationIds.SEARCH_TEXT_BOX)),
                 new RetrySettings
                 {
-                    Timeout = TimeSpan.FromSeconds(5),
+                    Timeout = TimeSpan.FromSeconds(45),
+                    Interval = TimeSpan.FromMilliseconds(250),
                     IgnoreException = true,
                     ThrowOnTimeout = true,
-                    TimeoutMessage = "Failed to find remote source screen"
-                }).As<RemoteSourceScreen>();
+                    TimeoutMessage = "Failed to find remote source search textbox"
+                });
+
+            Retry.Find(
+                () => FindFirstDescendant(cf => cf.ByAutomationId(AutomationIds.PACKAGES_LIST)),
+                new RetrySettings
+                {
+                    Timeout = TimeSpan.FromSeconds(45),
+                    Interval = TimeSpan.FromMilliseconds(250),
+                    IgnoreException = true,
+                    ThrowOnTimeout = true,
+                    TimeoutMessage = "Failed to find remote source packages list"
+                });
+
+            return new RemoteSourceScreen(FrameworkAutomationElement);
+        }
+
+        public string GetCurrentSourceText()
+        {
+            var sourceComboBox = Retry.Find(
+                    () => FindFirstDescendant(cf => cf.ByControlType(ControlType.ComboBox)),
+                    new RetrySettings
+                    {
+                        Timeout = TimeSpan.FromSeconds(10),
+                        Interval = TimeSpan.FromMilliseconds(200),
+                        IgnoreException = true,
+                        ThrowOnTimeout = false
+                    })
+                ?.AsComboBox();
+
+            return sourceComboBox?.SelectedItem?.Text;
         }
 
         public void WaitForDialog()

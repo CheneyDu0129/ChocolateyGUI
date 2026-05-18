@@ -230,19 +230,28 @@ namespace ChocolateyGui.TestUtilities
                 VideoQuality = 6,
                 TargetVideoPath = Path.Combine(TestsMediaPath, $"{SanitizeFileName(videoName)}.avi")
             };
-            await AdjustRecorderSettings(videoRecorderSettings);
-            _recorder = new VideoRecorder(videoRecorderSettings, r =>
+
+            try
             {
-                var testName = TestContext.CurrentContext.Test.ClassName + "." + (_testMethodName ?? "[SetUp]");
-                var img = CaptureImage();
-                img.ApplyOverlays(new InfoOverlay(img)
+                await AdjustRecorderSettings(videoRecorderSettings);
+                _recorder = new VideoRecorder(videoRecorderSettings, r =>
                 {
-                    RecordTimeSpan = r.RecordTimeSpan,
-                    OverlayStringFormat = @"{rt:hh\:mm\:ss\.fff} / {name} / CPU: {cpu} / RAM: {mem.p.used}/{mem.p.tot} ({mem.p.used.perc}) / " + testName
-                }, new MouseOverlay(img));
-                return img;
-            });
-            await Task.Delay(500);
+                    var testName = TestContext.CurrentContext.Test.ClassName + "." + (_testMethodName ?? "[SetUp]");
+                    var img = CaptureImage();
+                    img.ApplyOverlays(new InfoOverlay(img)
+                    {
+                        RecordTimeSpan = r.RecordTimeSpan,
+                        OverlayStringFormat = @"{rt:hh\:mm\:ss\.fff} / {name} / CPU: {cpu} / RAM: {mem.p.used}/{mem.p.tot} ({mem.p.used.perc}) / " + testName
+                    }, new MouseOverlay(img));
+                    return img;
+                });
+                await Task.Delay(500);
+            }
+            catch (Exception ex)
+            {
+                Logger.Default.Warn("Video recorder initialization failed. Tests will continue without video recording. Ex: {0}", ex);
+                _recorder = null;
+            }
         }
 
         /// <summary>

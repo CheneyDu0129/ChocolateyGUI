@@ -196,7 +196,7 @@
 
                     <RadioButton Grid.Row="1" Tag="{lang:Localize AdvancedChocolateyDialog_AdvancedOptions_Header}">
                         <StackPanel Grid.IsSharedSizeScope="True" Orientation="Vertical">
-                            <mah:MetroHeader Background="{DynamicResource MahApps.Brushes.Gray10}" Header="{lang:Localize AdvancedChocolateyDialog_CacheLocation_Header}" Tag="{lang:Localize AdvancedChocolateyDialog_CacheLocation_ToolTip}">
+                            <mah:MetroHeader Background="{DynamicResource MahApps.Brushes.Gray10}" Header="{lang:Localize AdvancedChocolateyDialog_CacheLocation_Header}" Tag="{lang:Localize AdvancedChocolateyDialog_CacheLocation_ToolTip}" Visibility="Collapsed">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition />
@@ -216,7 +216,7 @@
                                     <Button Grid.Column="1" Content="{lang:Localize AdvancedChocolateyDialog_Browse}" Command="{Binding BrowseLogFileCommand}" />
                                 </Grid>
                             </mah:MetroHeader>
-                            <mah:MetroHeader Header="{lang:Localize AdvancedChocolateyDialog_IgnoreHttpCache_Header}" Tag="{lang:Localize AdvancedChocolateyDialog_IgnoreHttpCache_ToolTip}" Visibility="{Binding IgnoreHttpCacheIsAvailable, Converter={StaticResource BooleanToVisibilty}}">
+                            <mah:MetroHeader Header="{lang:Localize AdvancedChocolateyDialog_IgnoreHttpCache_Header}" Tag="{lang:Localize AdvancedChocolateyDialog_IgnoreHttpCache_ToolTip}" Visibility="Collapsed">
                                 <mah:ToggleSwitch VerticalAlignment="Center" IsOn="{Binding IgnoreHttpCache}" />
                             </mah:MetroHeader>
                             <mah:MetroHeader Header="{lang:Localize AdvancedChocolateyDialog_OverrideArguments_Header}" Tag="{lang:Localize AdvancedChocolateyDialog_OverrideArguments_ToolTip}" Visibility="Collapsed">

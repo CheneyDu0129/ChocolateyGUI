@@ -14,12 +14,16 @@ namespace ChocolateyGui.UITests.Screens
 
         protected AutomationElement FindItemByTextBlockName(AutomationElement list, string wantedName)
         {
-            // scope this to whatever contains the items: the List/ItemsControl/ListBox element
-            var items = list.FindAllDescendants(cf => cf.ByControlType(controlType: ControlType.ListItem));
+            if (list == null || string.IsNullOrWhiteSpace(wantedName))
+            {
+                return null;
+            }
+
+            var items = list.FindAllDescendants(cf => cf.ByControlType(ControlType.ListItem));
 
             return items.FirstOrDefault(item =>
                 item.FindFirstDescendant(cf =>
-                    cf.ByControlType(ControlType.Text) // TextBlock maps to ControlType.Text in UIA
+                    cf.ByControlType(ControlType.Text)
                       .And(cf.ByName(wantedName))
                 ) != null);
         }

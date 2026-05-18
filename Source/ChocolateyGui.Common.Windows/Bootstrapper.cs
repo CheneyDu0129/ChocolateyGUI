@@ -98,7 +98,9 @@ namespace ChocolateyGui.Common.Windows
 
         public static string AppDataPath { get; } = LogSetup.GetAppDataPath(CommonAppDataName);
 
-        public static string LocalAppDataPath { get; } = LogSetup.GetLocalAppDataPath(LocalAppDataName);
+        public static string LocalAppDataPath { get; } =
+            Environment.GetEnvironmentVariable("ChocolateyGuiLocalAppDataPath")
+            ?? LogSetup.GetLocalAppDataPath(LocalAppDataName);
 
         public static string UserConfigurationDatabaseName { get; } = "UserDatabase";
 

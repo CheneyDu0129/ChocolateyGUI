@@ -14,7 +14,7 @@ namespace ChocolateyGui.UITests
         internal const string SEARCH_TEXT_BOX = "SearchTextBox";
         internal const string SHOW_ABOUT_BUTTON = "ShowAbout";
         internal const string SHOW_SETTINGS_BUTTON = "ShowSettings";
-        internal const string SOURCES_LIST_VIEW = "SourcesListView";
+        internal const string REMOTE_SOURCE_VIEW = "RemoteSourceView";
         internal const string VERSION_TEXT = "Version";
 
         internal static AutomationElement[] LocateAllByText(this AutomationElement automationElement, string text)

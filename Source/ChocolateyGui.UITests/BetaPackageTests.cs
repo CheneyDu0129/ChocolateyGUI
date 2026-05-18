@@ -2,12 +2,8 @@
 using ChocolateyGui.UITests.Screens;
 using FlaUI.Core;
 using FlaUI.Core.AutomationElements;
-using FlaUI.Core.Input;
-using FlaUI.Core.WindowsAPI;
 using NUnit.Framework;
 using System.Linq;
-using System.Threading;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 
 namespace ChocolateyGui.UITests
 {
@@ -28,24 +24,24 @@ namespace ChocolateyGui.UITests
             MainScreen = Application.GetMainWindow(Automation).As<MainScreen>();
 
             RemoteSourceScreen = MainScreen.OpenAndGetRemoteSourceScreen("hermes");
-            RemoteSourceScreen.FocusAndClearSearch();
-
-            Keyboard.Type(PACKAGE_UNDER_TEST);
-            Thread.Sleep(500); // Sometimes this fails without a minor sleep when debugging...
-            Keyboard.Press(VirtualKeyShort.ENTER);
-            MainScreen.WaitForDialog();
+            var currentSource = MainScreen.GetCurrentSourceText();
+            TestContext.WriteLine($"[Arrange] Current source selected: {currentSource}");
+            Assert.That(currentSource, Is.Not.Null.And.Matches<string>(s => s.ToLower().Contains("hermes") || s.ToLower().Contains("ept-stable")),
+                $"当前源选择应为 hermes 或 ept-stable，但实际为：{currentSource}");
+            RemoteSourceScreen.SetPrereleaseFilter(true);
+            RemoteSourceScreen.SetAllVersionsFilter(false);
+            RemoteSourceScreen.SearchForPackage(PACKAGE_UNDER_TEST);
         }
 
         [Test]
         public void RemoteScreenFindsStableVersionOfDesiredPackage()
         {
             var packageList = RemoteSourceScreen.GetPackageList();
-            
+
             Assert.AreEqual(1, packageList.Length);
-            
+
             var targetPackage = packageList.FirstOrDefault();
             targetPackage.Click();
-            Thread.Sleep(100); // Without waiting, sometimes this fails...
             targetPackage.DoubleClick();
             var versionItem = MainScreen.FindFirstDescendant(cf => cf.ByAutomationId(AutomationIds.VERSION_TEXT));
 
@@ -55,8 +51,9 @@ namespace ChocolateyGui.UITests
         [Test]
         public void RemoteScreenFindsPrereleaseVersionOfDesiredPackage()
         {
-            MainScreen.FindFirstDescendant(cf => cf.ByAutomationId(AutomationIds.PRERELEASE_CHECK_BOX)).Click();
-            MainScreen.WaitForDialog();
+            RemoteSourceScreen.SetPrereleaseFilter(true);
+            RemoteSourceScreen.SetAllVersionsFilter(false);
+            RemoteSourceScreen.SearchForPackage(PACKAGE_UNDER_TEST);
 
             var packageList = RemoteSourceScreen.GetPackageList();
 
@@ -64,7 +61,6 @@ namespace ChocolateyGui.UITests
 
             var targetPackage = packageList.FirstOrDefault();
             targetPackage.Click();
-            Thread.Sleep(100);
             targetPackage.DoubleClick();
             var versionItem = MainScreen.FindFirstDescendant(cf => cf.ByAutomationId(AutomationIds.VERSION_TEXT));
 
@@ -74,8 +70,9 @@ namespace ChocolateyGui.UITests
         [Test]
         public void RemoteScreenFindsAllStableVersionsOfDesiredPackage()
         {
-            MainScreen.FindFirstDescendant(cf => cf.ByAutomationId(AutomationIds.ALL_VERSIONS_CHECK_BOX)).Click();
-            MainScreen.WaitForDialog();
+            RemoteSourceScreen.SetPrereleaseFilter(false);
+            RemoteSourceScreen.SetAllVersionsFilter(true);
+            RemoteSourceScreen.SearchForPackage(PACKAGE_UNDER_TEST);
 
             var packageList = RemoteSourceScreen.GetPackageList();
 
@@ -83,7 +80,6 @@ namespace ChocolateyGui.UITests
 
             var targetPackage = packageList.FirstOrDefault();
             targetPackage.Click();
-            Thread.Sleep(100);
             targetPackage.DoubleClick();
             var versionItem = MainScreen.FindFirstDescendant(cf => cf.ByAutomationId(AutomationIds.VERSION_TEXT));
 
@@ -93,11 +89,9 @@ namespace ChocolateyGui.UITests
         [Test]
         public void RemoteScreenFindsAllVersionsOfDesiredPackage()
         {
-            MainScreen.FindFirstDescendant(cf => cf.ByAutomationId(AutomationIds.PRERELEASE_CHECK_BOX)).Click();
-            MainScreen.WaitForDialog();
-
-            MainScreen.FindFirstDescendant(cf => cf.ByAutomationId(AutomationIds.ALL_VERSIONS_CHECK_BOX)).Click();
-            MainScreen.WaitForDialog();
+            RemoteSourceScreen.SetPrereleaseFilter(true);
+            RemoteSourceScreen.SetAllVersionsFilter(true);
+            RemoteSourceScreen.SearchForPackage(PACKAGE_UNDER_TEST);
 
             var packageList = RemoteSourceScreen.GetPackageList();
 
@@ -105,7 +99,6 @@ namespace ChocolateyGui.UITests
 
             var targetPackage = packageList.FirstOrDefault();
             targetPackage.Click();
-            Thread.Sleep(100);
             targetPackage.DoubleClick();
             var versionItem = MainScreen.FindFirstDescendant(cf => cf.ByAutomationId(AutomationIds.VERSION_TEXT));
 

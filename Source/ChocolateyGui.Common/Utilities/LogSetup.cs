@@ -18,12 +18,12 @@ namespace ChocolateyGui.Common.Utilities
 
         public static void Execute()
         {
-            if (!Directory.Exists(_localAppDataPath))
+            if (!string.IsNullOrWhiteSpace(_localAppDataPath) && !Directory.Exists(_localAppDataPath))
             {
                 Directory.CreateDirectory(_localAppDataPath);
             }
 
-            if (!Directory.Exists(_logsFolderPath))
+            if (!string.IsNullOrWhiteSpace(_logsFolderPath) && !Directory.Exists(_logsFolderPath))
             {
                 Directory.CreateDirectory(_logsFolderPath);
             }
