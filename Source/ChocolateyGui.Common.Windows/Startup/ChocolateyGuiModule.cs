@@ -100,7 +100,8 @@ namespace ChocolateyGui.Common.Windows.Startup
                     .ForMember(dest => dest.Version, opt => opt.MapFrom(src => src.Identity.Version))
                     .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Identity.Id))
                     .ForMember(dest => dest.Authors, opt => opt.MapFrom(src => src.Authors.Split(',')))
-                    .ForMember(dest => dest.Owners, opt => opt.MapFrom(src => src.Owners.Split(',')));
+                    .ForMember(dest => dest.Owners, opt => opt.MapFrom(src => src.Owners.Split(',')))
+                     .ForMember(dest => dest.GalleryDetailsUrl, opt => opt.MapFrom(src => src.PackageDetailsUrl == null ? null : src.PackageDetailsUrl.AbsoluteUri));
 
                 config.CreateMap<ConfigFileFeatureSetting, ChocolateyFeature>();
                 config.CreateMap<ConfigFileConfigSetting, ChocolateySetting>();
