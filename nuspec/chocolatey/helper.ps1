@@ -1,31 +1,78 @@
+function Get-GuiCliCommandName {
+    [CmdletBinding()]
+    param()
+
+    return Get-PackageManagerCliCommandName
+}
+
+function Get-PackageManagerInstallDirectory {
+    [CmdletBinding()]
+    param()
+
+    return (Join-Path $env:ProgramFiles '__PACKAGE_INSTALL_DIRECTORY__')
+}
+
+function Get-PackageManagerGuiExeName {
+    [CmdletBinding()]
+    param()
+
+    return '__PACKAGE_GUI_EXE_NAME__'
+}
+
+function Get-PackageManagerCliExeName {
+    [CmdletBinding()]
+    param()
+
+    return '__PACKAGE_CLI_EXE_NAME__'
+}
+
+function Get-PackageManagerCommandName {
+    [CmdletBinding()]
+    param()
+
+    return '__PACKAGE_COMMAND_NAME__'
+}
+
+function Get-PackageManagerCliCommandName {
+    [CmdletBinding()]
+    param()
+
+    return '__PACKAGE_CLI_COMMAND_NAME__'
+}
+
 function Set-FeatureState {
     [CmdletBinding()]
     param(
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [string] $FeatureName,
 
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [bool] $EnableFeature,
 
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [bool] $Global
     )
 
+    $cliCommandName = Get-GuiCliCommandName
+
     if ($EnableFeature) {
-        if($Global) {
+        if ($Global) {
             Write-Output "Enabling $FeatureName globally..."
-            Start-ChocolateyProcessAsAdmin -Statements "feature enable --name=$FeatureName --global" -ExeToRun "chocolateyguicli"
-        } else {
-            Write-Output "Enabling $FeatureName..."
-            Start-ChocolateyProcessAsAdmin -Statements "feature enable --name=$FeatureName" -ExeToRun "chocolateyguicli"
+            Start-ChocolateyProcessAsAdmin -Statements "feature enable --name=$FeatureName --global" -ExeToRun $cliCommandName
         }
-    } else {
-        if($Global) {
+        else {
+            Write-Output "Enabling $FeatureName..."
+            Start-ChocolateyProcessAsAdmin -Statements "feature enable --name=$FeatureName" -ExeToRun $cliCommandName
+        }
+    }
+    else {
+        if ($Global) {
             Write-Output "Disabling $FeatureName globally..."
-            Start-ChocolateyProcessAsAdmin -Statements "feature disable --name=$FeatureName --global" -ExeToRun "chocolateyguicli"
-        } else {
+            Start-ChocolateyProcessAsAdmin -Statements "feature disable --name=$FeatureName --global" -ExeToRun $cliCommandName
+        }
+        else {
             Write-Output "Disabling $FeatureName..."
-            Start-ChocolateyProcessAsAdmin -Statements "feature disable --name=$FeatureName" -ExeToRun "chocolateyguicli"
+            Start-ChocolateyProcessAsAdmin -Statements "feature disable --name=$FeatureName" -ExeToRun $cliCommandName
         }
     }
 }
@@ -33,22 +80,25 @@ function Set-FeatureState {
 function Set-Config {
     [CmdletBinding()]
     param(
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [string] $ConfigName,
 
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [string] $ConfigValue,
 
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [bool] $Global
     )
 
-    if($Global) {
+    $cliCommandName = Get-GuiCliCommandName
+
+    if ($Global) {
         Write-Output "Setting $ConfigName globally..."
-        Start-ChocolateyProcessAsAdmin -Statements "config set --name=$ConfigName --value=$ConfigValue" -ExeToRun "chocolateyguicli"
-    } else {
+        Start-ChocolateyProcessAsAdmin -Statements "config set --name=$ConfigName --value=$ConfigValue --global" -ExeToRun $cliCommandName
+    }
+    else {
         Write-Output "Setting $ConfigName..."
-        Start-ChocolateyProcessAsAdmin -Statements "config set --name=$ConfigName --value=$ConfigValue --global" -ExeToRun "chocolateyguicli"
+        Start-ChocolateyProcessAsAdmin -Statements "config set --name=$ConfigName --value=$ConfigValue" -ExeToRun $cliCommandName
     }
 }
 
@@ -61,84 +111,84 @@ function Set-UserSettings {
     # Features
     $applyGlobally = $pp.ContainsKey("Global")
 
-    if($pp.ContainsKey("ShowConsoleOutput")) {
+    if ($pp.ContainsKey("ShowConsoleOutput")) {
         Set-FeatureState "ShowConsoleOutput" ($pp.ShowConsoleOutput -eq $true) $applyGlobally
     }
 
-    if($pp.ContainsKey("DefaultToTileViewForLocalSource")) {
+    if ($pp.ContainsKey("DefaultToTileViewForLocalSource")) {
         Set-FeatureState "DefaultToTileViewForLocalSource" ($pp.DefaultToTileViewForLocalSource -eq $true) $applyGlobally
     }
 
-    if($pp.ContainsKey("DefaultToTileViewForRemoteSource")) {
+    if ($pp.ContainsKey("DefaultToTileViewForRemoteSource")) {
         Set-FeatureState "DefaultToTileViewForRemoteSource" ($pp.DefaultToTileViewForRemoteSource -eq $true) $applyGlobally
     }
 
-    if($pp.ContainsKey("UseDelayedSearch")) {
+    if ($pp.ContainsKey("UseDelayedSearch")) {
         Set-FeatureState "UseDelayedSearch" ($pp.UseDelayedSearch -eq $true) $applyGlobally
     }
 
-    if($pp.ContainsKey("PreventPreload")) {
+    if ($pp.ContainsKey("PreventPreload")) {
         Set-FeatureState "PreventPreload" ($pp.PreventPreload -eq $true) $applyGlobally
     }
 
-    if($pp.ContainsKey("PreventAutomatedOutdatedPackagesCheck")) {
+    if ($pp.ContainsKey("PreventAutomatedOutdatedPackagesCheck")) {
         Set-FeatureState "PreventAutomatedOutdatedPackagesCheck" ($pp.PreventAutomatedOutdatedPackagesCheck -eq $true) $applyGlobally
     }
 
-    if($pp.ContainsKey("ExcludeInstalledPackages")) {
+    if ($pp.ContainsKey("ExcludeInstalledPackages")) {
         Set-FeatureState "ExcludeInstalledPackages" ($pp.ExcludeInstalledPackages -eq $true) $applyGlobally
     }
 
-    if($pp.ContainsKey("ShowAggregatedSourceView")) {
+    if ($pp.ContainsKey("ShowAggregatedSourceView")) {
         Set-FeatureState "ShowAggregatedSourceView" ($pp.ShowAggregatedSourceView -eq $true) $applyGlobally
     }
 
-    if($pp.ContainsKey("ShowAdditionalPackageInformation")) {
+    if ($pp.ContainsKey("ShowAdditionalPackageInformation")) {
         Set-FeatureState "ShowAdditionalPackageInformation" ($pp.ShowAdditionalPackageInformation -eq $true) $applyGlobally
     }
 
-    if($pp.ContainsKey("AllowNonAdminAccessToSettings")) {
+    if ($pp.ContainsKey("AllowNonAdminAccessToSettings")) {
         Set-FeatureState "AllowNonAdminAccessToSettings" ($pp.AllowNonAdminAccessToSettings -eq $true) $applyGlobally
     }
 
-    if($pp.ContainsKey("UseKeyboardBindings")) {
+    if ($pp.ContainsKey("UseKeyboardBindings")) {
         Set-FeatureState "UseKeyboardBindings" ($pp.UseKeyboardBindings -eq $true) $applyGlobally
     }
 
-    if($pp.ContainsKey("HidePackageDownloadCount")) {
+    if ($pp.ContainsKey("HidePackageDownloadCount")) {
         Set-FeatureState "HidePackageDownloadCount" ($pp.HidePackageDownloadCount -eq $true) $applyGlobally
     }
 
-    if($pp.ContainsKey("PreventAllPackageIconDownloads")) {
+    if ($pp.ContainsKey("PreventAllPackageIconDownloads")) {
         Set-FeatureState "PreventAllPackageIconDownloads" ($pp.PreventAllPackageIconDownloads -eq $true) $applyGlobally
     }
 
-    if($pp.ContainsKey("HideAllRemoteChocolateySources")) {
+    if ($pp.ContainsKey("HideAllRemoteChocolateySources")) {
         Set-FeatureState "HideAllRemoteChocolateySources" ($pp.HideAllRemoteChocolateySources -eq $true) $applyGlobally
     }
 
-    if($pp.ContainsKey("DefaultToDarkMode")) {
+    if ($pp.ContainsKey("DefaultToDarkMode")) {
         Set-FeatureState "DefaultToDarkMode" ($pp.DefaultToDarkMode -eq $true) $applyGlobally
     }
 
-    if($pp.ContainsKey("HideThisPCSource")) {
+    if ($pp.ContainsKey("HideThisPCSource")) {
         Set-FeatureState "HideThisPCSource" ($pp.HideThisPCSource -eq $true) $applyGlobally
     }
 
-    if($pp.ContainsKey("PreventUsageOfUpdateAllButton")) {
+    if ($pp.ContainsKey("PreventUsageOfUpdateAllButton")) {
         Set-FeatureState "PreventUsageOfUpdateAllButton" ($pp.PreventUsageOfUpdateAllButton -eq $true) $applyGlobally
     }
 
     # config
-    if($pp.ContainsKey("OutdatedPackagesCacheDurationInMinutes")) {
+    if ($pp.ContainsKey("OutdatedPackagesCacheDurationInMinutes")) {
         Set-Config "OutdatedPackagesCacheDurationInMinutes" ($pp.OutdatedPackagesCacheDurationInMinutes) $applyGlobally
     }
 
-    if($pp.ContainsKey("DefaultSourceName")) {
+    if ($pp.ContainsKey("DefaultSourceName")) {
         Set-Config "DefaultSourceName" ($pp.DefaultSourceName) $applyGlobally
     }
 
-    if($pp.ContainsKey("UseLanguage")) {
+    if ($pp.ContainsKey("UseLanguage")) {
         Set-Config "UseLanguage" ($pp.UseLanguage) $applyGlobally
     }
 }

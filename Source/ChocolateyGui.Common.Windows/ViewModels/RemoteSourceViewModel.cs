@@ -6,16 +6,20 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
+using System.Xml.Linq;
 using AutoMapper;
 using Caliburn.Micro;
+using ChocolateyGui.Common.Constants;
 using ChocolateyGui.Common.Enums;
 using ChocolateyGui.Common.Models;
 using ChocolateyGui.Common.Models.Messages;
@@ -43,6 +47,12 @@ namespace ChocolateyGui.Common.Windows.ViewModels
         private readonly IConfigService _configService;
         private readonly IEventAggregator _eventAggregator;
         private readonly IMapper _mapper;
+        private static readonly string ProvidedPackagesWhitelistPath = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData, Environment.SpecialFolderOption.DoNotVerify),
+            BrandingConstants.CompanyDirectoryName,
+            "chocogui-packages-whitelist.xml");
+        private readonly HashSet<string> _providedPackageIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        private readonly HashSet<string> _applicationPackageIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         private int _currentPage = 1;
         private bool _hasLoaded;
         private bool _shouldShowPreventPreloadMessage;
@@ -61,6 +71,8 @@ namespace ChocolateyGui.Common.Windows.ViewModels
         private bool _isLoadingPackages;
         private bool _hasShownLoadError;
         private bool _isOnline = true;
+        private bool _showAllPackages;
+        private static bool _globalShowAllPackages;
 
         private IDisposable _searchQuerySubscription;
 
@@ -113,6 +125,7 @@ namespace ChocolateyGui.Common.Windows.ViewModels
 
             SortSelection = L(nameof(Resources.RemoteSourceViewModel_SortSelectionAtoZ));
             IncludePrerelease = true; // 默认包含预发布版本
+            ShowAllPackages = _globalShowAllPackages;
         }
 
         public bool HasLoaded
@@ -171,6 +184,18 @@ namespace ChocolateyGui.Common.Windows.ViewModels
         {
             get { return _includePrerelease; }
             set { this.SetPropertyValue(ref _includePrerelease, value); }
+        }
+
+        public bool ShowAllPackages
+        {
+            get { return _showAllPackages; }
+            set
+            {
+                if (this.SetPropertyValue(ref _showAllPackages, value))
+                {
+                    _globalShowAllPackages = value;
+                }
+            }
         }
 
         public bool MatchWord
@@ -310,6 +335,7 @@ namespace ChocolateyGui.Common.Windows.ViewModels
 
                 HasLoaded = false;
                 ShowShouldPreventPreloadMessage = false;
+                LoadProvidedPackageWhitelist();
 
                 var sort = _sortSelectionName;
 
@@ -331,14 +357,20 @@ namespace ChocolateyGui.Common.Windows.ViewModels
                                     IncludeAllVersions,
                                     MatchWord,
                                     Source.Value));
+
+                    var sourcePackages = ShowAllPackages
+                        ? result.Packages.ToList()
+                        : result.Packages.Where(IsTopLevelProvidedPackage).ToList();
+
                     var installedPackages = await _chocolateyPackageService.GetInstalledPackages();
 
                     PackageSource.Refresh();
 
-                    PageCount = (int)Math.Ceiling((double)result.TotalCount / (double)PageSize);
+                    var totalCount = ShowAllPackages ? result.TotalCount : sourcePackages.Count;
+                    PageCount = Math.Max(1, (int)Math.Ceiling((double)Math.Max(0, totalCount) / (double)PageSize));
                     Packages.Clear();
 
-                    result.Packages.ToList().ForEach(p =>
+                    sourcePackages.ForEach(p =>
                     {
                         var remoteVersion = p.Version;
 
@@ -463,7 +495,7 @@ namespace ChocolateyGui.Common.Windows.ViewModels
 
                 var immediateProperties = new[]
                 {
-                    "IncludeAllVersions", "IncludePrerelease", "MatchWord", "SortSelection"
+                    "IncludeAllVersions", "IncludePrerelease", "MatchWord", "SortSelection", "ShowAllPackages"
                 };
 
                 if (_configService.GetEffectiveConfiguration().UseDelayedSearch ?? false)
@@ -554,6 +586,69 @@ namespace ChocolateyGui.Common.Windows.ViewModels
 #pragma warning disable 4014
                 .Subscribe(e => LoadPackages(false));
 #pragma warning restore 4014
+        }
+
+        private void LoadProvidedPackageWhitelist()
+        {
+            _providedPackageIds.Clear();
+            _applicationPackageIds.Clear();
+
+            try
+            {
+                if (!File.Exists(ProvidedPackagesWhitelistPath))
+                {
+                    return;
+                }
+
+                var doc = XDocument.Load(ProvidedPackagesWhitelistPath);
+                if (doc.Root == null)
+                {
+                    return;
+                }
+
+                var packageNodes = doc.Descendants()
+                    .Select(node => new
+                    {
+                        Node = node,
+                        Id = node.Attribute("Id")?.Value
+                            ?? node.Attribute("PackageId")?.Value
+                            ?? (string.Equals(node.Name.LocalName, "Package", StringComparison.OrdinalIgnoreCase) ? node.Value : null)
+                    })
+                    .Where(x => !string.IsNullOrWhiteSpace(x.Id))
+                    .Select(x => new
+                    {
+                        x.Node,
+                        Id = x.Id.Trim()
+                    });
+
+                foreach (var packageNode in packageNodes)
+                {
+                    _providedPackageIds.Add(packageNode.Id);
+
+                    if (packageNode.Node.Attribute("Application") != null)
+                    {
+                        _applicationPackageIds.Add(packageNode.Id);
+                    }
+                }
+            }
+            catch
+            {
+            }
+        }
+
+        private bool IsTopLevelProvidedPackage(Package package)
+        {
+            if (package == null || string.IsNullOrWhiteSpace(package.Id))
+            {
+                return false;
+            }
+
+            if (_applicationPackageIds.Count > 0)
+            {
+                return _applicationPackageIds.Contains(package.Id);
+            }
+
+            return _providedPackageIds.Contains(package.Id);
         }
     }
 }

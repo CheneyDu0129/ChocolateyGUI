@@ -114,12 +114,13 @@ It is **not currently** expected that these Pester tests are run before submitti
 This repository supports branding-aware builds from a single pipeline.
 
  * Build profile argument: `--companyProfile=semight|nexustest` (default is `semight`).
- * Package id defaults to `instr-pkgmgr`.
- * Optional id prefix is available through `--packagePrefix=<prefix>` for future split packaging.
+ * Package id defaults to `instr-pkgmgr`, reserved for the unprefixed Semight Instruments package.
+ * OEM builds must use `--packagePrefix=<prefix>` to keep package id, shim names, Inno AppId, install paths, runtime data paths, and cleanup scope isolated.
+ * Optional `--oemId=<identity>` controls filesystem namespace and optional `--oemName=<display name>` controls publisher display metadata.
 
 Version and release notes are team-maintained:
 
- * Update version strategy and baseline in `GitVersion.yml`.
+ * Update version baseline in `VERSION.txt`.
  * Update release notes in `CHANGELOG.md` for each release.
  * Keep package metadata release notes aligned with repository-maintained release notes.
 

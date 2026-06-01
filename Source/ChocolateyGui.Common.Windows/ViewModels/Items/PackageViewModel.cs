@@ -14,6 +14,7 @@ using AutoMapper;
 using Caliburn.Micro;
 using chocolatey;
 using ChocolateyGui.Common.Base;
+using ChocolateyGui.Common.Constants;
 using ChocolateyGui.Common.Models;
 using ChocolateyGui.Common.Models.Messages;
 using ChocolateyGui.Common.Properties;
@@ -25,6 +26,7 @@ using MahApps.Metro.Controls.Dialogs;
 using NuGet.Versioning;
 using Action = System.Action;
 using MemoryCache = System.Runtime.Caching.MemoryCache;
+using Application = System.Windows.Application;
 
 namespace ChocolateyGui.Common.Windows.ViewModels.Items
 {
@@ -585,6 +587,12 @@ namespace ChocolateyGui.Common.Windows.ViewModels.Items
 
         public async Task Reinstall()
         {
+            if (IsSelfPackageUpgrade())
+            {
+                await TriggerSelfReinstall();
+                return;
+            }
+
             if (!IsSourceAvailable)
             {
                 await _dialogService.ShowMessageAsync(
@@ -641,6 +649,12 @@ namespace ChocolateyGui.Common.Windows.ViewModels.Items
 
                 if (confirmationResult == MessageDialogResult.Affirmative)
                 {
+                    if (IsSelfPackageUpgrade())
+                    {
+                        await TriggerSelfUninstall();
+                        return;
+                    }
+
                     using (await StartProgressDialog(L(nameof(Resources.PackageViewModel_UninstallingPackage)), L(nameof(Resources.PackageViewModel_UninstallingPackage)), Id))
                     {
                         var result = await _chocolateyService.UninstallPackage(Id, Version.ToNormalizedStringChecked(), true);
@@ -686,6 +700,12 @@ namespace ChocolateyGui.Common.Windows.ViewModels.Items
         {
             try
             {
+                if (IsSelfPackageUpgrade())
+                {
+                    await TriggerSelfUpgrade();
+                    return;
+                }
+
                 using (await StartProgressDialog(L(nameof(Resources.PackageViewModel_UpdatingPackage)), L(nameof(Resources.PackageViewModel_UpdatingPackage)), Id))
                 {
                     var result = await _chocolateyService.UpdatePackage(Id, LatestVersion.ToNormalizedStringChecked(), Source);
@@ -727,6 +747,124 @@ namespace ChocolateyGui.Common.Windows.ViewModels.Items
                 await _dialogService.ShowMessageAsync(
                     L(nameof(Resources.PackageViewModel_FailedToUpdate)),
                     L(nameof(Resources.PackageViewModel_RanIntoUpdateError), Id, ex.Message));
+            }
+        }
+
+        private bool IsSelfPackageUpgrade()
+        {
+            return !string.IsNullOrWhiteSpace(BrandingConstants.PackageId)
+                && string.Equals(Id, BrandingConstants.PackageId, StringComparison.OrdinalIgnoreCase);
+        }
+
+        private async Task TriggerSelfUpgrade()
+        {
+            try
+            {
+                using (await StartProgressDialog(L(nameof(Resources.PackageViewModel_UpdatingPackage)), L(nameof(Resources.PackageViewModel_UpdatingPackage)), Id))
+                {
+                    var processInfo = new ProcessStartInfo
+                    {
+                        FileName = "powershell.exe",
+                        Arguments = string.Format("-NoProfile -ExecutionPolicy Bypass -Command \"choco upgrade '{0}' -y\"", BrandingConstants.PackageId),
+                        UseShellExecute = true,
+                        Verb = "runas",
+                        WindowStyle = ProcessWindowStyle.Hidden
+                    };
+
+                    var process = Process.Start(processInfo);
+                    if (process == null)
+                    {
+                        throw new InvalidOperationException("Failed to start self-upgrade process.");
+                    }
+
+                    await _dialogService.ShowMessageAsync(
+                        L(nameof(Resources.PackageViewModel_UpdatingPackage)),
+                        "Upgrade started. The app will close now. Reopen it when done.");
+                }
+
+                Application.Current?.Dispatcher?.Invoke(() => Application.Current.Shutdown());
+            }
+            catch (Exception ex)
+            {
+                Logger.Warning(ex, "Self-upgrade for {Package} was cancelled or failed to start.", BrandingConstants.PackageId);
+                await _dialogService.ShowMessageAsync(
+                    L(nameof(Resources.PackageViewModel_FailedToUpdate)),
+                    L(nameof(Resources.PackageViewModel_RanIntoUpdateError), BrandingConstants.PackageId, ex.Message));
+            }
+        }
+
+        private async Task TriggerSelfReinstall()
+        {
+            try
+            {
+                using (await StartProgressDialog(L(nameof(Resources.PackageViewModel_ReinstallingPackage)), L(nameof(Resources.PackageViewModel_ReinstallingPackage)), Id))
+                {
+                    var processInfo = new ProcessStartInfo
+                    {
+                        FileName = "powershell.exe",
+                        Arguments = string.Format("-NoProfile -ExecutionPolicy Bypass -Command \"choco upgrade '{0}' -y --force\"", BrandingConstants.PackageId),
+                        UseShellExecute = true,
+                        Verb = "runas",
+                        WindowStyle = ProcessWindowStyle.Hidden
+                    };
+
+                    var process = Process.Start(processInfo);
+                    if (process == null)
+                    {
+                        throw new InvalidOperationException("Failed to start self-reinstall process.");
+                    }
+
+                    await _dialogService.ShowMessageAsync(
+                        L(nameof(Resources.PackageViewModel_ReinstallingPackage)),
+                        "Reinstall started. The app will close now. Reopen it when done.");
+                }
+
+                Application.Current?.Dispatcher?.Invoke(() => Application.Current.Shutdown());
+            }
+            catch (Exception ex)
+            {
+                Logger.Warning(ex, "Self-reinstall for {Package} was cancelled or failed to start.", BrandingConstants.PackageId);
+                await _dialogService.ShowMessageAsync(
+                    L(nameof(Resources.PackageViewModel_FailedToReinstall)),
+                    L(nameof(Resources.PackageViewModel_RanIntoInstallError), BrandingConstants.PackageId, ex.Message));
+            }
+        }
+
+        private async Task TriggerSelfUninstall()
+        {
+            try
+            {
+                using (await StartProgressDialog(L(nameof(Resources.PackageViewModel_UninstallingPackage)), L(nameof(Resources.PackageViewModel_UninstallingPackage)), Id))
+                {
+                    var processInfo = new ProcessStartInfo
+                    {
+                        FileName = "powershell.exe",
+                        Arguments = string.Format("-NoProfile -ExecutionPolicy Bypass -Command \"choco uninstall '{0}' -y\"", BrandingConstants.PackageId),
+                        UseShellExecute = true,
+                        Verb = "runas",
+                        WindowStyle = ProcessWindowStyle.Hidden
+                    };
+
+                    var process = Process.Start(processInfo);
+                    if (process == null)
+                    {
+                        throw new InvalidOperationException("Failed to start self-uninstall process.");
+                    }
+
+                    await _dialogService.ShowMessageAsync(
+                        L(nameof(Resources.PackageViewModel_UninstallingPackage)),
+                        "Uninstall started. The app will close now."
+                    );
+                }
+
+                Application.Current?.Dispatcher?.Invoke(() => Application.Current.Shutdown());
+            }
+            catch (Exception ex)
+            {
+                Logger.Warning(ex, "Self-uninstall for {Package} was cancelled or failed to start.", BrandingConstants.PackageId);
+                await _dialogService.ShowMessageAsync(
+                    L(nameof(Resources.PackageViewModel_FailedToUninstall)),
+                    L(nameof(Resources.PackageViewModel_RanIntoUninstallError), BrandingConstants.PackageId, ex.Message));
             }
         }
 

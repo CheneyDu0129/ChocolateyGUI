@@ -41,7 +41,7 @@ namespace ChocolateyGui.Common.Windows.Services
 
         public virtual ImageSource GetEmptyIconImage()
         {
-            var image = new BitmapImage(new Uri("pack://application:,,,/ChocolateyGui;component/chocolatey@4.png", UriKind.RelativeOrAbsolute));
+            var image = new BitmapImage(new Uri("pack://application:,,,/ChocolateyGui;component/packagemanagericon.ico", UriKind.RelativeOrAbsolute));
             image.Freeze();
             return image;
         }

@@ -34,6 +34,11 @@ jobs:
             Source/packages
           key: ${{ runner.os }}-tools-${{ hashFiles('recipe.cake') }}
 
+      - name: Install Inno Setup
+        shell: powershell
+        run: |
+          choco install innosetup --confirm --no-progress
+
       - name: Build project
         shell: powershell
         env:

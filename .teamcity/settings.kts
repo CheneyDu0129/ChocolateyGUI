@@ -49,7 +49,7 @@ object ChocolateyGUI : BuildType({
                         Install-WindowsFeature -Name NET-Framework-Features
                     }
 
-                    choco install windows-sdk-7.1 netfx-4.0.3-devpack visualstudio2019buildtools netfx-4.8-devpack --confirm --no-progress
+                    choco install windows-sdk-7.1 netfx-4.0.3-devpack visualstudio2019buildtools netfx-4.8-devpack innosetup --confirm --no-progress
                     exit ${'$'}LastExitCode
                 """.trimIndent()
             }
@@ -120,7 +120,7 @@ object ChocolateyGUISchd : BuildType({
                         Install-WindowsFeature -Name NET-Framework-Features
                     }
 
-                    choco install windows-sdk-7.1 netfx-4.0.3-devpack visualstudio2019buildtools netfx-4.8-devpack --confirm --no-progress
+                    choco install windows-sdk-7.1 netfx-4.0.3-devpack visualstudio2019buildtools netfx-4.8-devpack innosetup --confirm --no-progress
                     exit ${'$'}LastExitCode
                 """.trimIndent()
             }
@@ -185,7 +185,7 @@ object ChocolateyGUIQA : BuildType({
                         Install-WindowsFeature -Name NET-Framework-Features
                     }
 
-                    choco install windows-sdk-7.1 netfx-4.0.3-devpack visualstudio2019buildtools netfx-4.8-devpack dotnet-6.0-runtime --confirm --no-progress
+                    choco install windows-sdk-7.1 netfx-4.0.3-devpack visualstudio2019buildtools netfx-4.8-devpack dotnet-6.0-runtime innosetup --confirm --no-progress
                     exit ${'$'}LastExitCode
                 """.trimIndent()
             }
@@ -250,7 +250,7 @@ object ChocolateyGUISign : BuildType({
                         Install-WindowsFeature -Name NET-Framework-Features
                     }
 
-                    choco install windows-sdk-7.1 netfx-4.0.3-devpack dotnet-6.0-runtime --confirm --no-progress
+                    choco install windows-sdk-7.1 netfx-4.0.3-devpack dotnet-6.0-runtime innosetup --confirm --no-progress
                     exit ${'$'}LastExitCode
                 """.trimIndent()
             }

@@ -32,12 +32,18 @@ namespace ChocolateyGui.Common.Windows.Utilities.Converters
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotImplementedException();
+            if (value == null)
+            {
+                return true;
+            }
+
+            return value as bool? == false;
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
-            throw new NotImplementedException();
+            var convertedValue = ConvertBack(value, typeof(bool), parameter, culture);
+            return targetTypes.Select(_ => convertedValue).ToArray();
         }
     }
 }

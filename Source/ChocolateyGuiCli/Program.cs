@@ -6,6 +6,8 @@
 using System;
 using System.IO;
 using System.Reflection;
+using System.Threading;
+using ChocolateyGui.Common.Constants;
 using ChocolateyGui.Common.Startup;
 
 namespace ChocolateyGuiCli
@@ -13,9 +15,12 @@ namespace ChocolateyGuiCli
     public class Program
     {
         private static ResolveEventHandler _handler = null;
+        private static Mutex _applicationMutex;
 
         public static void Main(string[] args)
         {
+            _applicationMutex = new Mutex(false, BrandingConstants.CliMutexName);
+
             AddAssemblyResolver();
 
             Runner.Run(args);

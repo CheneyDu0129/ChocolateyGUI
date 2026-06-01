@@ -25,7 +25,7 @@ namespace ChocolateyGui.Common.Services
             get
             {
                 var productName = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyProductAttribute>()?.Product ?? "Instrument Package Manager";
-                return string.Format("{0} v{1}", productName, Version);
+                return string.Format("{0} v{1}", productName, InformationalVersion);
             }
         }
     }

@@ -151,6 +151,12 @@ namespace ChocolateyGui.Common.Windows.ViewModels
                 _selectedBrowseSource = value;
                 NotifyOfPropertyChange(nameof(SelectedBrowseSource));
 
+                var remoteSource = value as RemoteSourceViewModel;
+                if (remoteSource != null)
+                {
+                    remoteSource.LoadPackages(false);
+                }
+
                 if (!_isSynchronizingSelection && IsBrowseProductsSelected)
                 {
                     ActivateItem(value);

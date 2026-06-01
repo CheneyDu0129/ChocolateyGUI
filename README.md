@@ -69,7 +69,7 @@ If you would like to contribute code or help fix bugs in this fork, please revie
 ### Building
 
 * It is assumed that a version of Visual Studio 2019 or newer is already installed on the machine being used to complete the build.
-* `choco install wixtoolset -y`
+* `choco install innosetup -y`
 * **Add By DU JIAWEI**: `Install-Module -Name ConvertToSARIF -RequiredVersion 1.0.0 -SkipPublisherCheck -Force -Scope CurrentUser`
 * **OPTIONAL:** Set `FXCOPDIR` environment variable, which can be set using [vswhere](https://chocolatey.org/packages/vswhere) and the following command:
 
@@ -79,7 +79,6 @@ If you would like to contribute code or help fix bugs in this fork, please revie
    refreshenv
    ```
 
-* Install WiX toolset integration for Visual Studio from [WiX Toolset Visual Studio 2019 Extension](https://marketplace.visualstudio.com/items?itemName=WixToolset.WixToolsetVisualStudio2019Extension)
 * From an **Administrative** PowerShell Window, navigate to the folder where you have cloned this repository and run `build.ps1`, this will run Cake and it will go through the build script.
 
   ```ps1
@@ -92,55 +91,86 @@ The build now supports company branding profiles through Cake arguments.
 
 * Default profile is `semight` (no extra arguments required).
 * Supported `companyProfile` values: `semight`, `nexustest`.
-* Package id defaults to `instr-pkgmgr`.
-* Optional `packagePrefix` can be used for future id split (for example: `semight-instr-pkgmgr`).
+* Package id defaults to `instr-pkgmgr` and is the unprefixed Semight Instruments package id.
+* Optional `packagePrefix` creates an isolated OEM package id (for example: `acme-instr-pkgmgr`).
+* Optional `oemId` controls the OEM filesystem namespace used under `%ProgramFiles%`, `%ProgramData%`, and `%LOCALAPPDATA%`.
+* Optional `oemName` controls OEM publisher display text.
 * Default package version uses stable `Major.Minor.Patch` and does not follow branch prerelease label.
 * Optional `packageVersion` can be used to set an explicit package version.
-* Optional `useBranchPackageVersion=true` restores the old branch-derived prerelease package version behavior.
+#### OEM Coexistence Rules
+
+OEM packages must be isolated by package id, installation path, runtime data path, shim command names, Inno AppId, and uninstall cleanup scope.
+
+Default Semight Instruments build (no prefix):
+
+```ps1
+./build.ps1 --companyProfile=semight
+```
+
+OEM build example:
+
+```ps1
+./build.ps1 --packagePrefix=acme --oemId=Acme --oemName="ACME"
+```
+
+Expected OEM isolation output for `acme`:
+
+* package id: `acme-instr-pkgmgr`
+* install path: `%ProgramFiles%\Acme\PackageManager`
+* runtime data: `%ProgramData%\Acme\PackageManager` and `%LOCALAPPDATA%\Acme\PackageManager`
+* shim commands: `acme-instr-pkgmgr` and `acme-instr-pkgmgr-cli`
+* cleanup scope: only `acme` package/source/assets
 
 #### Company Rename Checklist
 
 If you need to change the company name (for example, from `Semight Instruments` to another organization), use the checklist below to avoid path or packaging mismatches.
 
 1. Runtime path constants (single source of truth)
-  - Update `CompanyDirectoryName` (and `ProductDirectoryName` when needed) in `Source/ChocolateyGui.Common/Constants/BrandingConstants.cs`.
-  - This controls runtime `ProgramData` and `LocalAppData` path segments used by both GUI and CLI.
 
-2. MSI installer directory variables
-  - Update `CompanyDirectoryName` and `ProductDirectoryName` in `Source/ChocolateyGui.Install/Product.wxs`.
-  - This controls installer-created folders under:
-    - `C:\ProgramData\<CompanyDirectoryName>\<ProductDirectoryName>\Config`
-    - `%LOCALAPPDATA%\<CompanyDirectoryName>\<ProductDirectoryName>`
-    - `C:\<CompanyDirectoryName>\<ProductDirectoryName>` (current install root strategy)
+* Update `CompanyDirectoryName` (and `ProductDirectoryName` when needed) in `Source/ChocolateyGui.Common/Constants/BrandingConstants.cs`.
+* This controls runtime `ProgramData` and `LocalAppData` path segments used by both GUI and CLI.
 
-3. Product display metadata (if brand text changes)
-  - Update `ProductName` and `Manufacturer` in `Source/ChocolateyGui.Install/Product.wxs`.
-  - Update assembly metadata in `Source/SolutionVersion.cs` when required.
+1. Inno installer directory variables
 
-4. Packaging/company profile metadata
-  - Check company profile mapping in `recipe.cake` (`companyProfile`, `companyName`, `packageDisplayName`, `packageId`).
-  - Build with the target profile and verify generated package id/title.
+* Update `CompanyDirectoryName` and `ProductDirectoryName` defaults in `Source/ChocolateyGui.Install/ChocolateyGUI.iss` if needed.
+* Build-time values are injected by `recipe.cake` task `Build-Inno-Installer`.
+* This controls installer-created folders under:
+  * `C:\ProgramData\<CompanyDirectoryName>\<ProductDirectoryName>\Config`
+  * `%LOCALAPPDATA%\<CompanyDirectoryName>\<ProductDirectoryName>`
+  * `%ProgramFiles%\<CompanyDirectoryName>\<ProductDirectoryName>`
 
-5. Documentation and legal artifacts
-  - Review `README.md`, `ABOUT.md`, `CONTRIBUTING.md`, `CREDITS.md`, and `CREDITS.json` for visible company naming.
+1. Product display metadata (if brand text changes)
 
-6. Final validation after rename
-  - Run `./build.ps1 --companyProfile=<target>`.
-  - Verify installed paths, ARP display name/manufacturer, and CLI shim command names.
+* Update `MyAppName` and `MyAppPublisher` defaults in `Source/ChocolateyGui.Install/ChocolateyGUI.iss` when required.
+* Runtime values are injected via `recipe.cake` for profile-aware packaging.
+* Update assembly metadata in `Source/SolutionVersion.cs` when required.
+
+1. Packaging/company profile metadata
+
+* Check company profile mapping in `recipe.cake` (`companyProfile`, `companyName`, `packageDisplayName`, `packageId`).
+* Build with the target profile and verify generated package id/title.
+
+1. Documentation and legal artifacts
+
+* Review `README.md`, `ABOUT.md`, `CONTRIBUTING.md`, `CREDITS.md`, and `CREDITS.json` for visible company naming.
+
+1. Final validation after rename
+
+* Run `./build.ps1 --companyProfile=<target>`.
+* Verify installed paths, ARP display name/manufacturer, and CLI shim command names.
 
 Examples:
 
 ```ps1
 ./build.ps1 --companyProfile=semight
 ./build.ps1 --companyProfile=nexustest
-./build.ps1 --companyProfile=semight --packagePrefix=semight
+./build.ps1 --packagePrefix=acme --oemId=Acme --oemName="ACME"
 ./build.ps1 --companyProfile=semight --packageVersion=3.0.2
-./build.ps1 --companyProfile=semight --useBranchPackageVersion=true
 ```
 
 #### Version and Release Notes Ownership
 
-* Version rules are maintained in `GitVersion.yml`.
+* Version rules are maintained in `VERSION.txt`.
 * Release notes are maintained by the team in `CHANGELOG.md`.
 * Package metadata `releaseNotes` is injected from `CHANGELOG.md` during packaging.
 * `chocolateyInstall.ps1` package display name is profile-driven during packaging (semight/nexustest) without changing source script signatures.

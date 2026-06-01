@@ -9,8 +9,10 @@ using System;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
+using System.Threading;
 using System.Windows;
 using Autofac;
+using ChocolateyGui.Common.Constants;
 using ChocolateyGui.Common.Enums;
 using ChocolateyGui.Common.Services;
 using ChocolateyGui.Common.Startup;
@@ -28,6 +30,7 @@ namespace ChocolateyGui
     public partial class App
     {
         private static readonly TranslationSource _translationSource = TranslationSource.Instance;
+        private static Mutex _applicationMutex;
 
         #region DupFinder Exclusion
         public App()
@@ -101,6 +104,8 @@ namespace ChocolateyGui
         /// <inheritdoc />
         protected override void OnStartup(StartupEventArgs e)
         {
+            _applicationMutex = new Mutex(false, BrandingConstants.AppMutexName);
+
             base.OnStartup(e);
 
             ThemeAssist.BundledTheme.Generate("ChocolateyGui");
